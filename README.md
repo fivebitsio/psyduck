@@ -5,7 +5,7 @@ A privacy-friendly analytics tool built with modern technologies for fast data p
 ## 📸 Screenshots
 
 ### Dashboard Overview
-![Dashboard Screenshot](shttps://github.com/user-attachments/assets/e08259d2-13a0-4c53-ab2c-bbaf9b976aa1)
+![Dashboard Screenshot](https://github.com/user-attachments/assets/e08259d2-13a0-4c53-ab2c-bbaf9b976aa1)
 *Main analytics dashboard showing key metrics and visualizations*
 ```
 
