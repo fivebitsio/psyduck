@@ -1,0 +1,20 @@
+create table events (
+  browser varchar,
+  country_code varchar,
+  device_type device_type,
+  duration integer,
+  event_id varchar,
+  event_type varchar,
+  hostname varchar,
+  os varchar,
+  pathname varchar,
+  referrer varchar,
+  timestamp timestamp default now(),
+  unique_visit boolean,
+  utm_id varchar,
+  utm_source varchar,
+  utm_medium varchar,
+  utm_campaign varchar,
+  utm_content varchar,
+  utm_term varchar
+);
