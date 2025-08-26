@@ -1,7 +1,6 @@
 import { Hono } from 'hono'
-import { CreateEvent, UpdateEvent } from './types'
-import EventService from './service'
 import createEventService from './service'
+import { CreateEvent, UpdateEvent } from './types'
 
 interface deps {
   service: ReturnType<typeof createEventService>

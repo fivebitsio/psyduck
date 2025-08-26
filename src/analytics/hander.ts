@@ -1,6 +1,6 @@
 import { Hono } from 'hono'
-import { precision } from './types'
 import createAnalyticsService from './service'
+import { precision } from './types'
 
 interface deps {
   service: ReturnType<typeof createAnalyticsService>
