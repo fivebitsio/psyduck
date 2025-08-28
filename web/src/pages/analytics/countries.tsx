@@ -1,5 +1,6 @@
 import { Bar, BarChart, CartesianGrid, LabelList, XAxis, YAxis } from 'recharts'
 
+import { calendarRangeAtom } from '@/atoms/analytics'
 import {
   Card,
   CardContent,
@@ -13,11 +14,10 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from '@/components/ui/chart'
-import { useEffect, useState } from 'react'
-import { useAtomValue } from 'jotai'
-import { calendarRangeAtom } from '@/atoms/analytics'
 import api from '@/lib/api'
+import { useAtomValue } from 'jotai'
 import { Loader } from 'lucide-react'
+import { useEffect, useState } from 'react'
 
 const chartConfig = {
   count: {

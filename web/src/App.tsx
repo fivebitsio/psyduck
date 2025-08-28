@@ -1,10 +1,10 @@
 import { ThemeProvider } from '@/components/theme-provider'
-import Analytics from '@/pages/analytics/analytics'
+import Routes from './routes'
 
 function App() {
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-      <Analytics />
+      <Routes />
     </ThemeProvider>
   )
 }

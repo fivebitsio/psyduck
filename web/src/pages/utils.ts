@@ -1,4 +1,4 @@
-import type { ChartData, Precision } from './metrics'
+import type { ChartData, Precision } from '@/pages/analytics/metrics'
 
 export function fillGapsInData(
   data: ChartData[],
@@ -42,7 +42,6 @@ export function fillGapsInData(
     }
   }
 
-  // Normalize both start and end dates
   const normalizedStart = normalizeDate(start, precision)
   const normalizedEnd = normalizeDate(end, precision)
   const current = new Date(normalizedStart)
@@ -98,17 +97,14 @@ export function fillGapsInData(
     return data
   }
 
-  // First, add all existing data points to maintain them
   const existingDates = new Set(data.map((item) => item.date))
   data.forEach((item) => filled.push({ ...item }))
 
-  // Then fill in the gaps with zero values
   const generatedDates: string[] = []
   while (current <= normalizedEnd) {
     const dateKey = formatDate(current)
     generatedDates.push(dateKey)
 
-    // Only add if this date doesn't already exist in our data
     if (!existingDates.has(dateKey)) {
       filled.push({
         date: dateKey,
@@ -121,7 +117,6 @@ export function fillGapsInData(
     increment()
   }
 
-  // Sort by date to maintain chronological order
   filled.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
 
   return filled
