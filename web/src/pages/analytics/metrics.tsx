@@ -1,24 +1,17 @@
-import { useEffect, useMemo, useState } from 'react'
-import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from 'recharts'
-import { Card, CardAction, CardContent, CardHeader } from '@/components/ui/card'
+import { calendarRangeAtom } from '@/atoms/analytics'
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import {
   type ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
 } from '@/components/ui/chart'
-import { CalendarIcon, Loader } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover'
-import { Calendar } from '@/components/ui/calendar'
-import { calendarRangeAtom, formattedRangeAtom } from '@/atoms/analytics'
+import { Loader } from 'lucide-react'
+import { useEffect, useMemo, useState } from 'react'
+import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from 'recharts'
 
 import api from '@/lib/api'
-import { useAtom } from 'jotai'
+import { useAtomValue } from 'jotai'
 import { fillGapsInData } from '../utils'
 
 export interface ChartData {
@@ -51,8 +44,7 @@ function Metrics() {
   const [chartData, setChartData] = useState<ChartData[]>([])
   const [fetching, setFetching] = useState<boolean>(false)
 
-  const [range, setRange] = useAtom(calendarRangeAtom)
-  const [formattedRange] = useAtom(formattedRangeAtom)
+  const range = useAtomValue(calendarRangeAtom)
 
   useEffect(() => {
     const fetchMetrics = async () => {
@@ -90,7 +82,7 @@ function Metrics() {
 
   if (!chartData || chartData.length === 0) {
     return (
-      <Card className="py-0 mt-20">
+      <Card className="py-0">
         <CardContent className="p-6">
           <div className="text-center">No data available</div>
         </CardContent>
@@ -120,40 +112,13 @@ function Metrics() {
               )
             })}
           </div>
-          <CardAction className="mr-4 my-auto @md/card:mt-0">
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button variant="outline">
-                  <CalendarIcon />
-                  {formattedRange}
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent
-                className="w-auto overflow-hidden p-0"
-                align="end"
-              >
-                <Calendar
-                  mode="range"
-                  defaultMonth={range.from}
-                  selected={range}
-                  onSelect={(newRange) => {
-                    // Only update if both dates are selected
-                    if (newRange?.from && newRange?.to) {
-                      setRange({ from: newRange.from, to: newRange.to })
-                    }
-                  }}
-                  className="rounded-lg border shadow-sm"
-                />
-              </PopoverContent>
-            </Popover>
-          </CardAction>
         </div>
       </CardHeader>
     )
   }
 
   return (
-    <Card className="py-0 mt-20">
+    <Card className="py-0">
       {cardHeader()}
       <CardContent className="px-2 sm:p-6">
         <ChartContainer

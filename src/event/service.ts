@@ -1,8 +1,8 @@
 import * as ct from 'countries-and-timezones'
 
-import { CreateEvent, Event, UpdateEvent } from './types'
 import { getHostname } from '../utils'
 import createEventRepo from './repo'
+import { CreateEvent, Event, UpdateEvent } from './types'
 
 interface deps {
   repo: ReturnType<typeof createEventRepo>

@@ -5,9 +5,9 @@ import {
   ChartTooltipContent,
   type ChartConfig,
 } from '@/components/ui/chart'
+import { useMemo } from 'react'
 import { Label, Pie, PieChart } from 'recharts'
 import type { VisitsByDeviceType } from '../devices'
-import { useMemo } from 'react'
 
 const chartConfig = {
   mobile: {

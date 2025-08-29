@@ -3,7 +3,6 @@ import {
   Metric,
   MetricsResponse,
   precision,
-  VisitsByBrowser,
   VisitsByCountry,
   VisitsByDevice,
   VisitsByPage,
