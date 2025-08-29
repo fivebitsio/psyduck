@@ -12,8 +12,14 @@ function createConfigRepo(db: Low<ConfigSchema>) {
     })
   }
 
-  async function existsByUsername(username: string): Promise<boolean> {
+  async function userExistsByUsername(username: string): Promise<boolean> {
     return db.data.users.some((u) => u.username === username)
+  }
+
+  async function getUserByUsername(
+    username: string,
+  ): Promise<User | undefined> {
+    return db.data.users.find((u) => u.username === username)
   }
 
   async function listUsers(): Promise<User[]> {
@@ -23,7 +29,8 @@ function createConfigRepo(db: Low<ConfigSchema>) {
   return {
     addUser,
     deleteUser,
-    existsByUsername,
+    userExistsByUsername,
+    getUserByUsername,
     listUsers,
   }
 }
