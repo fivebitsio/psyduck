@@ -1,3 +1,4 @@
+import { password } from 'bun'
 import createConfigRepo from './repo'
 import {
   User,
@@ -14,6 +15,7 @@ function createConfigService(deps: deps) {
   async function addUser(user: User): Promise<void> {
     const userExists = await deps.repo.userExistsByUsername(user.username)
     if (userExists) throw new UserExistsError(user.username)
+    user.password = password.hashSync(user.password)
 
     return deps.repo.addUser(user)
   }

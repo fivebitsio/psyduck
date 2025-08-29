@@ -1,6 +1,7 @@
+import { password } from 'bun'
 import { sign, verify } from 'hono/jwt'
 import createConfigRepo from '../config/repo'
-import { InvalidCredentialsError, SignInRequest, SignInResponse } from './types'
+import { InvalidCredentialsError, SignInRequest } from './types'
 
 interface deps {
   repo: ReturnType<typeof createConfigRepo>
@@ -10,7 +11,7 @@ function createAuthService(deps: deps) {
   async function signIn(req: SignInRequest): Promise<string> {
     const user = await deps.repo.getUserByUsername(req.username)
 
-    if (user === undefined || req.password !== user.password) {
+    if (user === undefined || !password.verify(req.password, user.password)) {
       throw InvalidCredentialsError
     }
 
