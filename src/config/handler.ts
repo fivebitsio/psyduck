@@ -1,6 +1,6 @@
 import { Hono } from 'hono'
 import createConfigService from './service'
-import { UserRequest } from './types'
+import { UserDoesNotExistError, UserExistsError, UserRequest } from './types'
 
 interface deps {
   service: ReturnType<typeof createConfigService>
@@ -17,8 +17,12 @@ function createConfigHandler(deps: deps) {
 
       return c.json({}, 201)
     } catch (error) {
-      console.error('Error creating user:', error)
-      return c.json({}, 500)
+      switch (true) {
+        case error instanceof UserExistsError:
+          return c.json({ error: error.message }, 409)
+        default:
+          return c.json({ error: 'Internal server error' }, 500)
+      }
     }
   })
 
@@ -29,8 +33,22 @@ function createConfigHandler(deps: deps) {
       await deps.service.deleteUser(username)
       return c.json({}, 200)
     } catch (error) {
-      console.error('Error deleting user:', error)
-      return c.json({}, 500)
+      switch (true) {
+        case error instanceof UserDoesNotExistError:
+          return c.json({ error: error.message }, 404)
+
+        default:
+          return c.json({ error: 'Internal server error' }, 500)
+      }
+    }
+  })
+
+  app.get('/users', async (c) => {
+    try {
+      const users = await deps.service.listUserNames()
+      return c.json(users, 200)
+    } catch (error) {
+      return c.json({ error: 'Internal server error' }, 500)
     }
   })
 

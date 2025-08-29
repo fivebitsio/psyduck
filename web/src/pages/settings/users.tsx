@@ -17,16 +17,19 @@ import {
 import { Input } from '@/components/ui/input'
 import api from '@/lib/api'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { UserPlus } from 'lucide-react'
+import { Loader2, Trash2, UserPlus } from 'lucide-react'
+import { useCallback, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
 interface User {
   username: string
-  password: string
 }
 
 function Users() {
+  const [users, setUsers] = useState<User[]>([])
+  const [fetching, setFetching] = useState<boolean>(false)
+
   const formSchema = z.object({
     username: z.string().min(3).max(50),
     password: z.string().min(6).max(100),
@@ -40,17 +43,53 @@ function Users() {
     },
   })
 
+  const fetchUsers = useCallback(async () => {
+    try {
+      setFetching(true)
+
+      const users = await api<undefined, User[]>({
+        method: 'GET',
+        url: `config/users`,
+      })
+      setUsers(users)
+    } catch (error) {
+      console.error('Error fetching users: ', error)
+    } finally {
+      setFetching(false)
+    }
+  }, [])
+
+  useEffect(() => {
+    fetchUsers()
+  }, [fetchUsers])
+
   async function handleAddUser(
     body: z.infer<typeof formSchema>,
   ): Promise<void> {
     try {
       await api({ url: 'config/users', method: 'POST', body: body })
-    } catch (error) {
-      console.error(error)
+      form.reset()
+      await fetchUsers()
+    } catch (error: any) {
+      if (error.message) {
+        form.setError('root', { type: 'server', message: error.message })
+      } else {
+        form.setError('root', {
+          type: 'server',
+          message: 'An error occurred while adding the user',
+        })
+      }
     }
   }
 
-  function handleDeleteUser(userToDelete: User): void {}
+  async function handleDeleteUser(username: string): Promise<void> {
+    try {
+      await api({ url: `config/users/${username}`, method: 'DELETE' })
+      await fetchUsers()
+    } catch (error: any) {
+      console.error(error)
+    }
+  }
 
   return (
     <div className="space-y-6">
@@ -99,9 +138,23 @@ function Users() {
                   </FormItem>
                 )}
               />
-              <Button type="submit" className="w-full md:w-auto">
-                Add User
+              <Button
+                disabled={form.formState.isSubmitting}
+                type="submit"
+                className="w-full md:w-auto"
+              >
+                {form.formState.isSubmitting ? (
+                  <>
+                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                    Submitting
+                  </>
+                ) : (
+                  'Add User'
+                )}
               </Button>
+              {form.formState.errors.root && (
+                <FormMessage>{form.formState.errors.root.message}</FormMessage>
+              )}
             </form>
           </Form>
         </CardContent>
@@ -109,29 +162,29 @@ function Users() {
 
       <Card>
         <CardHeader>
-          {/* <CardTitle>Users ({users.length})</CardTitle> */}
+          <CardTitle>Users ({users.length})</CardTitle>
           <CardDescription>Manage existing users</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
-            {/* {users.map((user: User, index: number) => (
-                <div
-                  key={`${user.username}-${index}`}
-                  className="flex items-center justify-between p-4 border rounded-sm"
-                >
-                  <div className="flex-1">
-                    <p className="font-medium">{user.username}</p>
-                  </div>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => handleDeleteUser(user)}
-                    className="text-red-600 hover:text-red-700 hover:bg-red-50"
-                  >
-                    <Trash2 className="w-4 h-4" />
-                  </Button>
+            {users.map((user: User, index: number) => (
+              <div
+                key={`${user.username}-${index}`}
+                className="flex items-center justify-between p-4 border rounded-sm"
+              >
+                <div className="flex-1">
+                  <p className="font-medium">{user.username}</p>
                 </div>
-              ))} */}
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => handleDeleteUser(user.username)}
+                  className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                >
+                  <Trash2 className="w-4 h-4" />
+                </Button>
+              </div>
+            ))}
           </div>
         </CardContent>
       </Card>

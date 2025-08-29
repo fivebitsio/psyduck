@@ -3,16 +3,28 @@ import { ConfigSchema, User } from './types'
 
 function createConfigRepo(db: Low<ConfigSchema>) {
   async function addUser(user: User): Promise<void> {
-    await db.update(({ users }) => users.push(user))
+    return db.update(({ users }) => users.push(user))
   }
 
   async function deleteUser(username: string): Promise<void> {
-    await db.update(({ users }) => users.filter((u) => u.username != username))
+    return db.update((data) => {
+      data.users = data.users.filter((u) => u.username !== username)
+    })
+  }
+
+  async function existsByUsername(username: string): Promise<boolean> {
+    return db.data.users.some((u) => u.username === username)
+  }
+
+  async function listUsers(): Promise<User[]> {
+    return db.data.users
   }
 
   return {
     addUser,
     deleteUser,
+    existsByUsername,
+    listUsers,
   }
 }
 
