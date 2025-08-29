@@ -12,14 +12,14 @@ interface deps {
 
 function createConfigService(deps: deps) {
   async function addUser(user: User): Promise<void> {
-    const userExists = await deps.repo.existsByUsername(user.username)
+    const userExists = await deps.repo.userExistsByUsername(user.username)
     if (userExists) throw new UserExistsError(user.username)
 
     return deps.repo.addUser(user)
   }
 
   async function deleteUser(username: string): Promise<void> {
-    const userExists = await deps.repo.existsByUsername(username)
+    const userExists = await deps.repo.userExistsByUsername(username)
     if (!userExists) throw new UserDoesNotExistError(username)
 
     return deps.repo.deleteUser(username)
