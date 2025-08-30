@@ -1,4 +1,4 @@
-import { DuckDBConnection, DuckDBInstance } from '@duckdb/node-api'
+import { type DuckDBConnection, DuckDBInstance } from '@duckdb/node-api'
 
 let _duckdb: DuckDBConnection
 let isInitialized: boolean = false
