@@ -1,0 +1,9 @@
+{
+  "jwtKey": "lGUXkLiYX8GPIPPhMuyefsF7KAp2rNlVkuDljfOgukTNFQ6/ju0lFzUBveab6v37ddHMAWuRRwnWIzzzk/xNwg==",
+  "users": [
+    {
+      "username": "praveen",
+      "password": "$argon2id$v=19$m=65536,t=2,p=1$9M9M3k+NQBoBj+16fhW0R/ok/bbrtlqaXYxCZprGGB8$SUF5VW/GiZH/DrTQOJ5rOxGIqMn+DPTtrRkDWhF1alA"
+    }
+  ]
+}

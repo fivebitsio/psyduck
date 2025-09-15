@@ -35,16 +35,20 @@ function createConfigService(deps: deps) {
   }
 
   async function generateJWTKey(): Promise<void> {
-    const jwtSecret = await generateSecret('HS256')
+    const jwtSecret = await crypto.subtle.generateKey(
+      { name: 'HMAC', hash: 'SHA-256' },
+      true,
+      ['sign', 'verify'],
+    )
 
-    const rawKey = await crypto.subtle.exportKey('raw', jwtSecret as CryptoKey)
+    const rawKey = await crypto.subtle.exportKey('raw', jwtSecret)
     const key = Buffer.from(new Uint8Array(rawKey)).toString('base64')
-
     await deps.repo.setJWTKey(key)
   }
 
   async function jwtKeyExists(): Promise<boolean> {
     const key = await deps.repo.getJwtKey()
+    console.log('JWT Key:', key.length > 0)
     return key.length > 0
   }
 
