@@ -46,7 +46,7 @@ const api = async <T, K>({
   if (typeof document !== 'undefined') {
     const token = localStorage.getItem('token')
     if (token && internalApi) {
-      headers['Authorization'] = `Bearer ${token}`
+      headers.Authorization = `Bearer ${token}`
     }
   }
 
@@ -57,7 +57,7 @@ const api = async <T, K>({
     method,
     body: body ? JSON.stringify(body) : undefined,
   })
-  if (response.status == 204) {
+  if (response.status === 204) {
     // please ensure that K is undefined for this case
     return undefined as K
   } else if (response.status >= 400) {

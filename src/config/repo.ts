@@ -1,5 +1,5 @@
-import { Low } from 'lowdb'
-import { ConfigSchema, User } from './types'
+import type { Low } from 'lowdb'
+import type { ConfigSchema, User } from './types'
 
 function createConfigRepo(db: Low<ConfigSchema>) {
   async function addUser(user: User): Promise<void> {
@@ -26,12 +26,24 @@ function createConfigRepo(db: Low<ConfigSchema>) {
     return db.data.users
   }
 
+  async function setJWTKey(key: string): Promise<void> {
+    return db.update((data) => {
+      data.jwtKey = key
+    })
+  }
+
+  async function getJwtKey(): Promise<string> {
+    return db.data.jwtKey
+  }
+
   return {
     addUser,
     deleteUser,
     userExistsByUsername,
     getUserByUsername,
     listUsers,
+    setJWTKey,
+    getJwtKey,
   }
 }
 

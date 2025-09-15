@@ -1,6 +1,10 @@
 import { Hono } from 'hono'
-import createConfigService from './service'
-import { UserDoesNotExistError, UserExistsError, UserRequest } from './types'
+import type createConfigService from './service'
+import {
+  UserDoesNotExistError,
+  UserExistsError,
+  type UserRequest,
+} from './types'
 
 interface deps {
   service: ReturnType<typeof createConfigService>

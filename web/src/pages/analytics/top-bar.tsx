@@ -1,3 +1,5 @@
+import { useAtom } from 'jotai'
+import { CalendarIcon } from 'lucide-react'
 import { calendarRangeAtom, formattedRangeAtom } from '@/atoms/analytics'
 import { Button } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'
@@ -6,8 +8,6 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover'
-import { useAtom } from 'jotai'
-import { CalendarIcon } from 'lucide-react'
 
 function TopBar() {
   const [range, setRange] = useAtom(calendarRangeAtom)

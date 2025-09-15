@@ -1,7 +1,7 @@
 import { password } from 'bun'
 import { sign, verify } from 'hono/jwt'
-import createConfigRepo from '../config/repo'
-import { InvalidCredentialsError, SignInRequest } from './types'
+import type createConfigRepo from '../config/repo'
+import { InvalidCredentialsError, type SignInRequest } from './types'
 
 interface deps {
   repo: ReturnType<typeof createConfigRepo>

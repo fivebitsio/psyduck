@@ -1,3 +1,8 @@
+import { zodResolver } from '@hookform/resolvers/zod'
+import { Loader2, Trash2, UserPlus } from 'lucide-react'
+import { useCallback, useEffect, useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { z } from 'zod'
 import { Button } from '@/components/ui/button'
 import {
   Card,
@@ -16,11 +21,6 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import api from '@/lib/api'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { Loader2, Trash2, UserPlus } from 'lucide-react'
-import { useCallback, useEffect, useState } from 'react'
-import { useForm } from 'react-hook-form'
-import { z } from 'zod'
 
 interface User {
   username: string
@@ -28,7 +28,7 @@ interface User {
 
 function Users() {
   const [users, setUsers] = useState<User[]>([])
-  const [fetching, setFetching] = useState<boolean>(false)
+  const [_fetching, setFetching] = useState<boolean>(false)
 
   const formSchema = z.object({
     username: z.string().min(3).max(50),
@@ -70,9 +70,17 @@ function Users() {
       await api({ url: 'config/users', method: 'POST', body: body })
       form.reset()
       await fetchUsers()
-    } catch (error: any) {
-      if (error.message) {
-        form.setError('root', { type: 'server', message: error.message })
+    } catch (error) {
+      if (
+        error &&
+        typeof error === 'object' &&
+        'message' in error &&
+        typeof (error as any).message === 'string'
+      ) {
+        form.setError('root', {
+          type: 'server',
+          message: (error as any).message,
+        })
       } else {
         form.setError('root', {
           type: 'server',

@@ -1,6 +1,6 @@
-import { DuckDBConnection, DuckDBInstance } from '@duckdb/node-api'
-import * as fs from 'fs/promises'
-import * as path from 'path'
+import * as fs from 'node:fs/promises'
+import * as path from 'node:path'
+import { type DuckDBConnection, DuckDBInstance } from '@duckdb/node-api'
 
 interface MigratorConfig {
   dbPath: string
@@ -101,19 +101,19 @@ class Migrator {
 
       return rows.map((row: any) => row.name)
     } catch (err) {
+      console.error(
+        'Error fetching applied migrations:',
+        (err as Error).message,
+      )
       throw err
     }
   }
 
   private async executeQuery(query: string, params: any[] = []): Promise<void> {
-    try {
-      if (params.length > 0) {
-        await this.db.run(query, params)
-      } else {
-        await this.db.run(query)
-      }
-    } catch (err) {
-      throw err
+    if (params.length > 0) {
+      await this.db.run(query, params)
+    } else {
+      await this.db.run(query)
     }
   }
 }

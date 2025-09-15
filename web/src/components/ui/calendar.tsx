@@ -1,13 +1,53 @@
-import * as React from 'react'
 import {
   ChevronDownIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
+  ChevronUpIcon,
+  type LucideProps,
 } from 'lucide-react'
-import { DayButton, DayPicker, getDefaultClassNames } from 'react-day-picker'
-
-import { cn } from '@/lib/utils'
+import * as React from 'react'
+import {
+  type DayButton,
+  DayPicker,
+  getDefaultClassNames,
+} from 'react-day-picker'
 import { Button, buttonVariants } from '@/components/ui/button'
+import { cn } from '@/lib/utils'
+
+function WeekNumber({
+  children,
+  ...props
+}: React.PropsWithChildren<React.TdHTMLAttributes<HTMLTableCellElement>>) {
+  return (
+    <td {...props}>
+      <div className="flex size-(--cell-size) items-center justify-center text-center">
+        {children}
+      </div>
+    </td>
+  )
+}
+function Chevron({
+  className,
+  orientation,
+  ...props
+}: {
+  className?: string
+  orientation?: 'left' | 'right' | 'down' | 'up'
+} & LucideProps) {
+  if (orientation === 'left') {
+    return <ChevronLeftIcon className={cn('size-4', className)} {...props} />
+  }
+
+  if (orientation === 'right') {
+    return <ChevronRightIcon className={cn('size-4', className)} {...props} />
+  }
+
+  if (orientation === 'up') {
+    return <ChevronUpIcon className={cn('size-4', className)} {...props} />
+  }
+
+  return <ChevronDownIcon className={cn('size-4', className)} {...props} />
+}
 
 function Calendar({
   className,
@@ -133,36 +173,9 @@ function Calendar({
             />
           )
         },
-        Chevron: ({ className, orientation, ...props }) => {
-          if (orientation === 'left') {
-            return (
-              <ChevronLeftIcon className={cn('size-4', className)} {...props} />
-            )
-          }
-
-          if (orientation === 'right') {
-            return (
-              <ChevronRightIcon
-                className={cn('size-4', className)}
-                {...props}
-              />
-            )
-          }
-
-          return (
-            <ChevronDownIcon className={cn('size-4', className)} {...props} />
-          )
-        },
+        Chevron,
         DayButton: CalendarDayButton,
-        WeekNumber: ({ children, ...props }) => {
-          return (
-            <td {...props}>
-              <div className="flex size-(--cell-size) items-center justify-center text-center">
-                {children}
-              </div>
-            </td>
-          )
-        },
+        WeekNumber,
         ...components,
       }}
       {...props}

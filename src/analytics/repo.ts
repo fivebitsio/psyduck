@@ -1,7 +1,7 @@
-import { DuckDBConnection } from '@duckdb/node-api'
+import type { DuckDBConnection } from '@duckdb/node-api'
 import * as ct from 'countries-and-timezones'
 import * as queries from './queries'
-import {
+import type {
   Metric,
   precision,
   VisitsByBrowser,

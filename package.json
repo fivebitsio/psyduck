@@ -13,7 +13,7 @@
     "dev:all": "bun run dev & bun run dev:track",
     "migrate": "bun run bin/migrate.ts",
     "db": "duckdb data/psyduck.db",
-    "fmt": "biome format --write",
+    "fmt": "biome check --write",
     "prepare": "husky",
     "track:build": "bun run --filter=@psyduck/track build",
     "track:package": "bun run --filter=@psyduck/track package",
@@ -21,13 +21,15 @@
   },
   "dependencies": {
     "@duckdb/node-api": "1.3.2-alpha.25",
+    "@inquirer/prompts": "^7.8.6",
     "countries-and-timezones": "^3.8.0",
     "hono": "^4.9.1",
+    "jose": "^6.1.0",
     "lowdb": "^7.0.1",
     "yargs": "^18.0.0"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.2.0",
+    "@biomejs/biome": "2.2.4",
     "@types/bun": "latest",
     "@types/yargs": "^17.0.33",
     "husky": "^9.1.7"

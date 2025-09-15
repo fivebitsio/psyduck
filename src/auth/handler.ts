@@ -1,6 +1,6 @@
 import { Hono } from 'hono'
-import createAuthService from './service'
-import { InvalidCredentialsError, SignInRequest } from './types'
+import type createAuthService from './service'
+import { InvalidCredentialsError, type SignInRequest } from './types'
 
 interface deps {
   service: ReturnType<typeof createAuthService>

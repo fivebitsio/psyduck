@@ -1,10 +1,11 @@
 import { password } from 'bun'
-import createConfigRepo from './repo'
+import { generateSecret } from 'jose'
+import type createConfigRepo from './repo'
 import {
-  User,
+  type User,
   UserDoesNotExistError,
   UserExistsError,
-  UserWithoutPassword,
+  type UserWithoutPassword,
 } from './types'
 
 interface deps {
@@ -33,10 +34,30 @@ function createConfigService(deps: deps) {
     return users.map((user) => ({ username: user.username }))
   }
 
+  async function generateJWTKey(): Promise<void> {
+    const jwtSecret = await crypto.subtle.generateKey(
+      { name: 'HMAC', hash: 'SHA-256' },
+      true,
+      ['sign', 'verify'],
+    )
+
+    const rawKey = await crypto.subtle.exportKey('raw', jwtSecret)
+    const key = Buffer.from(new Uint8Array(rawKey)).toString('base64')
+    await deps.repo.setJWTKey(key)
+  }
+
+  async function jwtKeyExists(): Promise<boolean> {
+    const key = await deps.repo.getJwtKey()
+    console.log('JWT Key:', key.length > 0)
+    return key.length > 0
+  }
+
   return {
     addUser,
     deleteUser,
+    generateJWTKey,
     listUserNames,
+    jwtKeyExists,
   }
 }
 
