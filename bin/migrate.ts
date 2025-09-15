@@ -35,10 +35,10 @@ function parseArguments() {
       db: { type: 'string', default: './data/psyduck.db' },
       migrations: { type: 'string', default: './migrations' },
       number: { type: 'string', default: '1' },
-      help: { type: 'boolean', short: 'h' }
+      help: { type: 'boolean', short: 'h' },
     },
     allowPositionals: true,
-    strict: false
+    strict: false,
   })
 
   return { values, positionals }
@@ -58,7 +58,10 @@ async function handleUpCommand(migrator: Migrator) {
   }
 }
 
-async function handleDownCommand(migrator: Migrator, numberOfMigrations: string | boolean) {
+async function handleDownCommand(
+  migrator: Migrator,
+  numberOfMigrations: string | boolean,
+) {
   try {
     let num: number | 'all'
     if (numberOfMigrations === 'all') {
@@ -107,7 +110,10 @@ async function main() {
 
   const migrator = new Migrator({
     dbPath: typeof values.db === 'string' ? values.db : './data/psyduck.db',
-    migrationsDir: typeof values.migrations === 'string' ? values.migrations : './migrations'
+    migrationsDir:
+      typeof values.migrations === 'string'
+        ? values.migrations
+        : './migrations',
   })
 
   try {
