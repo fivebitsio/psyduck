@@ -1,9 +1,9 @@
+import { resolve } from 'node:path'
 import { input, password } from '@inquirer/prompts'
-import { resolve } from 'path'
 import { JSONFilePreset } from 'lowdb/node'
-import { ConfigSchema, User } from '../src/config/types'
 import createConfigRepo from '../src/config/repo'
 import createConfigService from '../src/config/service'
+import type { ConfigSchema, User } from '../src/config/types'
 
 const configPath = resolve(__dirname, '../data/config.json')
 

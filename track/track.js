@@ -1,4 +1,4 @@
-;(function () {
+;(() => {
   let config,
     isInit = false,
     eventID = null,

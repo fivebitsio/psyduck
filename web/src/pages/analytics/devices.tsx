@@ -1,11 +1,11 @@
-import { useEffect, useState } from 'react'
 import { useAtomValue } from 'jotai'
-import { calendarRangeAtom } from '@/atoms/analytics'
-import api from '@/lib/api'
 import { Loader } from 'lucide-react'
+import { useEffect, useState } from 'react'
+import { calendarRangeAtom } from '@/atoms/analytics'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import DeviceTypes from './devices/device_types'
+import api from '@/lib/api'
 import Browsers from './devices/browsers'
+import DeviceTypes from './devices/device_types'
 import Os from './devices/os'
 
 export interface VisitsByDeviceType {

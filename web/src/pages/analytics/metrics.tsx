@@ -1,3 +1,7 @@
+import { useAtomValue } from 'jotai'
+import { Loader } from 'lucide-react'
+import { useEffect, useMemo, useState } from 'react'
+import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from 'recharts'
 import { calendarRangeAtom } from '@/atoms/analytics'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import {
@@ -6,12 +10,7 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from '@/components/ui/chart'
-import { Loader } from 'lucide-react'
-import { useEffect, useMemo, useState } from 'react'
-import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from 'recharts'
-
 import api from '@/lib/api'
-import { useAtomValue } from 'jotai'
 import { fillGapsInData } from '../utils'
 
 export interface ChartData {
@@ -103,6 +102,7 @@ function Metrics() {
                   data-active={activeChart === chart}
                   className="data-[active=true]:bg-muted/50 relative z-30 flex flex-1 flex-col justify-center gap-1 border-t px-6 py-4 text-left even:border-l sm:border-t-0 sm:border-l sm:px-8 sm:py-6"
                   onClick={() => setActiveChart(chart)}
+                  type="button"
                 >
                   <span className="text-s">{chartConfig[chart].label}</span>
                   <span className="text-lg leading-none font-bold sm:text-3xl">

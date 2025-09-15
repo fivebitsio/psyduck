@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 
+import process from 'node:process'
 import yargs from 'yargs'
 import { hideBin } from 'yargs/helpers'
 import Migrator from '../src/lib/migrator'
-import process from 'node:process'
 
 yargs(hideBin(process.argv))
   .command('up', 'Apply all pending migrations', {}, async (argv) => {

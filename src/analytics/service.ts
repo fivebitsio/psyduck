@@ -1,5 +1,5 @@
-import createAnalyticsRepo from './repo'
-import {
+import type createAnalyticsRepo from './repo'
+import type {
   Metric,
   MetricsResponse,
   precision,

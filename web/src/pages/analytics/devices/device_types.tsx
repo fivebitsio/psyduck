@@ -1,12 +1,12 @@
+import { useMemo } from 'react'
+import { Label, Pie, PieChart } from 'recharts'
 import { Card, CardContent } from '@/components/ui/card'
 import {
+  type ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-  type ChartConfig,
 } from '@/components/ui/chart'
-import { useMemo } from 'react'
-import { Label, Pie, PieChart } from 'recharts'
 import type { VisitsByDeviceType } from '../devices'
 
 const chartConfig = {
@@ -31,9 +31,7 @@ interface DeviceTypesProps {
 function DeviceTypes({ deviceTypes }: DeviceTypesProps) {
   const totalVisitors = useMemo(() => {
     return deviceTypes.reduce((acc, curr) => acc + curr.count, 0)
-  }, [])
-
-  console.log(deviceTypes)
+  }, [deviceTypes])
 
   return (
     <Card className="flex flex-col">

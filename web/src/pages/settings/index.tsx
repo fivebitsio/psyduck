@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import {
   Card,
   CardContent,
@@ -6,7 +7,6 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
-import { useState } from 'react'
 import Users from './users'
 
 interface SidebarItem {
@@ -65,6 +65,7 @@ function Settings() {
                       ? 'bg-primary text-primary-foreground'
                       : 'hover:bg-muted text-muted-foreground hover:text-foreground'
                   }`}
+                  type="button"
                 >
                   {item.label}
                 </button>

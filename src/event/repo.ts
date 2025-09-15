@@ -1,5 +1,5 @@
-import { DuckDBConnection } from '@duckdb/node-api'
-import { Event } from './types.js'
+import type { DuckDBConnection } from '@duckdb/node-api'
+import type { Event } from './types.js'
 
 function createEventRepo(duckdb: DuckDBConnection) {
   const updateDurationQuery = `

@@ -24,7 +24,7 @@ export function fillGapsInData(
       case 'day':
         d.setHours(0, 0, 0, 0)
         return d
-      case 'week':
+      case 'week': {
         // Match backend: start of week on Monday (1)
         // Use the exact same logic as your backend
         d.setHours(0, 0, 0, 0)
@@ -33,6 +33,7 @@ export function fillGapsInData(
         const daysToMonday = day === 0 ? 6 : day - 1
         d.setDate(d.getDate() - daysToMonday)
         return d
+      }
       case 'month':
         d.setDate(1)
         d.setHours(0, 0, 0, 0)
@@ -98,7 +99,9 @@ export function fillGapsInData(
   }
 
   const existingDates = new Set(data.map((item) => item.date))
-  data.forEach((item) => filled.push({ ...item }))
+  data.forEach((item) => {
+    filled.push(item)
+  })
 
   const generatedDates: string[] = []
   while (current <= normalizedEnd) {

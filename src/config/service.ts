@@ -1,12 +1,12 @@
 import { password } from 'bun'
-import createConfigRepo from './repo'
+import { generateSecret } from 'jose'
+import type createConfigRepo from './repo'
 import {
-  User,
+  type User,
   UserDoesNotExistError,
   UserExistsError,
-  UserWithoutPassword,
+  type UserWithoutPassword,
 } from './types'
-import { generateSecret } from 'jose'
 
 interface deps {
   repo: ReturnType<typeof createConfigRepo>

@@ -1,5 +1,5 @@
-import { Low } from 'lowdb'
-import { ConfigSchema, User } from './types'
+import type { Low } from 'lowdb'
+import type { ConfigSchema, User } from './types'
 
 function createConfigRepo(db: Low<ConfigSchema>) {
   async function addUser(user: User): Promise<void> {
