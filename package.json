@@ -7,14 +7,14 @@
     "web"
   ],
   "scripts": {
-    "dev": "bun run --hot src/index.ts",
+    "dev": "bun run prepare && bun run --hot src/index.ts",
     "dev:track": "cd track && bun run dev",
     "dev:web": "cd web && bun --bun run dev",
     "dev:all": "bun run dev & bun run dev:track",
     "migrate": "bun run bin/migrate.ts",
     "db": "duckdb data/psyduck.db",
     "fmt": "biome check --write",
-    "prepare": "husky",
+    "prepare": "bun run bin/config.ts",
     "track:build": "bun run --filter=@psyduck/track build",
     "track:package": "bun run --filter=@psyduck/track package",
     "track:clean": "bun run --filter=@psyduck/track clean"

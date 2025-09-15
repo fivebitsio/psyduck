@@ -1,5 +1,4 @@
 import { password } from 'bun'
-import { generateSecret } from 'jose'
 import type createConfigRepo from './repo'
 import {
   type User,
