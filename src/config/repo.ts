@@ -26,12 +26,24 @@ function createConfigRepo(db: Low<ConfigSchema>) {
     return db.data.users
   }
 
+  async function setJWTKey(key: string): Promise<void> {
+    return db.update((data) => {
+      data.jwtKey = key
+    })
+  }
+
+  async function getJwtKey(): Promise<string> {
+    return db.data.jwtKey
+  }
+
   return {
     addUser,
     deleteUser,
     userExistsByUsername,
     getUserByUsername,
     listUsers,
+    setJWTKey,
+    getJwtKey,
   }
 }
 

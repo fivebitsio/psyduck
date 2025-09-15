@@ -9,6 +9,7 @@ export interface UserWithoutPassword {
 
 export interface ConfigSchema {
   users: User[]
+  jwtKey: string
 }
 
 export interface UserRequest {

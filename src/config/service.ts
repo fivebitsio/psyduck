@@ -6,6 +6,7 @@ import {
   UserExistsError,
   UserWithoutPassword,
 } from './types'
+import { generateSecret } from 'jose'
 
 interface deps {
   repo: ReturnType<typeof createConfigRepo>
@@ -33,10 +34,26 @@ function createConfigService(deps: deps) {
     return users.map((user) => ({ username: user.username }))
   }
 
+  async function generateJWTKey(): Promise<void> {
+    const jwtSecret = await generateSecret('HS256')
+
+    const rawKey = await crypto.subtle.exportKey('raw', jwtSecret as CryptoKey)
+    const key = Buffer.from(new Uint8Array(rawKey)).toString('base64')
+
+    await deps.repo.setJWTKey(key)
+  }
+
+  async function jwtKeyExists(): Promise<boolean> {
+    const key = await deps.repo.getJwtKey()
+    return key.length > 0
+  }
+
   return {
     addUser,
     deleteUser,
+    generateJWTKey,
     listUserNames,
+    jwtKeyExists,
   }
 }
 
