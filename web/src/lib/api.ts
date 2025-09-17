@@ -2,7 +2,7 @@ type HTTPMethod = 'DELETE' | 'GET' | 'PATCH' | 'POST' | 'PUT'
 const BASE_URL = 'http://localhost:1323/'
 
 const defaultHeaders = {
-  Accept: 'application/json',
+  'Accept': 'application/json',
   'Content-Type': 'application/json',
 }
 
@@ -17,7 +17,7 @@ interface HTTPError extends Error {
   type: 'http-error'
 }
 
-const newHttpError = (errData: APIError) => {
+function newHttpError(errData: APIError) {
   const err = new Error(errData.error) as HTTPError
   err.apiMessage = errData.message
   err.type = 'http-error'
@@ -32,13 +32,13 @@ interface ApiOptions<T> {
   internalApi?: boolean
 }
 
-const api = async <T, K>({
+async function api<T, K>({
   method = 'POST',
   url,
   body,
   additionalHeaders,
   internalApi = true,
-}: ApiOptions<T>) => {
+}: ApiOptions<T>) {
   const headers = { ...defaultHeaders, ...(additionalHeaders || {}) } as {
     [k: string]: string
   }
@@ -60,11 +60,13 @@ const api = async <T, K>({
   if (response.status === 204) {
     // please ensure that K is undefined for this case
     return undefined as K
-  } else if (response.status >= 400) {
+  }
+  else if (response.status >= 400) {
     const errData = (await response.json()) as APIError
     const err = newHttpError(errData)
     throw err
-  } else {
+  }
+  else {
     // handle success
     return response.json() as K
   }

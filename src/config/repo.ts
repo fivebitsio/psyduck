@@ -8,18 +8,18 @@ function createConfigRepo(db: Low<ConfigSchema>) {
 
   async function deleteUser(username: string): Promise<void> {
     return db.update((data) => {
-      data.users = data.users.filter((u) => u.username !== username)
+      data.users = data.users.filter(u => u.username !== username)
     })
   }
 
   async function userExistsByUsername(username: string): Promise<boolean> {
-    return db.data.users.some((u) => u.username === username)
+    return db.data.users.some(u => u.username === username)
   }
 
   async function getUserByUsername(
     username: string,
   ): Promise<User | undefined> {
-    return db.data.users.find((u) => u.username === username)
+    return db.data.users.find(u => u.username === username)
   }
 
   async function listUsers(): Promise<User[]> {

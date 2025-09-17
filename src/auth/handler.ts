@@ -1,6 +1,7 @@
-import { Hono } from 'hono'
 import type createAuthService from './service'
-import { InvalidCredentialsError, type SignInRequest } from './types'
+import type { SignInRequest } from './types'
+import { Hono } from 'hono'
+import { InvalidCredentialsError } from './types'
 
 interface deps {
   service: ReturnType<typeof createAuthService>
@@ -15,7 +16,8 @@ function createAuthHandler(deps: deps) {
       const token = await deps.service.signIn(user)
 
       return c.json({ token }, 201)
-    } catch (error) {
+    }
+    catch (error) {
       switch (true) {
         case error instanceof InvalidCredentialsError:
           return c.json({ error: error.message }, 401)

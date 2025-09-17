@@ -1,3 +1,4 @@
+import type { ChartConfig } from '@/components/ui/chart'
 import { useAtomValue } from 'jotai'
 import { Loader } from 'lucide-react'
 import { useEffect, useMemo, useState } from 'react'
@@ -5,7 +6,7 @@ import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from 'recharts'
 import { calendarRangeAtom } from '@/atoms/analytics'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import {
-  type ChartConfig,
+
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
@@ -38,8 +39,8 @@ const chartConfig = {
 } satisfies ChartConfig
 
 function Metrics() {
-  const [activeChart, setActiveChart] =
-    useState<keyof typeof chartConfig>('pageviews')
+  const [activeChart, setActiveChart]
+    = useState<keyof typeof chartConfig>('pageviews')
   const [chartData, setChartData] = useState<ChartData[]>([])
   const [fetching, setFetching] = useState<boolean>(false)
 
@@ -59,9 +60,11 @@ function Metrics() {
         })
         const filledMetrics = fillGapsInData(metrics, from, to, precision)
         setChartData(filledMetrics)
-      } catch (error) {
+      }
+      catch (error) {
         console.error('Error fetching metrics: ', error)
-      } finally {
+      }
+      finally {
         setFetching(false)
       }
     }
@@ -77,7 +80,8 @@ function Metrics() {
     [chartData],
   )
 
-  if (fetching) return <Loader />
+  if (fetching)
+    return <Loader />
 
   if (!chartData || chartData.length === 0) {
     return (
@@ -155,7 +159,8 @@ function Metrics() {
                     hour: 'numeric',
                     hour12: true,
                   })
-                } else {
+                }
+                else {
                   return date.toLocaleDateString('en-US', {
                     month: 'short',
                     day: 'numeric',
@@ -165,7 +170,7 @@ function Metrics() {
             />
             <YAxis tickLine={false} axisLine={false} tickMargin={8} />
             <ChartTooltip
-              content={
+              content={(
                 <ChartTooltipContent
                   className="w-[150px]"
                   nameKey="views"
@@ -181,7 +186,7 @@ function Metrics() {
                     })
                   }}
                 />
-              }
+              )}
             />
             <Bar dataKey={activeChart} fill={`var(--color-${activeChart})`} />
           </BarChart>

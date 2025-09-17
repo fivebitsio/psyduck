@@ -5,10 +5,11 @@ A privacy-friendly analytics tool built with modern technologies for fast data p
 ## 📸 Screenshots
 
 ### Dashboard Overview
-![Dashboard Screenshot](https://github.com/user-attachments/assets/e08259d2-13a0-4c53-ab2c-bbaf9b976aa1)
-*Main analytics dashboard showing key metrics and visualizations*
-```
 
+![Dashboard Screenshot](https://github.com/user-attachments/assets/e08259d2-13a0-4c53-ab2c-bbaf9b976aa1)
+_Main analytics dashboard showing key metrics and visualizations_
+
+````
 
 ## 🌟 Features
 
@@ -37,7 +38,7 @@ A privacy-friendly analytics tool built with modern technologies for fast data p
 ```bash
 git clone https://github.com/fivebits.io/psyduck.git
 cd psyduck
-```
+````
 
 ### 2. Install Dependencies
 
@@ -54,6 +55,7 @@ cd ..
 ### 3. Database Setup
 
 Run migrations to set up the database:
+
 ```bash
 bun migrate
 ```
@@ -61,11 +63,13 @@ bun migrate
 ### 4. Start Development Servers
 
 **Backend** (from project root):
+
 ```bash
 bun run dev
 ```
 
 **Frontend** (in a new terminal):
+
 ```bash
 cd web
 bun --bun run dev
@@ -76,11 +80,13 @@ The backend will typically run on `http://localhost:1323` and the frontend on `h
 ### 🗄️ Database Management
 
 **Run Migrations**:
+
 ```bash
 bun migrate
 ```
 
 **Open DuckDB Shell**:
+
 ```bash
 bun db
 ```

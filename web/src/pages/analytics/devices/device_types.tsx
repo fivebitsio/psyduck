@@ -1,13 +1,14 @@
+import type { VisitsByDeviceType } from '../devices'
+import type { ChartConfig } from '@/components/ui/chart'
 import { useMemo } from 'react'
 import { Label, Pie, PieChart } from 'recharts'
 import { Card, CardContent } from '@/components/ui/card'
 import {
-  type ChartConfig,
+
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
 } from '@/components/ui/chart'
-import type { VisitsByDeviceType } from '../devices'
 
 const chartConfig = {
   mobile: {

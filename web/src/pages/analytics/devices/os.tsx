@@ -1,12 +1,13 @@
+import type { VisitsByOs } from '../devices'
+import type { ChartConfig } from '@/components/ui/chart'
 import { Bar, BarChart, CartesianGrid, LabelList, XAxis, YAxis } from 'recharts'
 import { Card, CardContent } from '@/components/ui/card'
 import {
-  type ChartConfig,
+
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
 } from '@/components/ui/chart'
-import type { VisitsByOs } from '../devices'
 
 interface OsProps {
   os: VisitsByOs[]
@@ -42,7 +43,7 @@ function Os({ os }: OsProps) {
               tickLine={false}
               tickMargin={10}
               axisLine={false}
-              tickFormatter={(value) => value.slice(0, 3)}
+              tickFormatter={value => value.slice(0, 3)}
               hide
             />
             <XAxis dataKey="count" type="number" hide />

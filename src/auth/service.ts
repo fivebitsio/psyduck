@@ -1,7 +1,8 @@
+import type createConfigRepo from '../config/repo'
+import type { SignInRequest } from './types'
 import { password } from 'bun'
 import { sign, verify } from 'hono/jwt'
-import type createConfigRepo from '../config/repo'
-import { InvalidCredentialsError, type SignInRequest } from './types'
+import { InvalidCredentialsError } from './types'
 
 interface deps {
   repo: ReturnType<typeof createConfigRepo>
@@ -30,7 +31,8 @@ function createAuthService(deps: deps) {
     try {
       await verify(token, 'JWT_SECRET')
       return true
-    } catch (error) {
+    }
+    catch (error) {
       return false
     }
   }

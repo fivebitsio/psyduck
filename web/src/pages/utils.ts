@@ -6,7 +6,8 @@ export function fillGapsInData(
   to: string,
   precision: Precision,
 ): ChartData[] {
-  if (data.length === 0) return []
+  if (data.length === 0)
+    return []
 
   const start = new Date(from)
   const end = new Date(to)
@@ -98,7 +99,7 @@ export function fillGapsInData(
     return data
   }
 
-  const existingDates = new Set(data.map((item) => item.date))
+  const existingDates = new Set(data.map(item => item.date))
   data.forEach((item) => {
     filled.push(item)
   })

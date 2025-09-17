@@ -1,8 +1,8 @@
 {
   "name": "@psyduck/track",
+  "type": "module",
   "version": "1.0.0",
   "private": true,
-  "type": "module",
   "main": "track.js",
   "scripts": {
     "package": "bun run prebuild && bun build track.js --outdir dist --minify",

@@ -1,6 +1,7 @@
+import type { DuckDBConnection } from '@duckdb/node-api'
 import * as fs from 'node:fs/promises'
 import * as path from 'node:path'
-import { type DuckDBConnection, DuckDBInstance } from '@duckdb/node-api'
+import { DuckDBInstance } from '@duckdb/node-api'
 
 interface MigratorConfig {
   dbPath: string
@@ -11,11 +12,13 @@ class Migrator {
   private dbPath: string
   private db!: DuckDBConnection
   private migrationsDir: string
-  private appliedMigrationsQuery =
-    'select name from schema_migrations order by name'
+  private appliedMigrationsQuery
+    = 'select name from schema_migrations order by name'
+
   private deleteMigrationQuery = 'delete from schema_migrations where name = $1'
-  private insertMigrationQuery =
-    'insert into schema_migrations (name, applied_at) values ($1, $2)'
+  private insertMigrationQuery
+    = 'insert into schema_migrations (name, applied_at) values ($1, $2)'
+
   private createSchemaMigrationsQuery = `create table if not exists
     schema_migrations ( name varchar primary key, applied_at timestamp not null)`
 
@@ -66,7 +69,8 @@ class Migrator {
     let migrationsToRollback: string[]
     if (numberOfMigrations === 'all') {
       migrationsToRollback = [...appliedMigrations].reverse()
-    } else {
+    }
+    else {
       migrationsToRollback = appliedMigrations
         .slice(-numberOfMigrations)
         .reverse()
@@ -87,9 +91,9 @@ class Migrator {
     const applied = await this.getAppliedMigrations()
     const files = await fs.readdir(this.migrationsDir)
     return files
-      .filter((file) => file.endsWith('.up.sql'))
-      .map((file) => file.replace('.up.sql', ''))
-      .filter((name) => !applied.includes(name))
+      .filter(file => file.endsWith('.up.sql'))
+      .map(file => file.replace('.up.sql', ''))
+      .filter(name => !applied.includes(name))
       .sort()
   }
 
@@ -100,7 +104,8 @@ class Migrator {
       const rows = result.getRowObjects()
 
       return rows.map((row: any) => row.name)
-    } catch (err) {
+    }
+    catch (err) {
       console.error(
         'Error fetching applied migrations:',
         (err as Error).message,
@@ -112,7 +117,8 @@ class Migrator {
   private async executeQuery(query: string, params: any[] = []): Promise<void> {
     if (params.length > 0) {
       await this.db.run(query, params)
-    } else {
+    }
+    else {
       await this.db.run(query)
     }
   }

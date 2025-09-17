@@ -1,9 +1,9 @@
+import type { ConfigSchema, User } from '../src/config/types'
 import { resolve } from 'node:path'
 import { input, password } from '@inquirer/prompts'
 import { JSONFilePreset } from 'lowdb/node'
 import createConfigRepo from '../src/config/repo'
 import createConfigService from '../src/config/service'
-import type { ConfigSchema, User } from '../src/config/types'
 
 const configPath = resolve(__dirname, '../data/config.json')
 
@@ -13,12 +13,14 @@ async function ensureJwtKey(
   try {
     if (await configService.jwtKeyExists()) {
       console.log('JWT key already exists.')
-    } else {
+    }
+    else {
       console.log('JWT key not found. Generating new JWT key...')
       await configService.generateJWTKey()
       console.log('JWT key generated and saved.')
     }
-  } catch (error) {
+  }
+  catch (error) {
     console.error('Error ensuring JWT key:', error)
     throw error
   }
@@ -56,12 +58,14 @@ async function ensureUserExists(
 
       await configService.addUser(user)
       console.log(`User '${username}' created successfully.`)
-    } else {
+    }
+    else {
       console.log(
-        `Found ${users.length} existing user(s): ${users.map((user) => user.username).join(', ')}`,
+        `Found ${users.length} existing user(s): ${users.map(user => user.username).join(', ')}`,
       )
     }
-  } catch (error) {
+  }
+  catch (error) {
     console.error('Error ensuring user exists:', error)
     throw error
   }
@@ -83,7 +87,8 @@ async function initializeConfig() {
     console.log('Configuration setup completed successfully!')
 
     return configService
-  } catch (error) {
+  }
+  catch (error) {
     console.error('Error during configuration setup:', error)
     process.exit(1)
   }

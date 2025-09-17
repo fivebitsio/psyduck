@@ -1,6 +1,6 @@
-import { Hono } from 'hono'
 import type createAnalyticsService from './service'
 import type { precision } from './types'
+import { Hono } from 'hono'
 
 interface deps {
   service: ReturnType<typeof createAnalyticsService>
@@ -35,7 +35,8 @@ function createAnalyticsHandler(deps: deps) {
       )
 
       return c.json(metrics, 200)
-    } catch (error) {
+    }
+    catch (error) {
       console.error('Error fetching page views:', error)
       return c.json(
         { success: false, error: 'Failed to fetch page views' },
@@ -52,7 +53,8 @@ function createAnalyticsHandler(deps: deps) {
       const visits = await deps.service.getVisitsByCountry(from, to, allBool)
 
       return c.json(visits, 200)
-    } catch (error) {
+    }
+    catch (error) {
       console.error('Error fetching visits by country:', error)
       return c.json(
         { success: false, error: 'Failed to fetch visits by country' },
@@ -68,7 +70,8 @@ function createAnalyticsHandler(deps: deps) {
       const visits = await deps.service.getVisitsByDevice(from, to)
 
       return c.json(visits, 200)
-    } catch (error) {
+    }
+    catch (error) {
       console.error('Error fetching visits by device:', error)
       return c.json(
         { success: false, error: 'Failed to fetch visits by device' },
@@ -84,7 +87,8 @@ function createAnalyticsHandler(deps: deps) {
       const visits = await deps.service.getVisitsByPage(from, to)
 
       return c.json(visits, 200)
-    } catch (error) {
+    }
+    catch (error) {
       console.error('Error fetching visits by page:', error)
       return c.json(
         { success: false, error: 'Failed to fetch visits by page' },
@@ -100,7 +104,8 @@ function createAnalyticsHandler(deps: deps) {
       const visits = await deps.service.getVisitsBySource(from, to)
 
       return c.json(visits, 200)
-    } catch (error) {
+    }
+    catch (error) {
       console.error('Error fetching visits by source:', error)
       return c.json(
         { success: false, error: 'Failed to fetch visits by page' },

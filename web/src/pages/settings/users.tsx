@@ -52,9 +52,11 @@ function Users() {
         url: `config/users`,
       })
       setUsers(users)
-    } catch (error) {
+    }
+    catch (error) {
       console.error('Error fetching users: ', error)
-    } finally {
+    }
+    finally {
       setFetching(false)
     }
   }, [])
@@ -67,21 +69,23 @@ function Users() {
     body: z.infer<typeof formSchema>,
   ): Promise<void> {
     try {
-      await api({ url: 'config/users', method: 'POST', body: body })
+      await api({ url: 'config/users', method: 'POST', body })
       form.reset()
       await fetchUsers()
-    } catch (error) {
+    }
+    catch (error) {
       if (
-        error &&
-        typeof error === 'object' &&
-        'message' in error &&
-        typeof (error as any).message === 'string'
+        error
+        && typeof error === 'object'
+        && 'message' in error
+        && typeof (error as any).message === 'string'
       ) {
         form.setError('root', {
           type: 'server',
           message: (error as any).message,
         })
-      } else {
+      }
+      else {
         form.setError('root', {
           type: 'server',
           message: 'An error occurred while adding the user',
@@ -94,7 +98,8 @@ function Users() {
     try {
       await api({ url: `config/users/${username}`, method: 'DELETE' })
       await fetchUsers()
-    } catch (error: any) {
+    }
+    catch (error: any) {
       console.error(error)
     }
   }
@@ -151,14 +156,16 @@ function Users() {
                 type="submit"
                 className="w-full md:w-auto"
               >
-                {form.formState.isSubmitting ? (
-                  <>
-                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                    Submitting
-                  </>
-                ) : (
-                  'Add User'
-                )}
+                {form.formState.isSubmitting
+                  ? (
+                      <>
+                        <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                        Submitting
+                      </>
+                    )
+                  : (
+                      'Add User'
+                    )}
               </Button>
               {form.formState.errors.root && (
                 <FormMessage>{form.formState.errors.root.message}</FormMessage>
@@ -170,7 +177,11 @@ function Users() {
 
       <Card>
         <CardHeader>
-          <CardTitle>Users ({users.length})</CardTitle>
+          <CardTitle>
+            Users (
+            {users.length}
+            )
+          </CardTitle>
           <CardDescription>Manage existing users</CardDescription>
         </CardHeader>
         <CardContent>

@@ -1,13 +1,15 @@
+import type { LucideProps } from 'lucide-react'
+import type { DayButton } from 'react-day-picker'
 import {
   ChevronDownIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
   ChevronUpIcon,
-  type LucideProps,
+
 } from 'lucide-react'
 import * as React from 'react'
 import {
-  type DayButton,
+
   DayPicker,
   getDefaultClassNames,
 } from 'react-day-picker'
@@ -74,7 +76,7 @@ function Calendar({
       )}
       captionLayout={captionLayout}
       formatters={{
-        formatMonthDropdown: (date) =>
+        formatMonthDropdown: date =>
           date.toLocaleString('default', { month: 'short' }),
         ...formatters,
       }}
@@ -193,7 +195,8 @@ function CalendarDayButton({
 
   const ref = React.useRef<HTMLButtonElement>(null)
   React.useEffect(() => {
-    if (modifiers.focused) ref.current?.focus()
+    if (modifiers.focused)
+      ref.current?.focus()
   }, [modifiers.focused])
 
   return (
@@ -203,10 +206,10 @@ function CalendarDayButton({
       size="icon"
       data-day={day.date.toLocaleDateString()}
       data-selected-single={
-        modifiers.selected &&
-        !modifiers.range_start &&
-        !modifiers.range_end &&
-        !modifiers.range_middle
+        modifiers.selected
+        && !modifiers.range_start
+        && !modifiers.range_end
+        && !modifiers.range_middle
       }
       data-range-start={modifiers.range_start}
       data-range-end={modifiers.range_end}

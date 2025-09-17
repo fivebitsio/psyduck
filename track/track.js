@@ -1,10 +1,10 @@
 ;(() => {
-  let config,
-    isInit = false,
-    eventID = null,
-    startTime = null,
-    totalDuration = 0,
-    hasBeaconSent = false
+  let config
+  let isInit = false
+  let eventID = null
+  let startTime = null
+  let totalDuration = 0
+  let hasBeaconSent = false
 
   function getEventID() {
     if (!eventID) {
@@ -14,8 +14,8 @@
   }
 
   function getUtmParams() {
-    const p = {},
-      u = new URLSearchParams(location.search)
+    const p = {}
+    const u = new URLSearchParams(location.search)
     const utmParams = [
       'utm_id',
       'utm_source',
@@ -26,40 +26,53 @@
     ]
     utmParams.forEach((k) => {
       const v = u.get(k)
-      if (v) p[k.replace('utm_', '')] = v
+      if (v)
+        p[k.replace('utm_', '')] = v
     })
     return p
   }
 
   function getBrowser() {
     const ua = navigator.userAgent
-    if (ua.includes('Chrome')) return 'chrome'
-    if (ua.includes('Firefox')) return 'firefox'
-    if (ua.includes('Safari')) return 'safari'
-    if (ua.includes('Edge')) return 'edge'
+    if (ua.includes('Chrome'))
+      return 'chrome'
+    if (ua.includes('Firefox'))
+      return 'firefox'
+    if (ua.includes('Safari'))
+      return 'safari'
+    if (ua.includes('Edge'))
+      return 'edge'
     return 'Unknown'
   }
 
   function getOs() {
     const ua = navigator.userAgent
-    if (ua.includes('Windows')) return 'windows'
-    if (ua.includes('Mac OS')) return 'mac'
-    if (ua.includes('Linux')) return 'linux'
-    if (ua.includes('Android')) return 'android'
-    if (ua.includes('iOS')) return 'ios'
+    if (ua.includes('Windows'))
+      return 'windows'
+    if (ua.includes('Mac OS'))
+      return 'mac'
+    if (ua.includes('Linux'))
+      return 'linux'
+    if (ua.includes('Android'))
+      return 'android'
+    if (ua.includes('iOS'))
+      return 'ios'
     return 'Unknown'
   }
 
   function getDeviceType() {
     const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0
     const isWideScreen = window.innerWidth >= 1024
-    if (isTouch && !isWideScreen) return 'mobile'
-    if (isTouch && isWideScreen) return 'tablet'
+    if (isTouch && !isWideScreen)
+      return 'mobile'
+    if (isTouch && isWideScreen)
+      return 'tablet'
     return 'desktop'
   }
 
   function sendFinalBeacon() {
-    if (hasBeaconSent) return
+    if (hasBeaconSent)
+      return
     hasBeaconSent = true
 
     if (startTime) {
@@ -73,7 +86,8 @@
   }
 
   function track(type, data = {}) {
-    if (!isInit) return false
+    if (!isInit)
+      return false
     const utm = getUtmParams()
     const payload = {
       browser: getBrowser(),
@@ -103,7 +117,8 @@
   }
 
   function init(cfg) {
-    if (!cfg.domain || isInit) return
+    if (!cfg.domain || isInit)
+      return
     config = cfg
     isInit = true
     startTime = Date.now()
@@ -116,7 +131,8 @@
           startTime = null
         }
         sendFinalBeacon()
-      } else if (document.visibilityState === 'visible') {
+      }
+      else if (document.visibilityState === 'visible') {
         startTime = Date.now()
       }
     })

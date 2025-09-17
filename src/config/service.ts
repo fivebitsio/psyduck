@@ -1,10 +1,9 @@
-import { password } from 'bun'
 import type createConfigRepo from './repo'
+import type { User, UserWithoutPassword } from './types'
+import { password } from 'bun'
 import {
-  type User,
   UserDoesNotExistError,
   UserExistsError,
-  type UserWithoutPassword,
 } from './types'
 
 interface deps {
@@ -14,7 +13,8 @@ interface deps {
 function createConfigService(deps: deps) {
   async function addUser(user: User): Promise<void> {
     const userExists = await deps.repo.userExistsByUsername(user.username)
-    if (userExists) throw new UserExistsError(user.username)
+    if (userExists)
+      throw new UserExistsError(user.username)
     user.password = password.hashSync(user.password)
 
     return deps.repo.addUser(user)
@@ -22,7 +22,8 @@ function createConfigService(deps: deps) {
 
   async function deleteUser(username: string): Promise<void> {
     const userExists = await deps.repo.userExistsByUsername(username)
-    if (!userExists) throw new UserDoesNotExistError(username)
+    if (!userExists)
+      throw new UserDoesNotExistError(username)
 
     return deps.repo.deleteUser(username)
   }
@@ -30,7 +31,7 @@ function createConfigService(deps: deps) {
   async function listUserNames(): Promise<UserWithoutPassword[]> {
     const users = await deps.repo.listUsers()
 
-    return users.map((user) => ({ username: user.username }))
+    return users.map(user => ({ username: user.username }))
   }
 
   async function generateJWTKey(): Promise<void> {

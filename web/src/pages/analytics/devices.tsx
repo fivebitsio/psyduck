@@ -50,16 +50,19 @@ function Devices() {
           url: `analytics/visits_by_device?from=${from}&to=${to}`,
         })
         setChartData(metrics)
-      } catch (error) {
+      }
+      catch (error) {
         console.error('Error fetching metrics: ', error)
-      } finally {
+      }
+      finally {
         setFetching(false)
       }
     }
     fetchVisits()
   }, [range.from, range.to])
 
-  if (fetching) return <Loader />
+  if (fetching)
+    return <Loader />
 
   return (
     <Tabs defaultValue="devices">

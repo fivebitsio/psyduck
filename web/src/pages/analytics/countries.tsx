@@ -1,3 +1,4 @@
+import type { ChartConfig } from '@/components/ui/chart'
 import { useAtomValue } from 'jotai'
 import { Loader } from 'lucide-react'
 import { useEffect, useState } from 'react'
@@ -11,7 +12,7 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import {
-  type ChartConfig,
+
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
@@ -51,16 +52,19 @@ function Countries() {
           url: `analytics/visits_by_country?from=${from}&to=${to}`,
         })
         setChartData(metrics)
-      } catch (error) {
+      }
+      catch (error) {
         console.error('Error fetching metrics: ', error)
-      } finally {
+      }
+      finally {
         setFetching(false)
       }
     }
     fetchVisits()
   }, [range.from, range.to])
 
-  if (fetching) return <Loader />
+  if (fetching)
+    return <Loader />
 
   return (
     <Card>
@@ -85,7 +89,7 @@ function Countries() {
               tickLine={false}
               tickMargin={10}
               axisLine={false}
-              tickFormatter={(value) => value.slice(0, 3)}
+              tickFormatter={value => value.slice(0, 3)}
               hide
             />
             <XAxis dataKey="count" type="number" hide />

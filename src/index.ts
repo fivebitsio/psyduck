@@ -1,17 +1,17 @@
+import type { ConfigSchema } from './config/types'
 import { DuckDBInstance } from '@duckdb/node-api'
 import { Hono } from 'hono'
 import { cors } from 'hono/cors'
 import { logger } from 'hono/logger'
-import { JSONFilePreset } from 'lowdb/node'
 
+import { JSONFilePreset } from 'lowdb/node'
 import createAnalyticsHandler from './analytics/hander'
 import createAnalyticsRepo from './analytics/repo'
-import createAnalyticsService from './analytics/service'
 
+import createAnalyticsService from './analytics/service'
 import createConfigHandler from './config/handler'
 import createConfigRepo from './config/repo'
 import createConfigService from './config/service'
-import type { ConfigSchema } from './config/types'
 
 import createEventHandler from './event/handler'
 import createEventRepo from './event/repo'

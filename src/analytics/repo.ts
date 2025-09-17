@@ -1,6 +1,4 @@
 import type { DuckDBConnection } from '@duckdb/node-api'
-import * as ct from 'countries-and-timezones'
-import * as queries from './queries'
 import type {
   Metric,
   precision,
@@ -11,6 +9,8 @@ import type {
   VisitsByPage,
   VisitsBySource,
 } from './types'
+import * as ct from 'countries-and-timezones'
+import * as queries from './queries'
 
 function createAnalyticsRepo(duckdb: DuckDBConnection) {
   async function getVisits(
@@ -26,7 +26,7 @@ function createAnalyticsRepo(duckdb: DuckDBConnection) {
 
     const rows = result.getRowObjects()
 
-    return rows.map((row) => ({
+    return rows.map(row => ({
       time: row.time?.toString() ?? '',
       count: Number(row.count),
     }))
@@ -44,7 +44,7 @@ function createAnalyticsRepo(duckdb: DuckDBConnection) {
     })
     const rows = result.getRowObjects()
 
-    return rows.map((row) => ({
+    return rows.map(row => ({
       time: row.time?.toString() ?? '',
       count: Number(row.count),
     }))
@@ -63,7 +63,7 @@ function createAnalyticsRepo(duckdb: DuckDBConnection) {
 
     const rows = result.getRowObjects()
 
-    return rows.map((row) => ({
+    return rows.map(row => ({
       countryCode: row.country_code?.toString() ?? '',
       countryName:
         ct.getCountry(row.country_code?.toString() ?? '')?.name ?? '',
@@ -82,7 +82,7 @@ function createAnalyticsRepo(duckdb: DuckDBConnection) {
 
     const rows = result.getRowObjects()
 
-    return rows.map((row) => ({
+    return rows.map(row => ({
       deviceType: row.deviceType?.toString() ?? '',
       count: Number(row.count),
     }))
@@ -99,7 +99,7 @@ function createAnalyticsRepo(duckdb: DuckDBConnection) {
 
     const rows = result.getRowObjects()
 
-    return rows.map((row) => ({
+    return rows.map(row => ({
       browser: row.browser?.toString() ?? '',
       count: Number(row.count),
     }))
@@ -116,7 +116,7 @@ function createAnalyticsRepo(duckdb: DuckDBConnection) {
 
     const rows = result.getRowObjects()
 
-    return rows.map((row) => ({
+    return rows.map(row => ({
       os: row.os?.toString() ?? '',
       count: Number(row.count),
     }))
@@ -135,7 +135,7 @@ function createAnalyticsRepo(duckdb: DuckDBConnection) {
 
     const rows = result.getRowObjects()
 
-    return rows.map((row) => ({
+    return rows.map(row => ({
       pathname: row.pathname?.toString() ?? '',
       count: Number(row.count),
     }))
@@ -152,7 +152,7 @@ function createAnalyticsRepo(duckdb: DuckDBConnection) {
 
     const rows = result.getRowObjects()
 
-    return rows.map((row) => ({
+    return rows.map(row => ({
       source: row.referrer?.toString() ?? '',
       count: Number(row.count),
     }))
