@@ -1,13 +1,14 @@
-import * as TooltipPrimitive from '@radix-ui/react-tooltip'
-import type * as React from 'react'
+import * as TooltipPrimitive from '@radix-ui/react-tooltip';
+import type * as React from 'react';
 
-import { cn } from '@/lib/utils'
+import { cn } from '@/lib/utils';
 
 function TooltipProvider({
   delayDuration = 0,
   ...props
-}: React.ComponentProps<typeof TooltipPrimitive.Provider>) {
-  return <TooltipPrimitive data-slot="tooltip-provider" delayDuration={delayDuration} {...props} />
+}: React.ComponentProps<any>) {
+  const Provider = TooltipPrimitive.Provider as React.ComponentType<any>;
+  return <Provider data-slot="tooltip-provider" delayDuration={delayDuration} {...props} />;
 }
 
 function Tooltip({ ...props }: React.ComponentProps<typeof TooltipPrimitive.Root>) {
@@ -46,4 +47,5 @@ function TooltipContent({
   )
 }
 
-export { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger }
+export { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger };
+
