@@ -1,5 +1,5 @@
-import { AuthContext } from '@/context/auth-context'
-import { useContext } from 'react'
+import { isLoggedInAtom } from '@/atoms/auth'
+import { useAtomValue } from 'jotai'
 import { Redirect } from 'wouter'
 
 interface Props {
@@ -7,13 +7,13 @@ interface Props {
 }
 
 function AuthProtected({ children }: Props) {
-  const authContext = useContext(AuthContext)
+  const isLoggedIn = useAtomValue(isLoggedInAtom)
 
-  if (authContext.authenticated === false) {
+  if (isLoggedIn === false) {
     return <Redirect to='/login' />
   }
 
-  if (authContext.authenticated === undefined) {
+  if (isLoggedIn === undefined) {
     return "Loading..."
   }
 

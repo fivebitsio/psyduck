@@ -8,15 +8,16 @@ import {
 } from "@/components/ui/card"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { AuthContext } from "@/context/auth-context"
 import api from "@/lib/api"
 import { cn } from "@/lib/utils"
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useContext, useState } from "react"
+import { useAtom, useAtomValue, useSetAtom } from "jotai"
+import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { Redirect } from "wouter"
 import * as z from 'zod'
 import type { LoginResponse } from "./types"
+import { isLoggedInAtom, loginAtom } from "@/atoms/auth"
 
 const signInFormSchema = z.object({
   email: z
@@ -40,19 +41,21 @@ function LoginForm({
     defaultValues,
   })
 
-  const authContext = useContext(AuthContext)
+  const setLogin = useSetAtom(loginAtom)
+  const isLoggedIn = useAtomValue(isLoggedInAtom)
+
   const [loading, setLoading] = useState(false)
 
   async function login(data: SignInFormValues) {
     try {
       setLoading(true)
 
-      const response = await api<SignInFormValues, LoginResponse>({
+      const { token } = await api<SignInFormValues, LoginResponse>({
         url: `auth/signin`,
         body: data,
       })
 
-      authContext.setToken(response.token)
+      setLogin(token)
     } catch (error: unknown) {
       const errorMessage = error instanceof Error ? error.message : 'An unexpected error occurred'
       form.setError('root', { type: '', message: errorMessage })
@@ -62,7 +65,7 @@ function LoginForm({
     }
   }
 
-  if (authContext.authenticated) {
+  if (isLoggedIn) {
     return <Redirect to='/' />
   }
 
