@@ -1,8 +1,3 @@
-import { zodResolver } from '@hookform/resolvers/zod'
-import { Loader2, Trash2, UserPlus } from 'lucide-react'
-import { useCallback, useEffect, useState } from 'react'
-import { useForm } from 'react-hook-form'
-import { z } from 'zod'
 import { Button } from '@/components/ui/button'
 import {
   Card,
@@ -21,9 +16,14 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import api from '@/lib/api'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { Loader2, Trash2, UserPlus } from 'lucide-react'
+import { useCallback, useEffect, useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { z } from 'zod'
 
 interface User {
-  username: string
+  email: string
 }
 
 function Users() {
@@ -31,14 +31,14 @@ function Users() {
   const [_fetching, setFetching] = useState<boolean>(false)
 
   const formSchema = z.object({
-    username: z.string().min(3).max(50),
+    email: z.string().min(3).max(50),
     password: z.string().min(6).max(100),
   })
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      username: '',
+      email: '',
       password: '',
     },
   })
@@ -94,9 +94,9 @@ function Users() {
     }
   }
 
-  async function handleDeleteUser(username: string): Promise<void> {
+  async function handleDeleteUser(email: string): Promise<void> {
     try {
-      await api({ url: `config/users/${username}`, method: 'DELETE' })
+      await api({ url: `config/users/${email}`, method: 'DELETE' })
       await fetchUsers()
     }
     catch (error: any) {
@@ -122,10 +122,10 @@ function Users() {
             >
               <FormField
                 control={form.control}
-                name="username"
+                name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Username</FormLabel>
+                    <FormLabel>Email</FormLabel>
                     <FormControl>
                       <Input placeholder="psyduck" {...field} />
                     </FormControl>
@@ -158,14 +158,14 @@ function Users() {
               >
                 {form.formState.isSubmitting
                   ? (
-                      <>
-                        <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                        Submitting
-                      </>
-                    )
+                    <>
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                      Submitting
+                    </>
+                  )
                   : (
-                      'Add User'
-                    )}
+                    'Add User'
+                  )}
               </Button>
               {form.formState.errors.root && (
                 <FormMessage>{form.formState.errors.root.message}</FormMessage>
@@ -188,16 +188,16 @@ function Users() {
           <div className="space-y-4">
             {users.map((user: User, index: number) => (
               <div
-                key={`${user.username}-${index}`}
+                key={`${user.email}-${index}`}
                 className="flex items-center justify-between p-4 border rounded-sm"
               >
                 <div className="flex-1">
-                  <p className="font-medium">{user.username}</p>
+                  <p className="font-medium">{user.email}</p>
                 </div>
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={() => handleDeleteUser(user.username)}
+                  onClick={() => handleDeleteUser(user.email)}
                   className="text-red-600 hover:text-red-700 hover:bg-red-50"
                 >
                   <Trash2 className="w-4 h-4" />

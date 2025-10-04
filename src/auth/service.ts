@@ -1,7 +1,7 @@
-import type createConfigRepo from '../config/repo'
-import type { SignInRequest } from './types'
 import { password } from 'bun'
 import { sign, verify } from 'hono/jwt'
+import type createConfigRepo from '../config/repo'
+import type { SignInRequest } from './types'
 import { InvalidCredentialsError } from './types'
 
 interface deps {
@@ -10,16 +10,16 @@ interface deps {
 
 function createAuthService(deps: deps) {
   async function signIn(req: SignInRequest): Promise<string> {
-    const user = await deps.repo.getUserByUsername(req.username)
+    const user = await deps.repo.getUserByEmail(req.email)
 
     if (user === undefined || !password.verify(req.password, user.password)) {
-      throw InvalidCredentialsError
+      throw new InvalidCredentialsError()
     }
 
     const payload = {
       exp: Math.floor(Date.now() / 1000) + 24 * 60 * 60,
       iss: 'psyduck.io',
-      sub: user.username,
+      sub: user.email,
     }
 
     const token = await sign(payload, 'JWT_SECRET')

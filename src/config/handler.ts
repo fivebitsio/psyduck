@@ -1,6 +1,6 @@
+import { Hono } from 'hono'
 import type createConfigService from './service'
 import type { UserRequest } from './types'
-import { Hono } from 'hono'
 import {
   UserDoesNotExistError,
   UserExistsError,
@@ -31,11 +31,11 @@ function createConfigHandler(deps: deps) {
     }
   })
 
-  app.delete('/users/:username', async (c) => {
+  app.delete('/users/:email', async (c) => {
     try {
-      const username = c.req.param('username')
+      const email = c.req.param('email')
 
-      await deps.service.deleteUser(username)
+      await deps.service.deleteUser(email)
       return c.json({}, 200)
     }
     catch (error) {
@@ -51,7 +51,7 @@ function createConfigHandler(deps: deps) {
 
   app.get('/users', async (c) => {
     try {
-      const users = await deps.service.listUserNames()
+      const users = await deps.service.listEmails()
       return c.json(users, 200)
     }
     catch (error) {

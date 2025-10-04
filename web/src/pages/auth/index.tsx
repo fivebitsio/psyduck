@@ -18,15 +18,15 @@ function LoginForm() {
             <CardHeader>
               <CardTitle>Login to your account</CardTitle>
               <CardDescription>
-                Enter your username below to login to your account
+                Enter your email below to login to your account
               </CardDescription>
             </CardHeader>
             <CardContent>
               <form>
                 <div className="flex flex-col gap-6">
                   <div className="grid gap-3">
-                    <Label htmlFor="username">Username</Label>
-                    <Input name="username" placeholder="psyduck" required />
+                    <Label htmlFor="email">Email</Label>
+                    <Input name="email" placeholder="duck@psyduck.io" required />
                   </div>
                   <div className="grid gap-3">
                     <div className="flex items-center">

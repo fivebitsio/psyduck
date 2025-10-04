@@ -1,10 +1,10 @@
 export interface User {
-  username: string
+  email: string
   password: string
 }
 
 export interface UserWithoutPassword {
-  username: string
+  email: string
 }
 
 export interface ConfigSchema {
@@ -13,20 +13,20 @@ export interface ConfigSchema {
 }
 
 export interface UserRequest {
-  username: string
+  email: string
   password: string
 }
 
 export class UserExistsError extends Error {
-  constructor(username: string) {
-    super(`Username '${username}' already exists`)
+  constructor(email: string) {
+    super(`Email '${email}' already exists`)
     this.name = 'UserExistsError'
   }
 }
 
 export class UserDoesNotExistError extends Error {
-  constructor(username: string) {
-    super(`Username '${username}' does not exist`)
+  constructor(email: string) {
+    super(`Email '${email}' does not exist`)
     this.name = 'UserDoesNotExistError'
   }
 }

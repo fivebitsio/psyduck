@@ -1,5 +1,5 @@
 export interface SignInRequest {
-  username: string
+  email: string
   password: string
 }
 
@@ -9,7 +9,7 @@ export interface SignInResponse {
 
 export class InvalidCredentialsError extends Error {
   constructor() {
-    super('Invalid username / password')
+    super('Invalid email / password')
     this.name = 'InvalidCredentialsError'
   }
 }
