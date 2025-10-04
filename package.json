@@ -24,7 +24,6 @@
     "async-mutex": "^0.5.0",
     "countries-and-timezones": "^3.8.0",
     "hono": "^4.9.1",
-    "jose": "^6.1.0",
     "lowdb": "^7.0.1"
   },
   "devDependencies": {
