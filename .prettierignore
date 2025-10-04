@@ -1,0 +1,11 @@
+node_modules
+dist
+build
+.next
+.nuxt
+public
+.DS_Store
+*.min.js
+*.min.css
+coverage
+.nyc_output
