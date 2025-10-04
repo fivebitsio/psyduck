@@ -12,7 +12,7 @@ function createAuthService(deps: deps) {
   async function signIn(req: SignInRequest): Promise<string> {
     const user = await deps.repo.getUserByEmail(req.email)
 
-    if (user === undefined || !password.verify(req.password, user.password)) {
+    if (user === undefined || !(await password.verify(req.password, user.password))) {
       throw new InvalidCredentialsError()
     }
 

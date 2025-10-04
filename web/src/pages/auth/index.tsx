@@ -81,6 +81,11 @@ function LoginForm({
               <Form {...form}>
                 <form onSubmit={form.handleSubmit(login)}>
                   <div className="flex flex-col gap-6">
+                    {form.formState.errors.root && (
+                      <div className="rounded-md bg-destructive/15 p-3 text-sm text-destructive">
+                        {form.formState.errors.root.message}
+                      </div>
+                    )}
                     <div className='grid gap-2'>
                       <FormField
                         control={form.control}
