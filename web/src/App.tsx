@@ -1,11 +1,14 @@
 import { ThemeProvider } from '@/components/theme-provider'
+import { AuthProvider } from './context/auth-context'
 import Routes from './routes'
 
 function App() {
   return (
-    <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
-      <Routes />
-    </ThemeProvider>
+    <AuthProvider>
+      <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
+        <Routes />
+      </ThemeProvider>
+    </AuthProvider>
   )
 }
 

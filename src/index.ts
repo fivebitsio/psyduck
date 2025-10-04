@@ -1,8 +1,8 @@
-import type { ConfigSchema } from './config/types'
 import { DuckDBInstance } from '@duckdb/node-api'
 import { Hono } from 'hono'
 import { cors } from 'hono/cors'
 import { logger } from 'hono/logger'
+import type { ConfigSchema } from './config/types'
 
 import { JSONFilePreset } from 'lowdb/node'
 import createAnalyticsHandler from './analytics/hander'
@@ -13,6 +13,9 @@ import createConfigHandler from './config/handler'
 import createConfigRepo from './config/repo'
 import createConfigService from './config/service'
 
+import { jwt } from 'hono/jwt'
+import createAuthHandler from './auth/handler'
+import createAuthService from './auth/service'
 import createEventHandler from './event/handler'
 import createEventRepo from './event/repo'
 import createEventService from './event/service'
@@ -53,6 +56,19 @@ const eventRepo = createEventRepo(db)
 const eventService = createEventService({ repo: eventRepo })
 const eventHandler = createEventHandler({ service: eventService })
 
+const authService = createAuthService({ repo: configRepo })
+const authHandler = createAuthHandler({ service: authService })
+
+const jwtKey = await configRepo.getJwtKey()
+
+const jwtMiddleware = jwt({
+  secret: jwtKey,
+  alg: 'HS256',
+})
+
+configHandler.use("*", jwtMiddleware)
+analyticsHandler.use("*", jwtMiddleware)
+
 app.get('/health', (c) => {
   return c.json({ status: 'ok' })
 })
@@ -60,6 +76,7 @@ app.get('/health', (c) => {
 app.route('/analytics', analyticsHandler)
 app.route('/config', configHandler)
 app.route('/events', eventHandler)
+app.route('/auth', authHandler)
 
 process.on('SIGINT', async () => {
   console.log('Received SIGINT. Closing database connection...')

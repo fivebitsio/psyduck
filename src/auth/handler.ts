@@ -1,6 +1,6 @@
+import { Hono } from 'hono'
 import type createAuthService from './service'
 import type { SignInRequest } from './types'
-import { Hono } from 'hono'
 import { InvalidCredentialsError } from './types'
 
 interface deps {
@@ -10,7 +10,7 @@ interface deps {
 function createAuthHandler(deps: deps) {
   const app = new Hono()
 
-  app.post('/signIn', async (c) => {
+  app.post('/signin', async (c) => {
     try {
       const user = await c.req.json<SignInRequest>()
       const token = await deps.service.signIn(user)
