@@ -1,8 +1,8 @@
 import type createEventRepo from './repo'
 
-import type { CreateEvent, Event, UpdateEvent } from './types'
 import * as ct from 'countries-and-timezones'
 import { getHostname } from '../utils'
+import type { CreateEvent, Event, UpdateEvent } from './types'
 
 interface deps {
   repo: ReturnType<typeof createEventRepo>
@@ -15,22 +15,19 @@ function createEventService(deps: deps) {
     const event: Event = {
       ...eventWithoutTimezone,
       countryCode: ct.getCountryForTimezone(timezone)?.id || 'unknown',
-      uniqueVisit,
+      uniqueVisit
     }
 
     return await deps.repo.create(event)
   }
 
-  async function updateEvent(
-    eventId: string,
-    uEvent: UpdateEvent,
-  ): Promise<void> {
+  async function updateEvent(eventId: string, uEvent: UpdateEvent): Promise<void> {
     return await deps.repo.updateDuration(eventId, uEvent.duration)
   }
 
   return {
     createEvent,
-    updateEvent,
+    updateEvent
   }
 }
 

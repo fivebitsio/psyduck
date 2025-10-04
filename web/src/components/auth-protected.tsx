@@ -10,11 +10,11 @@ function AuthProtected({ children }: Props) {
   const isLoggedIn = useAtomValue(isLoggedInAtom)
 
   if (isLoggedIn === false) {
-    return <Redirect to='/login' />
+    return <Redirect to="/login" />
   }
 
   if (isLoggedIn === undefined) {
-    return "Loading..."
+    return 'Loading...'
   }
 
   return children

@@ -107,5 +107,5 @@ export {
   visitsByDeviceType,
   visitsByOs,
   visitsByPage,
-  visitsBySource,
+  visitsBySource
 }

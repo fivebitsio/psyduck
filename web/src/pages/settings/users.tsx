@@ -1,18 +1,12 @@
 import { Button } from '@/components/ui/button'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
+  FormMessage
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import api from '@/lib/api'
@@ -32,15 +26,15 @@ function Users() {
 
   const formSchema = z.object({
     email: z.string().min(3).max(50),
-    password: z.string().min(6).max(100),
+    password: z.string().min(6).max(100)
   })
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       email: '',
-      password: '',
-    },
+      password: ''
+    }
   })
 
   const fetchUsers = useCallback(async () => {
@@ -49,14 +43,12 @@ function Users() {
 
       const users = await api<undefined, User[]>({
         method: 'GET',
-        url: `config/users`,
+        url: `config/users`
       })
       setUsers(users)
-    }
-    catch (error) {
+    } catch (error) {
       console.error('Error fetching users: ', error)
-    }
-    finally {
+    } finally {
       setFetching(false)
     }
   }, [])
@@ -65,30 +57,26 @@ function Users() {
     fetchUsers()
   }, [fetchUsers])
 
-  async function handleAddUser(
-    body: z.infer<typeof formSchema>,
-  ): Promise<void> {
+  async function handleAddUser(body: z.infer<typeof formSchema>): Promise<void> {
     try {
       await api({ url: 'config/users', method: 'POST', body })
       form.reset()
       await fetchUsers()
-    }
-    catch (error) {
+    } catch (error) {
       if (
-        error
-        && typeof error === 'object'
-        && 'message' in error
-        && typeof (error as any).message === 'string'
+        error &&
+        typeof error === 'object' &&
+        'message' in error &&
+        typeof (error as any).message === 'string'
       ) {
         form.setError('root', {
           type: 'server',
-          message: (error as any).message,
+          message: (error as any).message
         })
-      }
-      else {
+      } else {
         form.setError('root', {
           type: 'server',
-          message: 'An error occurred while adding the user',
+          message: 'An error occurred while adding the user'
         })
       }
     }
@@ -98,8 +86,7 @@ function Users() {
     try {
       await api({ url: `config/users/${email}`, method: 'DELETE' })
       await fetchUsers()
-    }
-    catch (error: any) {
+    } catch (error: any) {
       console.error(error)
     }
   }
@@ -116,10 +103,7 @@ function Users() {
         </CardHeader>
         <CardContent>
           <Form {...form}>
-            <form
-              onSubmit={form.handleSubmit(handleAddUser)}
-              className="space-y-4"
-            >
+            <form onSubmit={form.handleSubmit(handleAddUser)} className="space-y-4">
               <FormField
                 control={form.control}
                 name="email"
@@ -141,11 +125,7 @@ function Users() {
                   <FormItem>
                     <FormLabel>Password</FormLabel>
                     <FormControl>
-                      <Input
-                        type="password"
-                        placeholder="********"
-                        {...field}
-                      />
+                      <Input type="password" placeholder="********" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -156,16 +136,14 @@ function Users() {
                 type="submit"
                 className="w-full md:w-auto"
               >
-                {form.formState.isSubmitting
-                  ? (
-                    <>
-                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                      Submitting
-                    </>
-                  )
-                  : (
-                    'Add User'
-                  )}
+                {form.formState.isSubmitting ? (
+                  <>
+                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                    Submitting
+                  </>
+                ) : (
+                  'Add User'
+                )}
               </Button>
               {form.formState.errors.root && (
                 <FormMessage>{form.formState.errors.root.message}</FormMessage>
@@ -177,11 +155,7 @@ function Users() {
 
       <Card>
         <CardHeader>
-          <CardTitle>
-            Users (
-            {users.length}
-            )
-          </CardTitle>
+          <CardTitle>Users ({users.length})</CardTitle>
           <CardDescription>Manage existing users</CardDescription>
         </CardHeader>
         <CardContent>

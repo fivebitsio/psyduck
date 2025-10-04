@@ -25,8 +25,8 @@ const app = new Hono()
 app.use(logger())
 app.use(
   cors({
-    origin: '*',
-  }),
+    origin: '*'
+  })
 )
 
 const instance = await DuckDBInstance.create('data/psyduck.db')
@@ -63,13 +63,13 @@ const jwtKey = await configRepo.getJwtKey()
 
 const jwtMiddleware = jwt({
   secret: jwtKey,
-  alg: 'HS256',
+  alg: 'HS256'
 })
 
-configHandler.use("*", jwtMiddleware)
-analyticsHandler.use("*", jwtMiddleware)
+configHandler.use('*', jwtMiddleware)
+analyticsHandler.use('*', jwtMiddleware)
 
-app.get('/health', (c) => {
+app.get('/health', c => {
   return c.json({ status: 'ok' })
 })
 
@@ -92,5 +92,5 @@ process.on('SIGTERM', async () => {
 
 export default {
   port: 1323,
-  fetch: app.fetch,
+  fetch: app.fetch
 }

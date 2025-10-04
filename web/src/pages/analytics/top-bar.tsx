@@ -1,13 +1,9 @@
-import { useAtom } from 'jotai'
-import { CalendarIcon } from 'lucide-react'
 import { calendarRangeAtom, formattedRangeAtom } from '@/atoms/analytics'
 import { Button } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover'
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
+import { useAtom } from 'jotai'
+import { CalendarIcon } from 'lucide-react'
 
 function TopBar() {
   const [range, setRange] = useAtom(calendarRangeAtom)
@@ -27,7 +23,7 @@ function TopBar() {
             mode="range"
             defaultMonth={range.from}
             selected={range}
-            onSelect={(newRange) => {
+            onSelect={newRange => {
               // Only update if both dates are selected
               if (newRange?.from && newRange?.to) {
                 setRange({ from: newRange.from, to: newRange.to })

@@ -11,10 +11,10 @@ aMonthAgo.setDate(now.getDate() - 30)
 
 export const calendarRangeAtom = atom<DateRange>({
   from: aMonthAgo,
-  to: now,
+  to: now
 })
 
-export const formattedRangeAtom = atom((get) => {
+export const formattedRangeAtom = atom(get => {
   const range = get(calendarRangeAtom)
   return `${range.from.toLocaleDateString()} - ${range.to.toLocaleDateString()}`
 })

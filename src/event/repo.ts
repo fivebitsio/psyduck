@@ -48,16 +48,13 @@ function createEventRepo(duckdb: DuckDBConnection) {
     await duckdb.run(insertQuery, { ...event })
   }
 
-  async function updateDuration(
-    eventID: string,
-    duration: number,
-  ): Promise<void> {
+  async function updateDuration(eventID: string, duration: number): Promise<void> {
     await duckdb.run(updateDurationQuery, { eventID, duration })
   }
 
   return {
     create,
-    updateDuration,
+    updateDuration
   }
 }
 

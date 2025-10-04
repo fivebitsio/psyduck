@@ -4,10 +4,9 @@ export function fillGapsInData(
   data: ChartData[],
   from: string,
   to: string,
-  precision: Precision,
+  precision: Precision
 ): ChartData[] {
-  if (data.length === 0)
-    return []
+  if (data.length === 0) return []
 
   const start = new Date(from)
   const end = new Date(to)
@@ -53,7 +52,7 @@ export function fillGapsInData(
     hour: () => current.setHours(current.getHours() + 1),
     day: () => current.setDate(current.getDate() + 1),
     week: () => current.setDate(current.getDate() + 7),
-    month: () => current.setMonth(current.getMonth() + 1),
+    month: () => current.setMonth(current.getMonth() + 1)
   }
 
   const formatMap = {
@@ -88,7 +87,7 @@ export function fillGapsInData(
       const year = d.getFullYear()
       const month = String(d.getMonth() + 1).padStart(2, '0')
       return `${year}-${month}`
-    },
+    }
   }
 
   const increment = incrementMap[precision]
@@ -100,7 +99,7 @@ export function fillGapsInData(
   }
 
   const existingDates = new Set(data.map(item => item.date))
-  data.forEach((item) => {
+  data.forEach(item => {
     filled.push(item)
   })
 
@@ -114,7 +113,7 @@ export function fillGapsInData(
         date: dateKey,
         pageviews: 0,
         visitors: 0,
-        bounces: 0,
+        bounces: 0
       })
     }
 

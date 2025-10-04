@@ -1,10 +1,7 @@
 import { password } from 'bun'
 import type createConfigRepo from './repo'
 import type { User, UserWithoutPassword } from './types'
-import {
-  UserDoesNotExistError,
-  UserExistsError,
-} from './types'
+import { UserDoesNotExistError, UserExistsError } from './types'
 
 interface deps {
   repo: ReturnType<typeof createConfigRepo>
@@ -13,8 +10,7 @@ interface deps {
 function createConfigService(deps: deps) {
   async function addUser(user: User): Promise<void> {
     const userExists = await deps.repo.userExistsByEmail(user.email)
-    if (userExists)
-      throw new UserExistsError(user.email)
+    if (userExists) throw new UserExistsError(user.email)
     user.password = password.hashSync(user.password)
 
     return deps.repo.addUser(user)
@@ -22,8 +18,7 @@ function createConfigService(deps: deps) {
 
   async function deleteUser(email: string): Promise<void> {
     const userExists = await deps.repo.userExistsByEmail(email)
-    if (!userExists)
-      throw new UserDoesNotExistError(email)
+    if (!userExists) throw new UserDoesNotExistError(email)
 
     return deps.repo.deleteUser(email)
   }
@@ -35,11 +30,10 @@ function createConfigService(deps: deps) {
   }
 
   async function generateJWTKey(): Promise<void> {
-    const jwtSecret = await crypto.subtle.generateKey(
-      { name: 'HMAC', hash: 'SHA-256' },
-      true,
-      ['sign', 'verify'],
-    )
+    const jwtSecret = await crypto.subtle.generateKey({ name: 'HMAC', hash: 'SHA-256' }, true, [
+      'sign',
+      'verify'
+    ])
 
     const rawKey = await crypto.subtle.exportKey('raw', jwtSecret)
     const key = Buffer.from(new Uint8Array(rawKey)).toString('base64')
@@ -57,7 +51,7 @@ function createConfigService(deps: deps) {
     deleteUser,
     generateJWTKey,
     listEmails,
-    jwtKeyExists,
+    jwtKeyExists
   }
 }
 

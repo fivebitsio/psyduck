@@ -6,7 +6,6 @@ import LoginForm from '@/pages/auth'
 import Settings from '@/pages/settings'
 import type { ComponentType } from 'react'
 
-
 type ProtectedRouteProps = {
   path: string
   component: ComponentType

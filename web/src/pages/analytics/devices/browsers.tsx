@@ -1,13 +1,8 @@
-import type { VisitsByBrowser } from '../devices'
-import type { ChartConfig } from '@/components/ui/chart'
-import { Bar, BarChart, CartesianGrid, LabelList, XAxis, YAxis } from 'recharts'
 import { Card, CardContent } from '@/components/ui/card'
-import {
-
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
-} from '@/components/ui/chart'
+import type { ChartConfig } from '@/components/ui/chart'
+import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart'
+import { Bar, BarChart, CartesianGrid, LabelList, XAxis, YAxis } from 'recharts'
+import type { VisitsByBrowser } from '../devices'
 
 interface BrowsersProps {
   browsers: VisitsByBrowser[]
@@ -16,11 +11,11 @@ interface BrowsersProps {
 const chartConfig = {
   count: {
     label: 'Visits',
-    color: 'var(--chart-2)',
+    color: 'var(--chart-2)'
   },
   label: {
-    color: 'var(--background)',
-  },
+    color: 'var(--background)'
+  }
 } satisfies ChartConfig
 
 function Browsers({ browsers }: BrowsersProps) {
@@ -33,7 +28,7 @@ function Browsers({ browsers }: BrowsersProps) {
             data={browsers}
             layout="vertical"
             margin={{
-              right: 16,
+              right: 16
             }}
           >
             <CartesianGrid horizontal={false} />
@@ -47,16 +42,8 @@ function Browsers({ browsers }: BrowsersProps) {
               hide
             />
             <XAxis dataKey="count" type="number" hide />
-            <ChartTooltip
-              cursor={false}
-              content={<ChartTooltipContent indicator="line" />}
-            />
-            <Bar
-              dataKey="count"
-              layout="vertical"
-              fill="var(--color-count)"
-              radius={4}
-            >
+            <ChartTooltip cursor={false} content={<ChartTooltipContent indicator="line" />} />
+            <Bar dataKey="count" layout="vertical" fill="var(--color-count)" radius={4}>
               <LabelList
                 dataKey="browser"
                 position="insideLeft"

@@ -1,9 +1,9 @@
-import { useAtomValue } from 'jotai'
-import { Loader } from 'lucide-react'
-import { useEffect, useState } from 'react'
 import { calendarRangeAtom } from '@/atoms/analytics'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import api from '@/lib/api'
+import { useAtomValue } from 'jotai'
+import { Loader } from 'lucide-react'
+import { useEffect, useState } from 'react'
 import Browsers from './devices/browsers'
 import DeviceTypes from './devices/device_types'
 import Os from './devices/os'
@@ -34,7 +34,7 @@ function Devices() {
   const [chartData, setChartData] = useState<ChartData>({
     deviceTypes: [],
     browsers: [],
-    os: [],
+    os: []
   })
   const range = useAtomValue(calendarRangeAtom)
 
@@ -47,22 +47,19 @@ function Devices() {
 
         const metrics = await api<undefined, ChartData>({
           method: 'GET',
-          url: `analytics/visits_by_device?from=${from}&to=${to}`,
+          url: `analytics/visits_by_device?from=${from}&to=${to}`
         })
         setChartData(metrics)
-      }
-      catch (error) {
+      } catch (error) {
         console.error('Error fetching metrics: ', error)
-      }
-      finally {
+      } finally {
         setFetching(false)
       }
     }
     fetchVisits()
   }, [range.from, range.to])
 
-  if (fetching)
-    return <Loader />
+  if (fetching) return <Loader />
 
   return (
     <Tabs defaultValue="devices">

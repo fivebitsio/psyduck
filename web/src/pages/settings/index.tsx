@@ -1,12 +1,6 @@
-import { useState } from 'react'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
+import { useState } from 'react'
 import Users from './users'
 
 interface SidebarItem {
@@ -20,7 +14,7 @@ function Settings() {
   function sidebarItems(): SidebarItem[] {
     return [
       { id: 'users', label: 'Users' },
-      { id: 'general', label: 'General' },
+      { id: 'general', label: 'General' }
     ]
   }
 
@@ -29,14 +23,10 @@ function Settings() {
       <Card>
         <CardHeader>
           <CardTitle>General Settings</CardTitle>
-          <CardDescription>
-            Configure general application settings
-          </CardDescription>
+          <CardDescription>Configure general application settings</CardDescription>
         </CardHeader>
         <CardContent>
-          <p className="text-muted-foreground">
-            General settings content will go here.
-          </p>
+          <p className="text-muted-foreground">General settings content will go here.</p>
         </CardContent>
       </Card>
     )
@@ -46,9 +36,7 @@ function Settings() {
     <div className="md:container sm:mt-2 md:mt-4 lg:mt-16 mx-auto lg:max-w-4xl">
       <div className="space-y-0.5">
         <h2 className="text-2xl font-bold tracking-tight">Settings</h2>
-        <p className="text-muted-foreground">
-          Manage your application settings
-        </p>
+        <p className="text-muted-foreground">Manage your application settings</p>
       </div>
       <Separator className="my-6" />
 

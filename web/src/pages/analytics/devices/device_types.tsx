@@ -1,28 +1,23 @@
-import type { VisitsByDeviceType } from '../devices'
+import { Card, CardContent } from '@/components/ui/card'
 import type { ChartConfig } from '@/components/ui/chart'
+import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart'
 import { useMemo } from 'react'
 import { Label, Pie, PieChart } from 'recharts'
-import { Card, CardContent } from '@/components/ui/card'
-import {
-
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
-} from '@/components/ui/chart'
+import type { VisitsByDeviceType } from '../devices'
 
 const chartConfig = {
   mobile: {
     label: 'Mobile',
-    color: 'var(--chart-1)',
+    color: 'var(--chart-1)'
   },
   tablet: {
     label: 'Tablet',
-    color: 'var(--chart-2)',
+    color: 'var(--chart-2)'
   },
   desktop: {
     label: 'Desktop',
-    color: 'var(--chart-3)',
-  },
+    color: 'var(--chart-3)'
+  }
 } satisfies ChartConfig
 
 interface DeviceTypesProps {
@@ -39,10 +34,7 @@ function DeviceTypes({ deviceTypes }: DeviceTypesProps) {
       <CardContent className="flex-1">
         <ChartContainer config={chartConfig} className="mx-auto aspect-square">
           <PieChart>
-            <ChartTooltip
-              cursor={false}
-              content={<ChartTooltipContent hideLabel />}
-            />
+            <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
             <Pie
               data={deviceTypes}
               dataKey="count"

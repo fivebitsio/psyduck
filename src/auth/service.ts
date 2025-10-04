@@ -19,7 +19,7 @@ function createAuthService(deps: deps) {
     const payload = {
       exp: Math.floor(Date.now() / 1000) + 24 * 60 * 60,
       iss: 'psyduck.io',
-      sub: user.email,
+      sub: user.email
     }
 
     const token = await sign(payload, 'JWT_SECRET')
@@ -31,15 +31,14 @@ function createAuthService(deps: deps) {
     try {
       await verify(token, 'JWT_SECRET')
       return true
-    }
-    catch (error) {
+    } catch (error) {
       return false
     }
   }
 
   return {
     signIn,
-    verifyToken,
+    verifyToken
   }
 }
 

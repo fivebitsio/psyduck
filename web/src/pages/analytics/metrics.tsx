@@ -1,17 +1,12 @@
+import { calendarRangeAtom } from '@/atoms/analytics'
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import type { ChartConfig } from '@/components/ui/chart'
+import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart'
+import api from '@/lib/api'
 import { useAtomValue } from 'jotai'
 import { Loader } from 'lucide-react'
 import { useEffect, useMemo, useState } from 'react'
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from 'recharts'
-import { calendarRangeAtom } from '@/atoms/analytics'
-import { Card, CardContent, CardHeader } from '@/components/ui/card'
-import {
-
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
-} from '@/components/ui/chart'
-import api from '@/lib/api'
 import { fillGapsInData } from '../utils'
 
 export interface ChartData {
@@ -26,21 +21,20 @@ export type Precision = 'minute' | 'hour' | 'day' | 'week' | 'month'
 const chartConfig = {
   pageviews: {
     label: 'Views',
-    color: 'var(--chart-1)',
+    color: 'var(--chart-1)'
   },
   visitors: {
     label: 'Visitors',
-    color: 'var(--chart-2)',
+    color: 'var(--chart-2)'
   },
   bounces: {
     label: 'Bounces',
-    color: 'var(--chart-3)',
-  },
+    color: 'var(--chart-3)'
+  }
 } satisfies ChartConfig
 
 function Metrics() {
-  const [activeChart, setActiveChart]
-    = useState<keyof typeof chartConfig>('pageviews')
+  const [activeChart, setActiveChart] = useState<keyof typeof chartConfig>('pageviews')
   const [chartData, setChartData] = useState<ChartData[]>([])
   const [fetching, setFetching] = useState<boolean>(false)
 
@@ -56,15 +50,13 @@ function Metrics() {
 
         const metrics = await api<undefined, ChartData[]>({
           method: 'GET',
-          url: `analytics/metrics?from=${from}&to=${to}&precision=${precision}`,
+          url: `analytics/metrics?from=${from}&to=${to}&precision=${precision}`
         })
         const filledMetrics = fillGapsInData(metrics, from, to, precision)
         setChartData(filledMetrics)
-      }
-      catch (error) {
+      } catch (error) {
         console.error('Error fetching metrics: ', error)
-      }
-      finally {
+      } finally {
         setFetching(false)
       }
     }
@@ -75,13 +67,12 @@ function Metrics() {
     () => ({
       pageviews: chartData.reduce((acc, curr) => acc + curr.pageviews, 0),
       visitors: chartData.reduce((acc, curr) => acc + curr.visitors, 0),
-      bounces: chartData.reduce((acc, curr) => acc + curr.bounces, 0),
+      bounces: chartData.reduce((acc, curr) => acc + curr.bounces, 0)
     }),
-    [chartData],
+    [chartData]
   )
 
-  if (fetching)
-    return <Loader />
+  if (fetching) return <Loader />
 
   if (!chartData || chartData.length === 0) {
     return (
@@ -98,7 +89,7 @@ function Metrics() {
       <CardHeader className="flex flex-col items-stretch border-b !p-0 sm:flex-row">
         <div className="flex w-full justify-between">
           <div className="flex">
-            {['pageviews', 'visitors', 'bounces'].map((key) => {
+            {['pageviews', 'visitors', 'bounces'].map(key => {
               const chart = key as keyof typeof chartConfig
               return (
                 <button
@@ -125,16 +116,13 @@ function Metrics() {
     <Card className="py-0">
       {cardHeader()}
       <CardContent className="px-2 sm:p-6">
-        <ChartContainer
-          config={chartConfig}
-          className="aspect-auto h-[250px] w-full"
-        >
+        <ChartContainer config={chartConfig} className="aspect-auto h-[250px] w-full">
           <BarChart
             accessibilityLayer
             data={chartData}
             margin={{
               left: 12,
-              right: 12,
+              right: 12
             }}
           >
             <CartesianGrid vertical={false} />
@@ -144,7 +132,7 @@ function Metrics() {
               axisLine={false}
               tickMargin={8}
               minTickGap={32}
-              tickFormatter={(value) => {
+              tickFormatter={value => {
                 const date = new Date(value)
 
                 if (isNaN(date.getTime())) {
@@ -157,24 +145,23 @@ function Metrics() {
                 if (hasTime) {
                   return date.toLocaleTimeString('en-US', {
                     hour: 'numeric',
-                    hour12: true,
+                    hour12: true
                   })
-                }
-                else {
+                } else {
                   return date.toLocaleDateString('en-US', {
                     month: 'short',
-                    day: 'numeric',
+                    day: 'numeric'
                   })
                 }
               }}
             />
             <YAxis tickLine={false} axisLine={false} tickMargin={8} />
             <ChartTooltip
-              content={(
+              content={
                 <ChartTooltipContent
                   className="w-[150px]"
                   nameKey="views"
-                  labelFormatter={(value) => {
+                  labelFormatter={value => {
                     const date = new Date(value)
                     if (isNaN(date.getTime())) {
                       return value
@@ -182,11 +169,11 @@ function Metrics() {
                     return date.toLocaleDateString('en-US', {
                       month: 'short',
                       day: 'numeric',
-                      year: 'numeric',
+                      year: 'numeric'
                     })
                   }}
                 />
-              )}
+              }
             />
             <Bar dataKey={activeChart} fill={`var(--color-${activeChart})`} />
           </BarChart>

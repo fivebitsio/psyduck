@@ -1,13 +1,8 @@
-import type { VisitsByOs } from '../devices'
-import type { ChartConfig } from '@/components/ui/chart'
-import { Bar, BarChart, CartesianGrid, LabelList, XAxis, YAxis } from 'recharts'
 import { Card, CardContent } from '@/components/ui/card'
-import {
-
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
-} from '@/components/ui/chart'
+import type { ChartConfig } from '@/components/ui/chart'
+import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart'
+import { Bar, BarChart, CartesianGrid, LabelList, XAxis, YAxis } from 'recharts'
+import type { VisitsByOs } from '../devices'
 
 interface OsProps {
   os: VisitsByOs[]
@@ -16,11 +11,11 @@ interface OsProps {
 const chartConfig = {
   count: {
     label: 'Visits',
-    color: 'var(--chart-2)',
+    color: 'var(--chart-2)'
   },
   label: {
-    color: 'var(--background)',
-  },
+    color: 'var(--background)'
+  }
 } satisfies ChartConfig
 
 function Os({ os }: OsProps) {
@@ -33,7 +28,7 @@ function Os({ os }: OsProps) {
             data={os}
             layout="vertical"
             margin={{
-              right: 16,
+              right: 16
             }}
           >
             <CartesianGrid horizontal={false} />
@@ -47,16 +42,8 @@ function Os({ os }: OsProps) {
               hide
             />
             <XAxis dataKey="count" type="number" hide />
-            <ChartTooltip
-              cursor={false}
-              content={<ChartTooltipContent indicator="line" />}
-            />
-            <Bar
-              dataKey="count"
-              layout="vertical"
-              fill="var(--color-count)"
-              radius={4}
-            >
+            <ChartTooltip cursor={false} content={<ChartTooltipContent indicator="line" />} />
+            <Bar dataKey="count" layout="vertical" fill="var(--color-count)" radius={4}>
               <LabelList
                 dataKey="os"
                 position="insideLeft"

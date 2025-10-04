@@ -10,14 +10,13 @@ interface deps {
 function createAuthHandler(deps: deps) {
   const app = new Hono()
 
-  app.post('/signin', async (c) => {
+  app.post('/signin', async c => {
     try {
       const user = await c.req.json<SignInRequest>()
       const token = await deps.service.signIn(user)
 
       return c.json({ token }, 201)
-    }
-    catch (error) {
+    } catch (error) {
       switch (true) {
         case error instanceof InvalidCredentialsError:
           return c.json({ error: error.message }, 401)

@@ -1,6 +1,6 @@
+import { Hono } from 'hono'
 import type createEventService from './service'
 import type { CreateEvent, UpdateEvent } from './types'
-import { Hono } from 'hono'
 
 interface deps {
   service: ReturnType<typeof createEventService>
@@ -9,29 +9,27 @@ interface deps {
 function createEventHandler(deps: deps) {
   const app = new Hono()
 
-  app.post('/', async (c) => {
+  app.post('/', async c => {
     try {
       const createEvent = await c.req.json<CreateEvent>()
 
       await deps.service.createEvent(createEvent)
 
       return c.json({}, 201)
-    }
-    catch (error) {
+    } catch (error) {
       console.error('Error creating event:', error)
       return c.json({}, 500)
     }
   })
 
-  app.post('/:eventId', async (c) => {
+  app.post('/:eventId', async c => {
     try {
       const eventId = c.req.param('eventId')
       const updateEvent = await c.req.json<UpdateEvent>()
 
       await deps.service.updateEvent(eventId, updateEvent)
       return c.json({}, 200)
-    }
-    catch (error) {
+    } catch (error) {
       console.error('Error updating event:', error)
       return c.json({}, 500)
     }

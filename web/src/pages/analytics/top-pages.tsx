@@ -1,32 +1,21 @@
+import { calendarRangeAtom } from '@/atoms/analytics'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import type { ChartConfig } from '@/components/ui/chart'
+import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart'
+import api from '@/lib/api'
 import { useAtomValue } from 'jotai'
 import { Loader } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { Bar, BarChart, CartesianGrid, LabelList, XAxis, YAxis } from 'recharts'
-import { calendarRangeAtom } from '@/atoms/analytics'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
-import {
-
-  ChartContainer,
-  ChartTooltip,
-  ChartTooltipContent,
-} from '@/components/ui/chart'
-import api from '@/lib/api'
 
 const chartConfig = {
   count: {
     label: 'Visits',
-    color: 'var(--chart-2)',
+    color: 'var(--chart-2)'
   },
   label: {
-    color: 'var(--background)',
-  },
+    color: 'var(--background)'
+  }
 } satisfies ChartConfig
 
 export interface ChartData {
@@ -48,22 +37,19 @@ function TopPages() {
 
         const metrics = await api<undefined, ChartData[]>({
           method: 'GET',
-          url: `analytics/visits_by_page?from=${from}&to=${to}`,
+          url: `analytics/visits_by_page?from=${from}&to=${to}`
         })
         setChartData(metrics)
-      }
-      catch (error) {
+      } catch (error) {
         console.error('Error fetching metrics: ', error)
-      }
-      finally {
+      } finally {
         setFetching(false)
       }
     }
     fetchVisits()
   }, [range.from, range.to])
 
-  if (fetching)
-    return <Loader />
+  if (fetching) return <Loader />
 
   return (
     <Card>
@@ -78,7 +64,7 @@ function TopPages() {
             data={chartData}
             layout="vertical"
             margin={{
-              right: 16,
+              right: 16
             }}
           >
             <CartesianGrid horizontal={false} />
@@ -92,16 +78,8 @@ function TopPages() {
               hide
             />
             <XAxis dataKey="count" type="number" hide />
-            <ChartTooltip
-              cursor={false}
-              content={<ChartTooltipContent indicator="line" />}
-            />
-            <Bar
-              dataKey="count"
-              layout="vertical"
-              fill="var(--color-count)"
-              radius={4}
-            >
+            <ChartTooltip cursor={false} content={<ChartTooltipContent indicator="line" />} />
+            <Bar dataKey="count" layout="vertical" fill="var(--color-count)" radius={4}>
               <LabelList
                 dataKey="pathname"
                 position="insideLeft"

@@ -7,7 +7,7 @@ const stringStorage = {
   },
   removeItem: (key: string) => {
     localStorage.removeItem(key)
-  },
+  }
 }
 
 export { stringStorage }

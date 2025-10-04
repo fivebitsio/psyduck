@@ -35,10 +35,10 @@ function parseArguments() {
       db: { type: 'string', default: './data/psyduck.db' },
       migrations: { type: 'string', default: './migrations' },
       number: { type: 'string', default: '1' },
-      help: { type: 'boolean', short: 'h' },
+      help: { type: 'boolean', short: 'h' }
     },
     allowPositionals: true,
-    strict: false,
+    strict: false
   })
 
   return { values, positionals }
@@ -48,28 +48,22 @@ async function handleUpCommand(migrator: Migrator) {
   try {
     await migrator.up()
     console.log('Migrations applied successfully')
-  }
-  catch (err) {
+  } catch (err) {
     if (err instanceof Error) {
       console.error('Error applying migrations:', err.message)
-    }
-    else {
+    } else {
       console.error('Error applying migrations:', err)
     }
     process.exit(1)
   }
 }
 
-async function handleDownCommand(
-  migrator: Migrator,
-  numberOfMigrations: string | boolean,
-) {
+async function handleDownCommand(migrator: Migrator, numberOfMigrations: string | boolean) {
   try {
     let num: number | 'all'
     if (numberOfMigrations === 'all') {
       num = 'all'
-    }
-    else {
+    } else {
       num = Number(numberOfMigrations)
       if (isNaN(num) || num < 1 || !Number.isInteger(num)) {
         console.error('Error: --number must be a positive integer or "all"')
@@ -79,12 +73,10 @@ async function handleDownCommand(
 
     await migrator.down(num)
     console.log('Migration(s) rolled back successfully')
-  }
-  catch (err) {
+  } catch (err) {
     if (err instanceof Error) {
       console.error('Error rolling back migration:', err.message)
-    }
-    else {
+    } else {
       console.error('Error rolling back migration:', err)
     }
     process.exit(1)
@@ -115,26 +107,21 @@ async function main() {
 
   const migrator = new Migrator({
     dbPath: typeof values.db === 'string' ? values.db : './data/psyduck.db',
-    migrationsDir:
-      typeof values.migrations === 'string'
-        ? values.migrations
-        : './migrations',
+    migrationsDir: typeof values.migrations === 'string' ? values.migrations : './migrations'
   })
 
   try {
     if (command === 'up') {
       await handleUpCommand(migrator)
-    }
-    else if (command === 'down') {
+    } else if (command === 'down') {
       await handleDownCommand(migrator, values.number)
     }
-  }
-  finally {
+  } finally {
     migrator.close()
   }
 }
 
-main().catch((error) => {
+main().catch(error => {
   console.error('Fatal error:', error.message)
   process.exit(1)
 })

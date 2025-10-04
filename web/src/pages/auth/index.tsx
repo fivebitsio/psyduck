@@ -1,44 +1,43 @@
-import { Button } from "@/components/ui/button"
+import { isLoggedInAtom, loginAtom } from '@/atoms/auth'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
-import api from "@/lib/api"
-import { cn } from "@/lib/utils"
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage
+} from '@/components/ui/form'
+import { Input } from '@/components/ui/input'
+import api from '@/lib/api'
+import { cn } from '@/lib/utils'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useAtom, useAtomValue, useSetAtom } from "jotai"
-import { useState } from "react"
-import { useForm } from "react-hook-form"
-import { Redirect } from "wouter"
+import { useAtomValue, useSetAtom } from 'jotai'
+import { useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { Redirect } from 'wouter'
 import * as z from 'zod'
-import type { LoginResponse } from "./types"
-import { isLoggedInAtom, loginAtom } from "@/atoms/auth"
+import type { LoginResponse } from './types'
 
 const signInFormSchema = z.object({
-  email: z
-    .email({ message: 'Enter a valid email' }),
-  password: z.string({ message: 'Password is required' })
-    .nonempty({ message: "Password must not be empty" }),
+  email: z.email({ message: 'Enter a valid email' }),
+  password: z
+    .string({ message: 'Password is required' })
+    .nonempty({ message: 'Password must not be empty' })
 })
 
 type SignInFormValues = z.infer<typeof signInFormSchema>
 
 const defaultValues: SignInFormValues = {
   email: '',
-  password: '',
+  password: ''
 }
 
-function LoginForm({
-  ...props
-}) {
+function LoginForm({ ...props }) {
   const form = useForm<SignInFormValues>({
     resolver: zodResolver(signInFormSchema),
-    defaultValues,
+    defaultValues
   })
 
   const setLogin = useSetAtom(loginAtom)
@@ -52,7 +51,7 @@ function LoginForm({
 
       const { token } = await api<SignInFormValues, LoginResponse>({
         url: `auth/signin`,
-        body: data,
+        body: data
       })
 
       setLogin(token)
@@ -66,19 +65,17 @@ function LoginForm({
   }
 
   if (isLoggedIn) {
-    return <Redirect to='/' />
+    return <Redirect to="/" />
   }
 
   return (
     <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10">
       <div className="w-full max-w-sm">
-        <div className={cn("flex flex-col gap-6")} {...props}>
+        <div className={cn('flex flex-col gap-6')} {...props}>
           <Card>
             <CardHeader>
               <CardTitle>Login to your account</CardTitle>
-              <CardDescription>
-                Enter your email below to login to your account
-              </CardDescription>
+              <CardDescription>Enter your email below to login to your account</CardDescription>
             </CardHeader>
             <CardContent>
               <Form {...form}>
@@ -89,15 +86,20 @@ function LoginForm({
                         {form.formState.errors.root.message}
                       </div>
                     )}
-                    <div className='grid gap-2'>
+                    <div className="grid gap-2">
                       <FormField
                         control={form.control}
-                        name='email'
+                        name="email"
                         render={({ field }) => (
                           <FormItem>
                             <FormLabel>Email</FormLabel>
                             <FormControl>
-                              <Input type='email' autoComplete='email' placeholder='me@example.com' {...field} />
+                              <Input
+                                type="email"
+                                autoComplete="email"
+                                placeholder="me@example.com"
+                                {...field}
+                              />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -105,15 +107,15 @@ function LoginForm({
                       />
                     </div>
 
-                    <div className='grid gap-2'>
+                    <div className="grid gap-2">
                       <FormField
                         control={form.control}
-                        name='password'
+                        name="password"
                         render={({ field }) => (
                           <FormItem>
                             <FormLabel>Password</FormLabel>
                             <FormControl>
-                              <Input type='password' autoComplete='new-password' {...field} />
+                              <Input type="password" autoComplete="new-password" {...field} />
                             </FormControl>
                             <FormMessage />
                           </FormItem>

@@ -7,7 +7,7 @@ function createConfigRepo(db: Low<ConfigSchema>) {
   }
 
   async function deleteUser(email: string): Promise<void> {
-    return db.update((data) => {
+    return db.update(data => {
       data.users = data.users.filter(u => u.email !== email)
     })
   }
@@ -16,9 +16,7 @@ function createConfigRepo(db: Low<ConfigSchema>) {
     return db.data.users.some(u => u.email === email)
   }
 
-  async function getUserByEmail(
-    email: string,
-  ): Promise<User | undefined> {
+  async function getUserByEmail(email: string): Promise<User | undefined> {
     return db.data.users.find(u => u.email === email)
   }
 
@@ -27,7 +25,7 @@ function createConfigRepo(db: Low<ConfigSchema>) {
   }
 
   async function setJWTKey(key: string): Promise<void> {
-    return db.update((data) => {
+    return db.update(data => {
       data.jwtKey = key
     })
   }
@@ -43,7 +41,7 @@ function createConfigRepo(db: Low<ConfigSchema>) {
     getUserByEmail,
     listUsers,
     setJWTKey,
-    getJwtKey,
+    getJwtKey
   }
 }
 
