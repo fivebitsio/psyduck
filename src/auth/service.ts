@@ -18,7 +18,7 @@ function createAuthService(deps: deps) {
 
     const payload = {
       exp: Math.floor(Date.now() / 1000) + 24 * 60 * 60,
-      iss: 'psyduck.io',
+      iss: 'psyduck.click',
       sub: user.email
     }
 
