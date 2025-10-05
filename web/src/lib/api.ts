@@ -1,5 +1,5 @@
 type HTTPMethod = 'DELETE' | 'GET' | 'PATCH' | 'POST' | 'PUT'
-const BASE_URL = 'http://localhost:1323/'
+const BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:9876/'
 
 const defaultHeaders = {
   Accept: 'application/json',
