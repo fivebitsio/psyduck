@@ -42,8 +42,11 @@ function createConfigService(deps: deps) {
 
   async function jwtKeyExists(): Promise<boolean> {
     const key = await deps.repo.getJwtKey()
-    console.log('JWT Key:', key.length > 0)
     return key.length > 0
+  }
+
+  async function getDemoMode(): Promise<boolean> {
+    return deps.repo.getDemoMode()
   }
 
   return {
@@ -51,7 +54,8 @@ function createConfigService(deps: deps) {
     deleteUser,
     generateJWTKey,
     listEmails,
-    jwtKeyExists
+    jwtKeyExists,
+    getDemoMode
   }
 }
 

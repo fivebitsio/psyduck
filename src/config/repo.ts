@@ -34,6 +34,10 @@ function createConfigRepo(db: Low<ConfigSchema>) {
     return db.data.jwtKey
   }
 
+  async function getDemoMode(): Promise<boolean> {
+    return db.data.demoMode
+  }
+
   return {
     addUser,
     deleteUser,
@@ -41,7 +45,8 @@ function createConfigRepo(db: Low<ConfigSchema>) {
     getUserByEmail,
     listUsers,
     setJWTKey,
-    getJwtKey
+    getJwtKey,
+    getDemoMode
   }
 }
 

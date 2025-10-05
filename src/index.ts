@@ -67,7 +67,12 @@ const jwtMiddleware = jwt({
 })
 
 configHandler.use('*', jwtMiddleware)
-analyticsHandler.use('*', jwtMiddleware)
+
+const demoMode = await configService.getDemoMode()
+
+if (demoMode === false) {
+  analyticsHandler.use('*', jwtMiddleware)
+}
 
 app.get('/health', c => {
   return c.json({ status: 'ok' })

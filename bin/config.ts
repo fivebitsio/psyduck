@@ -118,7 +118,8 @@ async function main() {
   try {
     const configDb = await JSONFilePreset(configPath, {
       jwtKey: '',
-      users: []
+      users: [],
+      demoMode: false
     } as ConfigSchema)
     const configRepo = createConfigRepo(configDb)
     const configService = createConfigService({ repo: configRepo })

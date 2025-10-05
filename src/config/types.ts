@@ -10,6 +10,7 @@ export interface UserWithoutPassword {
 export interface ConfigSchema {
   users: User[]
   jwtKey: string
+  demoMode: boolean
 }
 
 export interface UserRequest {
