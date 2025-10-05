@@ -23,9 +23,14 @@ import createEventService from './event/service'
 const app = new Hono()
 
 app.use(logger())
+
 app.use(
   cors({
-    origin: '*'
+    origin: ['*'],
+    credentials: true,
+    allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowHeaders: ['X-Requested-With', 'Content-Type', 'Authorization'],
+    maxAge: 86400
   })
 )
 
