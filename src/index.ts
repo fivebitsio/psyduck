@@ -91,6 +91,6 @@ process.on('SIGTERM', async () => {
 })
 
 export default {
-  port: 1323,
+  port: 9876,
   fetch: app.fetch
 }
