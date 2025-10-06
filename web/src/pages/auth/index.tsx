@@ -64,7 +64,7 @@ function LoginForm({ ...props }) {
     }
   }
 
-  if (isLoggedIn) {
+  if (isLoggedIn || import.meta.env.VITE_DEMO_MODE === 'true') {
     return <Redirect to="/" />
   }
 
