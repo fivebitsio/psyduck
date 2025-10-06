@@ -72,17 +72,14 @@ function TopPages() {
         <CardTitle>Top Pages</CardTitle>
         <CardDescription>Visits by page</CardDescription>
       </CardHeader>
-      <CardContent className="flex-1 p-6">
-        <ChartContainer config={chartConfig} className="h-full mx-auto w-full">
+      <CardContent className="flex-1">
+        <ChartContainer config={chartConfig} className="mx-auto w-full">
           <BarChart
             accessibilityLayer
             data={chartData}
             layout="vertical"
             margin={{
-              right: 16,
-              left: 16,
-              top: 16,
-              bottom: 16
+              right: 48
             }}
           >
             <CartesianGrid horizontal={false} />
@@ -108,7 +105,7 @@ function TopPages() {
               <LabelList
                 dataKey="count"
                 position="right"
-                offset={8}
+                offset={16}
                 className="fill-foreground"
                 fontSize={12}
               />

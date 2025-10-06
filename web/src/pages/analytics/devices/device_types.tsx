@@ -29,8 +29,8 @@ function DeviceTypes({ deviceTypes }: DeviceTypesProps) {
     return deviceTypes.map(item => ({
       ...item,
       fill: `var(--color-${item.deviceType})`
-    }));
-  }, [deviceTypes]);
+    }))
+  }, [deviceTypes])
 
   const totalVisitors = useMemo(() => {
     return deviceTypes.reduce((acc, curr) => acc + curr.count, 0)

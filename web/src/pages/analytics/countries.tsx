@@ -80,7 +80,7 @@ function Countries() {
             data={chartData}
             layout="vertical"
             margin={{
-              right: 16
+              right: 48
             }}
           >
             <CartesianGrid horizontal={false} />
@@ -106,7 +106,7 @@ function Countries() {
               <LabelList
                 dataKey="count"
                 position="right"
-                offset={8}
+                offset={16}
                 className="fill-foreground"
                 fontSize={12}
               />

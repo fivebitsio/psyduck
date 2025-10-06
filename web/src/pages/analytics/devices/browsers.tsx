@@ -28,7 +28,7 @@ function Browsers({ browsers }: BrowsersProps) {
             data={browsers}
             layout="vertical"
             margin={{
-              right: 16
+              right: 48
             }}
           >
             <CartesianGrid horizontal={false} />
@@ -54,7 +54,7 @@ function Browsers({ browsers }: BrowsersProps) {
               <LabelList
                 dataKey="count"
                 position="right"
-                offset={8}
+                offset={16}
                 className="fill-foreground"
                 fontSize={12}
               />

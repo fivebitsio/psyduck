@@ -28,7 +28,7 @@ function Os({ os }: OsProps) {
             data={os}
             layout="vertical"
             margin={{
-              right: 16
+              right: 48
             }}
           >
             <CartesianGrid horizontal={false} />
@@ -54,7 +54,7 @@ function Os({ os }: OsProps) {
               <LabelList
                 dataKey="count"
                 position="right"
-                offset={8}
+                offset={16}
                 className="fill-foreground"
                 fontSize={12}
               />

@@ -45,7 +45,7 @@ function TopBar() {
             />
           </PopoverContent>
         </Popover>
-        {!DEMO_MODE &&
+        {!DEMO_MODE && (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" size="icon">
@@ -64,7 +64,8 @@ function TopBar() {
                 <span>Logout</span>
               </DropdownMenuItem>
             </DropdownMenuContent>
-          </DropdownMenu>}
+          </DropdownMenu>
+        )}
       </div>
     </div>
   )
