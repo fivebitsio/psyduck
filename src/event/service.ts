@@ -11,7 +11,8 @@ interface deps {
 function createEventService(deps: deps) {
   async function createEvent(cEvent: CreateEvent): Promise<void> {
     const { timezone, ...eventWithoutTimezone } = cEvent
-    const uniqueVisit = cEvent.hostname !== getHostname(cEvent.referrer)
+    const referrerHostname = cEvent.referrer ? getHostname(cEvent.referrer) : ''
+    const uniqueVisit = !referrerHostname || cEvent.hostname !== referrerHostname
     const event: Event = {
       ...eventWithoutTimezone,
       countryCode: ct.getCountryForTimezone(timezone)?.id || 'unknown',
