@@ -7,23 +7,23 @@ import TopPages from './top-pages'
 
 function Analytics() {
   return (
-    <div className="w-4xl m-auto flex flex-col gap-3 mt-10 mb-10">
+    <div className="w-full lg:w-4xl mx-auto px-4 lg:px-0 flex flex-col gap-3 mt-10 mb-10">
       <TopBar />
       <div className="flex flex-col gap-3">
         <Metrics />
-        <div className="flex gap-3">
-          <div className="w-4xl">
+        <div className="flex flex-col lg:flex-row gap-3">
+          <div className="w-full lg:w-4xl">
             <Countries />
           </div>
-          <div className="w-xl">
+          <div className="w-full lg:w-xl">
             <Devices />
           </div>
         </div>
-        <div className="flex gap-3">
-          <div className="w-4xl">
+        <div className="flex flex-col lg:flex-row gap-3">
+          <div className="w-full lg:w-4xl">
             <TopPages />
           </div>
-          <div className="w-xl">
+          <div className="w-full lg:w-xl">
             <Sources />
           </div>
         </div>
