@@ -25,6 +25,13 @@ interface DeviceTypesProps {
 }
 
 function DeviceTypes({ deviceTypes }: DeviceTypesProps) {
+  const deviceTypesWithFill = useMemo(() => {
+    return deviceTypes.map(item => ({
+      ...item,
+      fill: `var(--color-${item.deviceType})`
+    }));
+  }, [deviceTypes]);
+
   const totalVisitors = useMemo(() => {
     return deviceTypes.reduce((acc, curr) => acc + curr.count, 0)
   }, [deviceTypes])
@@ -36,7 +43,7 @@ function DeviceTypes({ deviceTypes }: DeviceTypesProps) {
           <PieChart>
             <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
             <Pie
-              data={deviceTypes}
+              data={deviceTypesWithFill}
               dataKey="count"
               nameKey="deviceType"
               innerRadius={60}

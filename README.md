@@ -75,7 +75,7 @@ cd web
 bun --bun run dev
 ```
 
-The backend will typically run on `http://localhost:1323` and the frontend on `http://localhost:5173`.
+The backend will typically run on `http://localhost:9876` and the frontend on `http://localhost:5173`.
 
 ### 🗄️ Database Management
 
