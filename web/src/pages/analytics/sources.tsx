@@ -52,19 +52,22 @@ function Sources() {
   if (fetching) return <Loader />
 
   return (
-    <Card>
+    <Card className="h-full flex flex-col">
       <CardHeader>
         <CardTitle>Sources</CardTitle>
         <CardDescription>Visits by sources</CardDescription>
       </CardHeader>
-      <CardContent>
-        <ChartContainer config={chartConfig} className="mx-auto aspect-square">
+      <CardContent className="flex-1 p-6">
+        <ChartContainer config={chartConfig} className="h-full mx-auto w-full">
           <BarChart
             accessibilityLayer
             data={chartData}
             layout="vertical"
             margin={{
-              right: 16
+              right: 16,
+              left: 16,
+              top: 16,
+              bottom: 16
             }}
           >
             <CartesianGrid horizontal={false} />
