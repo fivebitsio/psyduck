@@ -1,8 +1,9 @@
 import { calendarRangeAtom } from '@/atoms/analytics'
+import { Card, CardContent } from '@/components/ui/card'
+import { Skeleton } from '@/components/ui/skeleton'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import api from '@/lib/api'
 import { useAtomValue } from 'jotai'
-import { Loader } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import Browsers from './devices/browsers'
 import DeviceTypes from './devices/device_types'
@@ -59,7 +60,21 @@ function Devices() {
     fetchVisits()
   }, [range.from, range.to])
 
-  if (fetching) return <Loader />
+  if (fetching)
+    return (
+      <div>
+        <div className="flex space-x-2 mb-4">
+          <Skeleton className="h-9 w-24" />
+          <Skeleton className="h-9 w-24" />
+          <Skeleton className="h-9 w-24" />
+        </div>
+        <Card>
+          <CardContent className="p-6">
+            <Skeleton className="h-64 w-full" />
+          </CardContent>
+        </Card>
+      </div>
+    )
 
   return (
     <Tabs defaultValue="devices">

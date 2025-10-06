@@ -2,9 +2,9 @@ import { calendarRangeAtom } from '@/atoms/analytics'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import type { ChartConfig } from '@/components/ui/chart'
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart'
+import { Skeleton } from '@/components/ui/skeleton'
 import api from '@/lib/api'
 import { useAtomValue } from 'jotai'
-import { Loader } from 'lucide-react'
 import { useEffect, useMemo, useState } from 'react'
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from 'recharts'
 import { fillGapsInData } from '../utils'
@@ -72,7 +72,29 @@ function Metrics() {
     [chartData]
   )
 
-  if (fetching) return <Loader />
+  if (fetching)
+    return (
+      <Card className="py-0">
+        <CardHeader className="flex flex-col items-stretch border-b !p-0 sm:flex-row">
+          <div className="flex w-full justify-between">
+            <div className="flex">
+              {['pageviews', 'visitors', 'bounces'].map((_, index) => (
+                <div
+                  key={index}
+                  className="relative z-30 flex flex-1 flex-col justify-center gap-1 border-t px-6 py-4 text-left even:border-l sm:border-t-0 sm:border-l sm:px-8 sm:py-6"
+                >
+                  <Skeleton className="h-4 w-16 mb-2" />
+                  <Skeleton className="h-6 w-20" />
+                </div>
+              ))}
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent className="px-2 sm:p-6">
+          <Skeleton className="h-64 w-full" />
+        </CardContent>
+      </Card>
+    )
 
   if (!chartData || chartData.length === 0) {
     return (

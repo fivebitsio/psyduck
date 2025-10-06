@@ -2,7 +2,12 @@ import { calendarRangeAtom, formattedRangeAtom } from '@/atoms/analytics'
 import { logoutAtom } from '@/atoms/auth'
 import { Button } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger
+} from '@/components/ui/dropdown-menu'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { useAtom, useSetAtom } from 'jotai'
 import { CalendarIcon, LogOut, Menu, Settings } from 'lucide-react'

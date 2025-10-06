@@ -2,9 +2,9 @@ import { calendarRangeAtom } from '@/atoms/analytics'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import type { ChartConfig } from '@/components/ui/chart'
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart'
+import { Skeleton } from '@/components/ui/skeleton'
 import api from '@/lib/api'
 import { useAtomValue } from 'jotai'
-import { Loader } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { Bar, BarChart, CartesianGrid, LabelList, XAxis, YAxis } from 'recharts'
 
@@ -49,7 +49,22 @@ function Sources() {
     fetchVisits()
   }, [range.from, range.to])
 
-  if (fetching) return <Loader />
+  if (fetching)
+    return (
+      <Card className="h-full flex flex-col">
+        <CardHeader>
+          <CardTitle>
+            <Skeleton className="h-6 w-1/3" />
+          </CardTitle>
+          <CardDescription>
+            <Skeleton className="h-4 w-1/4" />
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="flex-1 p-6">
+          <Skeleton className="h-64 w-full" />
+        </CardContent>
+      </Card>
+    )
 
   return (
     <Card className="h-full flex flex-col">

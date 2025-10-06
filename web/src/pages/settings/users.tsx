@@ -9,9 +9,10 @@ import {
   FormMessage
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
+import { Skeleton } from '@/components/ui/skeleton'
 import api from '@/lib/api'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Loader2, Trash2, UserPlus } from 'lucide-react'
+import { Trash2, UserPlus } from 'lucide-react'
 import { useCallback, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
@@ -137,10 +138,10 @@ function Users() {
                 className="w-full md:w-auto"
               >
                 {form.formState.isSubmitting ? (
-                  <>
-                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  <div className="flex items-center">
+                    <Skeleton className="w-4 h-4 mr-2 rounded-sm" />
                     Submitting
-                  </>
+                  </div>
                 ) : (
                   'Add User'
                 )}
