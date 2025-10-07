@@ -1,4 +1,4 @@
-;(() => {
+; (() => {
   let config
   let isInit = false
   let eventID = null
@@ -127,6 +127,19 @@
   function destroy() {
     isInit = false
     eventID = null
+  }
+
+  function autoInit() {
+    const script = document.currentScript || document.querySelector('script[src*="track"]')
+    if (script && script.dataset.domain) {
+      init({ domain: script.dataset.domain })
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', autoInit)
+  } else {
+    autoInit()
   }
 
   window.Track = { init, track, destroy }
