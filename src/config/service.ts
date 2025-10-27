@@ -1,4 +1,5 @@
-import { password } from 'bun'
+import { randomBytes } from 'crypto'
+import bcrypt from 'bcrypt'
 import type createConfigRepo from './repo'
 import type { User, UserWithoutPassword } from './types'
 import { UserDoesNotExistError, UserExistsError } from './types'
@@ -11,7 +12,7 @@ function createConfigService(deps: deps) {
   async function addUser(user: User): Promise<void> {
     const userExists = await deps.repo.userExistsByEmail(user.email)
     if (userExists) throw new UserExistsError(user.email)
-    user.password = password.hashSync(user.password)
+    user.password = await bcrypt.hash(user.password, 10)
 
     return deps.repo.addUser(user)
   }

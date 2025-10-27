@@ -5,5 +5,5 @@ This is the documentation for the Psyduck Analytics, a privacy-friendly analytic
 Run development server:
 
 ```bash
-bun run dev
+pnpm --filter=docs dev
 ```

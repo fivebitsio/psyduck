@@ -5,13 +5,15 @@
   "private": true,
   "main": "track.js",
   "scripts": {
-    "package": "bun run prebuild && bun build track.js --outdir dist --minify",
-    "clean": "rm -rf dist",
-    "prebuild": "bun run clean",
-    "build": "bun run package",
-    "dev": "bun run --watch track.js"
+    "package": "pnpm run prebuild && esbuild track.js --outfile=dist/track.js --bundle --minify",
+    "clean": "rimraf dist",
+    "prebuild": "pnpm run clean",
+    "build": "pnpm run package",
+    "dev": "nodemon --watch track.js --exec 'node track.js'"
   },
   "devDependencies": {
-    "@types/bun": "latest"
+    "esbuild": "^0.24.0",
+    "nodemon": "^3.1.0",
+    "rimraf": "^6.0.1"
   }
 }

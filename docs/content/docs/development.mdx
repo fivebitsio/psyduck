@@ -7,8 +7,9 @@ description: Learn how to set up your development environment to contribute to P
 
 Before setting up the development environment, ensure you have the following installed:
 
-- [Bun](https://bun.sh/) (version 1.0 or higher)
-- [Node.js](https://nodejs.org/) (version 18 or higher) - Bun includes its own runtime, but some dependencies may require Node.js
+- [Node.js](https://nodejs.org/) (version 18 or higher)
+- [pnpm](https://pnpm.io/) (latest version)
+- [DuckDB](https://duckdb.org/) (optional, for direct database access)
 - [DuckDB](https://duckdb.org/) (optional, for direct database access)
 
 ## Clone the Repository
@@ -25,7 +26,7 @@ cd psyduck
 
 ```bash
 # Install project dependencies
-bun install
+pnpm install
 ```
 
 ## Project Structure
@@ -60,7 +61,7 @@ To run the main analytics server in development mode:
 
 ```bash
 # Run the development server with auto-reload
-bun run dev
+pnpm dev
 ```
 
 This command:
@@ -78,7 +79,7 @@ To develop the client-side tracking library:
 cd track
 
 # Start the tracking library development server
-bun run dev
+pnpm --filter=@psyduck/track dev
 ```
 
 ### Running All Services
@@ -87,7 +88,7 @@ To run both the main server and tracking library simultaneously:
 
 ```bash
 # Run both services
-bun run dev:all
+pnpm run dev:all
 ```
 
 ## Database Setup
@@ -98,7 +99,7 @@ The first time you run the application, you need to set up the database:
 
 ```bash
 # Run database migrations to create tables
-bun migrate up
+pnpm migrate
 ```
 
 ### Custom Database Path
@@ -107,7 +108,7 @@ To use a custom database file:
 
 ```bash
 # Run migrations with custom database path
-bun migrate up --db ./my-custom-db.db
+pnpm migrate --db ./my-custom-db.db
 
 # Run the server with custom database
 # (You would need to modify the source code to change the default path)
@@ -119,7 +120,7 @@ For debugging purposes, you can connect directly to the DuckDB database:
 
 ```bash
 # Connect to the database directly
-bun db
+pnpm db
 ```
 
 This command accesses the `data/psyduck.db` file using DuckDB's command-line interface.
@@ -154,40 +155,40 @@ The project includes several scripts for development:
 
 ```bash
 # Run the main server with auto-reload
-bun run dev
+pnpm dev
 
 # Run only the tracking library development server
-bun run dev:track
+pnpm --filter=@psyduck/track dev
 
 # Run all services (main server + tracking library)
-bun run dev:all
+pnpm run dev:all
 
 # Run database migrations
-bun run migrate
+pnpm migrate
 
 # Access the database directly
-bun run db
+pnpm db
 
 # Run ESLint for code linting
-bun run lint
+pnpm lint
 
 # Run ESLint with auto-fix
-bun run lint:fix
+pnpm lint:fix
 
 # Run Prettier for code formatting
-bun run format
+pnpm format
 
 # Check code formatting without applying changes
-bun run format:check
+pnpm format:check
 ```
 
 ## Development Workflow
 
 ### Code Changes
 
-1. The main server supports hot reloading when you run `bun run dev`
+1. The main server supports hot reloading when you run `pnpm dev`
 2. For the tracking library, changes to `track/track.js` will be reflected when you reload the page
-3. For production builds of the tracking library, use `bun run track:build`
+3. For production builds of the tracking library, use `pnpm track:build`
 
 ### Testing Changes
 
@@ -204,7 +205,7 @@ For debugging, you can:
 
 1. Check the server console output for error messages
 2. Use browser developer tools to inspect network requests
-3. Query the database directly using `bun db`
+3. Query the database directly using `pnpm db`
 
 ## Adding New Features
 
@@ -254,9 +255,9 @@ For information on deploying the Psyduck Analytics, see the [Deployment](/docs/d
    # Update system packages
    apt update && apt upgrade -y
    
-   # Install Bun runtime
-   curl -fsSL https://bun.sh/install | bash
-   source /root/.bashrc
+   # Install Node.js and pnpm
+   curl -fsSL https://get.pnpm.io/install.sh | sh -
+   # Follow Node.js installation from nodesource.com for your system
    
    # Install DuckDB
    apt install -y build-essential
@@ -269,17 +270,17 @@ For information on deploying the Psyduck Analytics, see the [Deployment](/docs/d
    cd psyduck
    
    # Install dependencies
-   bun install
+   pnpm install
    
    # Build the application if needed
-   # bun run build  # if there's a build step
+   # pnpm run build  # if there's a build step
    ```
 
 5. **Configure the Application**
    ```bash
    # The application will automatically create a config file on first run
    # Run the configuration setup
-   bun run prepare-config
+   pnpm prepare-config
    ```
 
 6. **Run as a Service**
@@ -300,7 +301,7 @@ For information on deploying the Psyduck Analytics, see the [Deployment](/docs/d
    Type=simple
    User=psyduck
    WorkingDirectory=/home/psyduck/psyduck
-   ExecStart=/root/.bun/bin/bun run src/index.ts
+   ExecStart=/usr/bin/node src/index.ts
    Restart=always
    RestartSec=10
    

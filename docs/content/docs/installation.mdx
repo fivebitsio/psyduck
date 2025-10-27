@@ -21,10 +21,10 @@ git clone https://github.com/your-repo/psyduck.git
 
 # Install dependencies
 cd psyduck
-bun install
+pnpm install
 
 # Start the server
-bun run dev
+pnpm dev
 ```
 
 The server will be available at `http://localhost:9876`.
@@ -38,7 +38,7 @@ The Psyduck Tracker uses DuckDB as its database. Before starting the server, you
 To apply all pending migrations:
 
 ```bash
-bun migrate up
+pnpm migrate
 ```
 
 This will:
@@ -52,22 +52,22 @@ You can customize the migration process:
 
 ```bash
 # Use a custom database file
-bun migrate up --db ./custom.db
+pnpm migrate --db ./custom.db
 
 # Use a custom migrations directory
-bun migrate up --migrations ./custom-migrations
+pnpm migrate --migrations ./custom-migrations
 
 # Rollback the last migration
-bun migrate down
+pnpm migrate down
 
 # Rollback a specific number of migrations
-bun migrate down --number 2
+pnpm migrate down --number 2
 
 # Rollback all migrations
-bun migrate down --number all
+pnpm migrate down --number all
 ```
 
-Migrations are run automatically when starting the development server via `bun run dev`.
+Migrations are run automatically when starting the development server via `pnpm dev`.
 
 ## Configuration Initialization
 
@@ -75,7 +75,7 @@ The Psyduck Tracker requires initial configuration including a JWT key and at le
 
 ### Automatic Configuration
 
-When you run `bun run dev`, the system automatically runs the configuration initialization script (`bin/config.ts`) which:
+When you run `pnpm dev`, the system automatically runs the configuration initialization script (`bin/config.ts`) which:
 
 1. Checks if a JWT key exists and generates one if needed
 2. Checks if any users exist and prompts for the creation of an initial user if none exist
@@ -85,8 +85,8 @@ When you run `bun run dev`, the system automatically runs the configuration init
 If you need to manually initialize the configuration:
 
 ```bash
-# This runs automatically with bun run dev, but can be run separately
-bun run prepare-config
+# This runs automatically with pnpm dev, but can be run separately
+pnpm prepare-config
 ```
 
 ### Adding Additional Users
@@ -94,7 +94,7 @@ bun run prepare-config
 To add additional users after the initial setup:
 
 ```bash
-bun run prepare-config -- --add-user
+pnpm prepare-config -- --add-user
 ```
 
 This will prompt you to enter an email and password for the new user.
@@ -186,7 +186,7 @@ For development with hot reloading:
 
 ```bash
 # Run the development server (includes auto-migration and config setup)
-bun run dev
+pnpm dev
 ```
 
 This command automatically:
@@ -201,7 +201,7 @@ For production deployment, you would run:
 
 ```bash
 # Just the server without development features
-bun run -- src/index.ts
+pnpm run dev:standalone
 ```
 
 ### Running Multiple Services
@@ -210,10 +210,10 @@ If you want to run the tracking library development server alongside the main se
 
 ```bash
 # Run the main server in one terminal
-bun run dev
+pnpm dev
 
 # Run the tracking library server in another terminal
-cd track && bun run dev
+pnpm --filter=@psyduck/track dev
 ```
 
 ### All-in-One Development
@@ -221,7 +221,7 @@ cd track && bun run dev
 To run all services simultaneously:
 
 ```bash
-bun run dev:all
+pnpm run dev:all
 ```
 
 This starts both the main server and the tracking library development server.

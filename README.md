@@ -15,21 +15,21 @@ _Main analytics dashboard showing key metrics and visualizations_
 
 - **Privacy-First**: All data processing happens on your infrastructure - no data leaves your control
 - **Fast Analytics**: Powered by DuckDB for lightning-fast analytical queries, ideal for small to medium websites
-- **Modern Stack**: Built with Bun runtime and React for optimal performance
+- **Modern Stack**: Built with Node.js and React for optimal performance
 - **Self-Hosted**: Complete control over your analytics data
 - **Lightweight**: Minimal resource footprint compared to traditional analytics solutions
 
 ## 🛠️ Tech Stack
 
-- **Backend**: Bun runtime with DuckDB for data processing
+- **Backend**: Node.js with DuckDB for data processing
 - **Frontend**: React with modern JavaScript tooling
 - **Database**: DuckDB for analytical workloads
-- **Runtime**: Bun for both backend and frontend development
+- **Package Manager**: pnpm for efficient dependency management
 
 ## 📋 Prerequisites
 
-- [Bun](https://bun.sh) (latest version recommended)
-- Node.js 20+ (for compatibility)
+- [Node.js](https://nodejs.org) (v20+ recommended)
+- [pnpm](https://pnpm.io) (latest version)
 
 ## 🚀 Quick Start
 
@@ -38,18 +38,13 @@ _Main analytics dashboard showing key metrics and visualizations_
 ```bash
 git clone https://github.com/fivebits.io/psyduck.git
 cd psyduck
-````
+```
 
 ### 2. Install Dependencies
 
 ```bash
-# Install backend dependencies
-bun install
-
-# Install frontend dependencies
-cd web
-bun install
-cd ..
+# Install all workspace dependencies
+pnpm install
 ```
 
 ### 3. Database Setup
@@ -57,7 +52,7 @@ cd ..
 Run migrations to set up the database:
 
 ```bash
-bun migrate
+pnpm migrate
 ```
 
 ### 4. Start Development Servers
@@ -65,14 +60,19 @@ bun migrate
 **Backend** (from project root):
 
 ```bash
-bun run dev
+pnpm run dev
 ```
 
 **Frontend** (in a new terminal):
 
 ```bash
-cd web
-bun --bun run dev
+pnpm --filter=web dev
+```
+
+**Or run both together:**
+
+```bash
+pnpm run dev:all
 ```
 
 The backend will typically run on `http://localhost:9876` and the frontend on `http://localhost:5173`.
@@ -82,13 +82,13 @@ The backend will typically run on `http://localhost:9876` and the frontend on `h
 **Run Migrations**:
 
 ```bash
-bun migrate
+pnpm migrate
 ```
 
 **Open DuckDB Shell**:
 
 ```bash
-bun db
+pnpm db
 ```
 
 ## 🔧 Configuration

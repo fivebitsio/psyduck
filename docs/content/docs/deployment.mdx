@@ -7,9 +7,9 @@ description: This section covers how to deploy the Psyduck Analytics to various 
 
 Before deploying to any specific platform, ensure you have:
 
-1. **Environment Setup**: Install necessary dependencies (Bun, DuckDB)
-2. **Configuration**: Run initial configuration (`bun run prepare-config`)
-3. **Database**: Ensure database migrations are applied (`bun migrate up`)
+1. **Environment Setup**: Install necessary dependencies (Node.js, pnpm, DuckDB)
+2. **Configuration**: Run initial configuration (`pnpm prepare-config`)
+3. **Database**: Ensure database migrations are applied (`pnpm migrate`)
 4. **Security**: Set up authentication and secure your installation
 
 ## Platform-Specific Deployment
@@ -42,9 +42,9 @@ Hetzner is a German cloud hosting provider that offers reliable, cost-effective 
    # Update system packages
    apt update && apt upgrade -y
    
-   # Install Bun runtime
-   curl -fsSL https://bun.sh/install | bash
-   source /root/.bashrc
+   # Install Node.js and pnpm
+   curl -fsSL https://get.pnpm.io/install.sh | sh -
+   # Follow Node.js installation from nodesource.com for your system
    
    # Install DuckDB
    apt install -y build-essential
@@ -57,17 +57,17 @@ Hetzner is a German cloud hosting provider that offers reliable, cost-effective 
    cd psyduck
    
    # Install dependencies
-   bun install
+   pnpm install
    
    # Build the application if needed
-   # bun run build  # if there's a build step
+   # pnpm run build  # if there's a build step
    ```
 
 5. **Configure the Application**
    ```bash
    # The application will automatically create a config file on first run
    # Run the configuration setup
-   bun run prepare-config
+   pnpm prepare-config
    ```
 
 6. **Run as a Service**
@@ -88,7 +88,7 @@ Hetzner is a German cloud hosting provider that offers reliable, cost-effective 
    Type=simple
    User=psyduck
    WorkingDirectory=/home/psyduck/psyduck
-   ExecStart=/root/.bun/bin/bun run src/index.ts
+   ExecStart=/usr/bin/node src/index.ts
    Restart=always
    RestartSec=10
    
