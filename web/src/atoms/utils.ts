@@ -1,12 +1,23 @@
+const isClient = typeof window !== 'undefined'
+
 const stringStorage = {
   getItem: (key: string) => {
-    return localStorage.getItem(key) || ''
+    if (isClient && window.localStorage) {
+      return localStorage.getItem(key) || ''
+    }
+    // For SSR, you might want to return a default value or check for data attributes
+    // that were potentially sent from the server
+    return ''
   },
   setItem: (key: string, value: string) => {
-    localStorage.setItem(key, value)
+    if (isClient && window.localStorage) {
+      localStorage.setItem(key, value)
+    }
   },
   removeItem: (key: string) => {
-    localStorage.removeItem(key)
+    if (isClient && window.localStorage) {
+      localStorage.removeItem(key)
+    }
   }
 }
 

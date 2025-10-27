@@ -5,5 +5,6 @@ export default [
     id: "docs-home",
   }),
   route("docs/*", "docs/page.tsx"),
+  route("demo", "routes/demo.tsx"),
   route("api/search", "docs/search.ts"),
 ] satisfies RouteConfig;

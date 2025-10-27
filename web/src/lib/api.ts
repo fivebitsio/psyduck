@@ -43,7 +43,7 @@ async function api<T, K>({
     [k: string]: string
   }
 
-  if (typeof document !== 'undefined') {
+  if (typeof window !== 'undefined' && window.localStorage) {
     const token = localStorage.getItem('token')
     if (token && internalApi) {
       headers.Authorization = `Bearer ${token}`

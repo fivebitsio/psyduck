@@ -5,10 +5,14 @@ import Sources from './sources'
 import TopBar from './top-bar'
 import TopPages from './top-pages'
 
-function Analytics() {
+interface AnalyticsProps {
+  showTopBar?: boolean
+}
+
+function Analytics({ showTopBar = true }: AnalyticsProps) {
   return (
     <div className="w-full lg:w-4xl mx-auto px-4 lg:px-0 flex flex-col gap-3 mt-10 mb-10">
-      <TopBar />
+      {showTopBar && <TopBar />}
       <div className="flex flex-col gap-3">
         <Metrics />
         <div className="flex flex-col lg:flex-row gap-3">
