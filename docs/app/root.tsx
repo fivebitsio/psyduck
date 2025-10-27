@@ -1,3 +1,5 @@
+import SearchDialog from '@/components/search';
+import { RootProvider } from 'fumadocs-ui/provider/react-router';
 import {
   isRouteErrorResponse,
   Links,
@@ -6,10 +8,8 @@ import {
   Scripts,
   ScrollRestoration,
 } from 'react-router';
-import { RootProvider } from 'fumadocs-ui/provider/react-router';
 import type { Route } from './+types/root';
 import './app.css';
-import SearchDialog from '@/components/search';
 
 export const links: Route.LinksFunction = () => [
   { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
@@ -32,6 +32,12 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <Meta />
         <Links />
+        {/* Psyduck Analytics Tracking Script */}
+        <script
+          async
+          src="https://tracker.psyduck.click/track.js"
+          data-domain="https://api.psyduck.click">
+        </script>
       </head>
       <body className="flex flex-col min-h-screen">
         <RootProvider search={{ SearchDialog }}>{children}</RootProvider>
