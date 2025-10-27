@@ -1,12 +1,12 @@
-import type { Route } from "./+types/home";
 import { Navigate } from "react-router";
+import type { Route } from "./+types/home";
 
-export function meta({}: Route.MetaArgs) {
+export function meta({ }: Route.MetaArgs) {
   return [
     { title: "Psyduck Documentation" },
     {
       name: "description",
-      content: "Documentation for Psyduck Analytics Platform",
+      content: "Documentation for Psyduck Analytics",
     },
   ];
 }

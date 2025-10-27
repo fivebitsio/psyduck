@@ -1,6 +1,6 @@
 # Psyduck Documentation
 
-This is the documentation for the Psyduck Analytics platform, a privacy-friendly analytics solution.
+This is the documentation for the Psyduck Analytics, a privacy-friendly analytics solution.
 
 Run development server:
 

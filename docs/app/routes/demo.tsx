@@ -13,13 +13,13 @@ export async function loader() {
 
 function DemoPage({ loaderData }: { loaderData: { tree: PageTree.Root } }) {
   return (
-    <DocsLayout {...baseOptions()} tree={loaderData.tree} searchToggle={{ enabled: false }}>
+    <DocsLayout {...baseOptions()} tree={loaderData.tree} nav={{ enabled: false, title: 'Psyduck' }}>
       <DocsPage>
         <DocsBody>
           <Analytics showTopBar={false} />
         </DocsBody>
       </DocsPage>
-    </DocsLayout>
+    </DocsLayout >
   );
 }
 
