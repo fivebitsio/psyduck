@@ -36,7 +36,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <script
           async
           src="https://tracker.psyduck.click/track.js"
-          data-domain="https://api.psyduck.click"
+          data-domain="https://api.demo.psyduck.click"
         ></script>
       </head>
       <body className="flex flex-col min-h-screen">
