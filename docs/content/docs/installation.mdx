@@ -1,0 +1,231 @@
+---
+title: Installation
+description: Learn how to install the Psyduck Tracker on your website. This guide covers both the client-side tracking code and server-side setup.
+---
+
+## Prerequisites
+
+Before installing the Psyduck Tracker, you need:
+
+1. A running Psyduck Analytics server
+2. Access to your website's HTML code
+3. Basic knowledge of HTML and JavaScript
+
+## Server Setup
+
+First, you'll need to have the Psyduck Analytics server running. If you haven't set it up yet:
+
+```bash
+# Clone the repository
+git clone https://github.com/your-repo/psyduck.git
+
+# Install dependencies
+cd psyduck
+bun install
+
+# Start the server
+bun run dev
+```
+
+The server will be available at `http://localhost:9876`.
+
+## Database Migration
+
+The Psyduck Tracker uses DuckDB as its database. Before starting the server, you need to run the database migrations to set up the required tables and types.
+
+### Running Migrations
+
+To apply all pending migrations:
+
+```bash
+bun migrate up
+```
+
+This will:
+- Create the `device_type` enum (mobile, tablet, desktop)
+- Create the `events` table with all required columns
+- Track which migrations have been applied
+
+### Migration Options
+
+You can customize the migration process:
+
+```bash
+# Use a custom database file
+bun migrate up --db ./custom.db
+
+# Use a custom migrations directory
+bun migrate up --migrations ./custom-migrations
+
+# Rollback the last migration
+bun migrate down
+
+# Rollback a specific number of migrations
+bun migrate down --number 2
+
+# Rollback all migrations
+bun migrate down --number all
+```
+
+Migrations are run automatically when starting the development server via `bun run dev`.
+
+## Configuration Initialization
+
+The Psyduck Tracker requires initial configuration including a JWT key and at least one user account.
+
+### Automatic Configuration
+
+When you run `bun run dev`, the system automatically runs the configuration initialization script (`bin/config.ts`) which:
+
+1. Checks if a JWT key exists and generates one if needed
+2. Checks if any users exist and prompts for the creation of an initial user if none exist
+
+### Manual Configuration
+
+If you need to manually initialize the configuration:
+
+```bash
+# This runs automatically with bun run dev, but can be run separately
+bun run prepare-config
+```
+
+### Adding Additional Users
+
+To add additional users after the initial setup:
+
+```bash
+bun run prepare-config -- --add-user
+```
+
+This will prompt you to enter an email and password for the new user.
+
+### Configuration File
+
+The configuration is stored in `data/config.json` with the following structure:
+
+```json
+{
+  "users": [
+    {
+      "email": "user@example.com",
+      "password": "hashed_password"
+    }
+  ],
+  "jwtKey": "your-jwt-secret-key",
+  "demoMode": false
+}
+```
+
+When `demoMode` is set to `true`, analytics endpoints are accessible without authentication, which is useful for development and testing.
+
+## Client-Side Installation
+
+There are two ways to install the tracker on your website:
+
+### Option 1: Script Tag (Recommended)
+
+Add the following script tag to the `<head>` section of your HTML pages:
+
+```html
+<script 
+  src="https://tracker.psyduck.click/track.js" 
+  data-domain="https://tracker.psyduck.click" 
+  defer>
+</script>
+```
+
+Alternatively, you can use your self-hosted instance:
+
+```html
+<script 
+  src="http://localhost:9876/track.js" 
+  data-domain="http://localhost:9876" 
+  defer>
+</script>
+```
+
+The hosted version at `https://tracker.psyduck.click` is recommended for most users as it requires no server setup.
+
+### Option 2: Manual Initialization
+
+If you need more control over when the tracker initializes, you can load the script manually and initialize it:
+
+```html
+<script src="https://tracker.psyduck.click/track.js" defer></script>
+<script>
+  // Initialize the tracker after the script loads
+  window.addEventListener('load', function() {
+    Psyduck.init({
+      domain: 'https://tracker.psyduck.click'  // Recommended hosted domain
+      // or
+      // domain: 'https://your-psyduck-server.com'  // Self-hosted instance
+    });
+  });
+</script>
+```
+
+## Verification
+
+To verify that tracking is working:
+
+1. Open your website in a browser
+2. Open the browser's developer tools (F12)
+3. Go to the Network tab
+4. Refresh the page
+5. Look for requests to your Psyduck server
+
+You should see a POST request to `/events` with event data.
+
+## Running the Server
+
+After installation and configuration, you can run the Psyduck Tracker server in different ways:
+
+### Development Mode
+
+For development with hot reloading:
+
+```bash
+# Run the development server (includes auto-migration and config setup)
+bun run dev
+```
+
+This command automatically:
+- Runs database migrations if needed
+- Sets up initial configuration (JWT key and user)
+- Starts the server with hot reloading
+- Makes the server available at `http://localhost:9876`
+
+### Production Mode
+
+For production deployment, you would run:
+
+```bash
+# Just the server without development features
+bun run -- src/index.ts
+```
+
+### Running Multiple Services
+
+If you want to run the tracking library development server alongside the main server:
+
+```bash
+# Run the main server in one terminal
+bun run dev
+
+# Run the tracking library server in another terminal
+cd track && bun run dev
+```
+
+### All-in-One Development
+
+To run all services simultaneously:
+
+```bash
+bun run dev:all
+```
+
+This starts both the main server and the tracking library development server.
+
+## Next Steps
+
+Once installed, check out the [Configuration Guide](/docs/tracker/configuration) to learn how to customize your tracking settings.

@@ -1,0 +1,400 @@
+---
+title: Development Setup
+description: Learn how to set up your development environment to contribute to Psyduck Tracker or run it locally for development purposes.
+---
+
+## Prerequisites
+
+Before setting up the development environment, ensure you have the following installed:
+
+- [Bun](https://bun.sh/) (version 1.0 or higher)
+- [Node.js](https://nodejs.org/) (version 18 or higher) - Bun includes its own runtime, but some dependencies may require Node.js
+- [DuckDB](https://duckdb.org/) (optional, for direct database access)
+
+## Clone the Repository
+
+```bash
+# Clone the repository
+git clone https://github.com/your-repo/psyduck.git
+
+# Navigate to the project directory
+cd psyduck
+```
+
+## Install Dependencies
+
+```bash
+# Install project dependencies
+bun install
+```
+
+## Project Structure
+
+Understanding the project structure will help you navigate the codebase:
+
+```
+psyduck/
+├── bin/                    # Command-line tools (migration, config)
+├── data/                   # Default data directory
+├── docs/                   # Documentation
+├── migrations/             # Database migration files
+├── src/                    # Main application source code
+│   ├── analytics/          # Analytics API and services
+│   ├── auth/               # Authentication services
+│   ├── config/             # Configuration management
+│   ├── event/              # Event tracking handlers
+│   ├── lib/                # Shared libraries
+│   ├── index.ts            # Main application entry point
+│   └── utils.ts            # Utility functions
+├── track/                  # Client-side tracking library
+├── web/                    # Web interface (if applicable)
+├── package.json            # Project dependencies and scripts
+└── README.md               # Project overview
+```
+
+## Running in Development Mode
+
+### Backend Server
+
+To run the main analytics server in development mode:
+
+```bash
+# Run the development server with auto-reload
+bun run dev
+```
+
+This command:
+- Runs the configuration setup (`prepare-config`)
+- Applies database migrations if needed
+- Starts the server with hot reloading
+- Makes the API available at `http://localhost:9876`
+
+### Tracking Library Development
+
+To develop the client-side tracking library:
+
+```bash
+# In a separate terminal, navigate to the track directory
+cd track
+
+# Start the tracking library development server
+bun run dev
+```
+
+### Running All Services
+
+To run both the main server and tracking library simultaneously:
+
+```bash
+# Run both services
+bun run dev:all
+```
+
+## Database Setup
+
+### Initial Database Setup
+
+The first time you run the application, you need to set up the database:
+
+```bash
+# Run database migrations to create tables
+bun migrate up
+```
+
+### Custom Database Path
+
+To use a custom database file:
+
+```bash
+# Run migrations with custom database path
+bun migrate up --db ./my-custom-db.db
+
+# Run the server with custom database
+# (You would need to modify the source code to change the default path)
+```
+
+### Direct Database Access
+
+For debugging purposes, you can connect directly to the DuckDB database:
+
+```bash
+# Connect to the database directly
+bun db
+```
+
+This command accesses the `data/psyduck.db` file using DuckDB's command-line interface.
+
+## Configuration for Development
+
+### Environment Configuration
+
+The application uses a JSON configuration file stored at `data/config.json`. The development setup automatically:
+
+1. Creates the file if it doesn't exist
+2. Generates a JWT key if one doesn't exist
+3. Prompts for an initial admin user if no users exist
+
+### Demo Mode
+
+For development, you can enable demo mode by setting `demoMode` to `true` in `data/config.json`:
+
+```json
+{
+  "users": [...],
+  "jwtKey": "your-jwt-key",
+  "demoMode": true
+}
+```
+
+When demo mode is enabled, analytics endpoints don't require authentication, making development and testing easier.
+
+## Development Scripts
+
+The project includes several scripts for development:
+
+```bash
+# Run the main server with auto-reload
+bun run dev
+
+# Run only the tracking library development server
+bun run dev:track
+
+# Run all services (main server + tracking library)
+bun run dev:all
+
+# Run database migrations
+bun run migrate
+
+# Access the database directly
+bun run db
+
+# Run ESLint for code linting
+bun run lint
+
+# Run ESLint with auto-fix
+bun run lint:fix
+
+# Run Prettier for code formatting
+bun run format
+
+# Check code formatting without applying changes
+bun run format:check
+```
+
+## Development Workflow
+
+### Code Changes
+
+1. The main server supports hot reloading when you run `bun run dev`
+2. For the tracking library, changes to `track/track.js` will be reflected when you reload the page
+3. For production builds of the tracking library, use `bun run track:build`
+
+### Testing Changes
+
+Since there are no explicit test files mentioned in the project, manual testing involves:
+
+1. Starting the development server
+2. Adding the tracking script to a test HTML page
+3. Verifying that events are properly recorded
+4. Checking the analytics endpoints for data
+
+### Debugging
+
+For debugging, you can:
+
+1. Check the server console output for error messages
+2. Use browser developer tools to inspect network requests
+3. Query the database directly using `bun db`
+
+## Adding New Features
+
+When adding new features:
+
+1. Add new endpoints in the appropriate handler files in `src/analytics/`, `src/auth/`, etc.
+2. Update the database schema and create a new migration if needed
+3. Update documentation in the `docs/` directory
+4. Follow the existing code patterns and structure
+
+## Contributing
+
+To contribute to the project:
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes following the existing code style
+4. Test your changes thoroughly
+5. Update documentation if needed
+6. Submit a pull request
+
+## Deployment
+
+For information on deploying the Psyduck Analytics platform, see the [Deployment](/docs/deployment) section which covers general deployment steps and platform-specific instructions including Hetzner.
+
+#### Prerequisites
+
+- A Hetzner account with a server instance running
+- SSH access to your server
+- Basic knowledge of Linux server administration
+
+#### Server Setup on Hetzner
+
+1. **Create a Hetzner Cloud Server**
+   - Go to the Hetzner Cloud Console
+   - Create a new server with at least 2GB RAM (4GB recommended)
+   - Choose Ubuntu 22.04 LTS as the operating system
+   - Select an SSH key for access
+
+2. **Connect to Your Server**
+   ```bash
+   ssh root@your-server-ip
+   ```
+
+3. **Install Dependencies**
+   ```bash
+   # Update system packages
+   apt update && apt upgrade -y
+   
+   # Install Bun runtime
+   curl -fsSL https://bun.sh/install | bash
+   source /root/.bashrc
+   
+   # Install DuckDB
+   apt install -y build-essential
+   ```
+
+4. **Deploy Psyduck**
+   ```bash
+   # Clone the repository
+   git clone https://github.com/your-repo/psyduck.git
+   cd psyduck
+   
+   # Install dependencies
+   bun install
+   
+   # Build the application if needed
+   # bun run build  # if there's a build step
+   ```
+
+5. **Configure the Application**
+   ```bash
+   # The application will automatically create a config file on first run
+   # Run the configuration setup
+   bun run prepare-config
+   ```
+
+6. **Run as a Service**
+   To ensure the application runs reliably, set it up as a system service:
+   
+   Create a service file:
+   ```bash
+   nano /etc/systemd/system/psyduck.service
+   ```
+   
+   Add the following configuration:
+   ```
+   [Unit]
+   Description=Psyduck Analytics Service
+   After=network.target
+   
+   [Service]
+   Type=simple
+   User=psyduck
+   WorkingDirectory=/home/psyduck/psyduck
+   ExecStart=/root/.bun/bin/bun run src/index.ts
+   Restart=always
+   RestartSec=10
+   
+   [Install]
+   WantedBy=multi-user.target
+   ```
+   
+   Then enable and start the service:
+   ```bash
+   # Create a dedicated user for security
+   useradd -m -s /bin/bash psyduck
+   cp -r /root/psyduck /home/psyduck/
+   chown -R psyduck:psyduck /home/psyduck/psyduck
+   
+   # Reload systemd and enable the service
+   systemctl daemon-reload
+   systemctl enable psyduck
+   systemctl start psyduck
+   
+   # Check the status
+   systemctl status psyduck
+   ```
+
+7. **Set Up a Reverse Proxy (Optional)**
+   For HTTPS and domain access, set up Nginx as a reverse proxy:
+   
+   ```bash
+   # Install Nginx
+   apt install nginx
+   
+   # Configure Nginx
+   nano /etc/nginx/sites-available/psyduck
+   ```
+   
+   Add the following configuration:
+   ```
+   server {
+       listen 80;
+       server_name your-domain.com;
+       
+       location / {
+           proxy_pass http://localhost:9876;
+           proxy_http_version 1.1;
+           proxy_set_header Upgrade $http_upgrade;
+           proxy_set_header Connection 'upgrade';
+           proxy_set_header Host $host;
+           proxy_set_header X-Real-IP $remote_addr;
+           proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+           proxy_set_header X-Forwarded-Proto $scheme;
+           proxy_cache_bypass $http_upgrade;
+       }
+   }
+   ```
+   
+   Enable the site:
+   ```bash
+   ln -s /etc/nginx/sites-available/psyduck /etc/nginx/sites-enabled/
+   nginx -t
+   systemctl restart nginx
+   ```
+
+8. **Enable HTTPS with Let's Encrypt**
+   ```bash
+   # Install Certbot
+   apt install certbot python3-certbot-nginx
+   
+   # Obtain certificate
+   certbot --nginx -d your-domain.com
+   
+   # Certbot will automatically update your Nginx configuration
+   ```
+
+#### Security Considerations
+
+- Use a firewall (ufw) to restrict access
+- Regularly update the system and dependencies
+- Use SSH keys instead of passwords
+- Set up monitoring and backup solutions
+- Keep your domain DNS settings secure
+
+#### Scaling on Hetzner
+
+For higher traffic loads, consider:
+
+- Upgrading to a more powerful server instance
+- Using Hetzner Load Balancers for multiple instances
+- Setting up database backups and monitoring
+- Using Hetzner's Object Storage for large datasets
+
+#### Troubleshooting
+
+Common issues and solutions:
+
+- **Port not accessible**: Check firewall settings and security groups in Hetzner console
+- **Database errors**: Ensure the `data/` directory has proper write permissions
+- **Service won't start**: Check logs with `journalctl -u psyduck -f`
+- **High memory usage**: Monitor with `htop` and consider upgrading server specs if needed

@@ -1,0 +1,143 @@
+---
+title: Configuration
+description: Learn how to configure the Psyduck Analytics platform for your specific needs and requirements.
+---
+
+## Overview
+
+The Psyduck configuration system manages:
+
+- Authentication settings
+- JWT token management
+- User accounts and permissions
+- Server settings
+- Demo mode options
+
+## Configuration File
+
+The platform uses a JSON configuration file stored at `data/config.json` with the following structure:
+
+```json
+{
+  "users": [
+    {
+      "email": "user@example.com",
+      "password": "hashed_password"
+    }
+  ],
+  "jwtKey": "your-jwt-secret-key",
+  "demoMode": false
+}
+```
+
+# Configuration
+
+Learn how to configure the Psyduck Tracker for your specific needs and requirements.
+
+## Server Configuration
+
+The Psyduck Tracker server can be configured through the config system. Configuration options are stored in `data/config.json`.
+
+### Demo Mode
+
+You can enable demo mode which allows analytics endpoints to be accessed without authentication:
+
+```json
+{
+  "demoMode": true,
+  "jwtKey": "your-jwt-secret-key"
+}
+```
+
+When `demoMode` is `true`, the analytics endpoints will not require authentication, making it easier to test and develop.
+
+### JWT Authentication
+
+The system uses JWT-based authentication. The `jwtKey` is used to sign and verify tokens. Make sure to use a strong, unique key in production.
+
+## Client-Side Configuration
+
+### Initialization Options
+
+The tracker can be initialized with the following options:
+
+```javascript
+Psyduck.init({
+  domain: 'https://tracker.psyduck.click'  // Recommended hosted domain
+  // or
+  // domain: 'http://localhost:9876'  // Self-hosted instance
+});
+```
+
+### Manual Event Tracking
+
+You can track custom events with additional data:
+
+```javascript
+// Track a custom event
+Psyduck.track('button-click', {
+  customData: {
+    buttonId: 'signup-button',
+    page: 'landing'
+  }
+});
+
+// Track other events
+Psyduck.track('form-submit', {
+  customData: {
+    formId: 'contact-form',
+    fields: ['name', 'email']
+  }
+});
+```
+
+### Advanced Configuration
+
+For more advanced use cases, you can:
+
+1. **Disable automatic page view tracking:**
+   Do not call `Psyduck.track('page-view')` automatically after initialization.
+
+2. **Custom event IDs:**
+   By default, the tracker generates UUIDs for events. You can override this if needed.
+
+3. **Custom data:**
+   Include additional custom data with each event using the `customData` field.
+
+## Tracking Parameters
+
+The tracker automatically collects the following information:
+
+- **Browser**: Detected from user agent (chrome, firefox, safari, etc.)
+- **Device Type**: Mobile, tablet, or desktop based on screen size and touch support
+- **Operating System**: Windows, Mac, Linux, Android, iOS, etc.
+- **Hostname**: The domain of the page being tracked
+- **Pathname**: The path of the page being tracked
+- **Referrer**: Where the visitor came from
+- **Timezone**: Detected from the browser
+- **UTM Parameters**: All UTM campaign tracking parameters
+- **Event ID**: Unique identifier for the session
+
+## Privacy Settings
+
+The Psyduck Tracker is designed to be privacy-friendly:
+
+- No personally identifiable information is collected
+- No cookies are used
+- All data is aggregated and anonymized
+- IP addresses are not stored
+- Only anonymous metrics are collected
+
+## Data Retention
+
+The system stores data in DuckDB which persists to disk. You're responsible for your own data retention policies and cleanup procedures.
+
+## Troubleshooting
+
+If you're having issues with tracking:
+
+1. Check that the server is running and accessible
+2. Verify the domain URL is correct in the initialization
+3. Check browser console for any errors
+4. Verify network requests are being made to your server
+5. Ensure CORS is properly configured if needed

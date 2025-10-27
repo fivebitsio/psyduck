@@ -1,0 +1,11 @@
+{
+  "pages": [
+    "index",
+    "installation", 
+    "tracking",
+    "configuration", 
+    "analytics",
+    "deployment",
+    "development"
+  ]
+}

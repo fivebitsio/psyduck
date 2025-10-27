@@ -1,0 +1,290 @@
+---
+title: Client-Side Tracking
+description: The Psyduck tracking library is a privacy-friendly, client-side analytics solution that collects user interaction data on your website. It's lightweight and designed to respect user privacy.
+---
+
+## Overview
+
+The tracking script provides powerful analytics without compromising user privacy. It's designed to be:
+
+- **Privacy-Friendly**: No cookies, no personal data collection
+- **Lightweight**: Minimal impact on website performance
+- **Easy to Implement**: Simple script integration
+- **Client-Side**: Runs directly in users' browsers
+
+## Core Features
+
+- Page view tracking
+- Traffic source analysis (referer, UTM parameters)
+- Device and browser detection
+- Geographic location tracking
+- Session duration measurement
+- Custom event tracking
+
+# Usage Examples
+
+Practical examples showing how to use the Psyduck Tracker in various scenarios.
+
+## Basic Usage
+
+### Standard Installation
+
+For most websites, simply add the tracking script to your HTML:
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- Other head content -->
+  <script 
+    src="https://tracker.psyduck.click/track.js" 
+    data-domain="https://tracker.psyduck.click" 
+    defer>
+  </script>
+</head>
+<body>
+  <!-- Your page content -->
+</body>
+</html>
+```
+
+Alternatively, if you're using a self-hosted instance:
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- Other head content -->
+  <script 
+    src="https://your-psyduck-server.com/track.js" 
+    data-domain="https://your-psyduck-server.com" 
+    defer>
+  </script>
+</head>
+<body>
+  <!-- Your page content -->
+</body>
+</html>
+```
+
+The hosted version at `https://tracker.psyduck.click` is recommended for most users as it requires no server setup. This will automatically track page views when the page loads.
+
+## Advanced Usage
+
+### Custom Event Tracking
+
+Track specific user interactions:
+
+```javascript
+// Track when a user clicks a signup button
+document.getElementById('signup-button').addEventListener('click', function() {
+  Psyduck.track('signup-click', {
+    customData: {
+      page: window.location.pathname,
+      buttonType: 'primary'
+    }
+  });
+});
+
+// Track form submissions
+document.getElementById('contact-form').addEventListener('submit', function() {
+  Psyduck.track('form-submit', {
+    customData: {
+      formId: 'contact-form',
+      fields: Array.from(this.elements).map(el => el.name)
+    }
+  });
+});
+
+// Track video plays
+document.getElementById('promo-video').addEventListener('play', function() {
+  Psyduck.track('video-play', {
+    customData: {
+      videoId: this.id,
+      duration: this.duration
+    }
+  });
+});
+```
+
+### E-commerce Tracking
+
+Track e-commerce events:
+
+```javascript
+// Track product view
+function trackProductView(productId, productName, category) {
+  Psyduck.track('product-view', {
+    customData: {
+      productId: productId,
+      productName: productName,
+      category: category
+    }
+  });
+}
+
+// Track add to cart
+function trackAddToCart(productId, productName, quantity) {
+  Psyduck.track('add-to-cart', {
+    customData: {
+      productId: productId,
+      productName: productName,
+      quantity: quantity
+    }
+  });
+}
+
+// Track purchase
+function trackPurchase(orderId, total, products) {
+  Psyduck.track('purchase', {
+    customData: {
+      orderId: orderId,
+      total: total,
+      products: products
+    }
+  });
+}
+```
+
+### Content Engagement Tracking
+
+Track how users interact with your content:
+
+```javascript
+// Track scroll depth
+let scrollTracked = { 25: false, 50: false, 75: false, 100: false };
+
+window.addEventListener('scroll', function() {
+  const scrollPercent = Math.round(
+    (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100
+  );
+  
+  if (scrollPercent >= 25 && !scrollTracked[25]) {
+    scrollTracked[25] = true;
+    Psyduck.track('scroll-depth', {
+      customData: { depth: 25 }
+    });
+  }
+  // Similar tracking for 50, 75, and 100%
+});
+
+// Track time on page
+let timeOnPage = 0;
+setInterval(function() {
+  timeOnPage += 10; // Every 10 seconds
+  if (timeOnPage % 30 === 0) { // Track every 30 seconds
+    Psyduck.track('time-on-page', {
+      customData: { seconds: timeOnPage }
+    });
+  }
+}, 10000);
+```
+
+## SPA (Single Page Application) Tracking
+
+For single page applications, you need to manually track route changes:
+
+```javascript
+// Example with React Router
+import { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
+
+function App() {
+  const location = useLocation();
+
+  useEffect(() => {
+    // Track page view on route change
+    Psyduck.track('page-view', {
+      customData: {
+        pathname: location.pathname,
+        previousPath: window.previousPath || ''
+      }
+    });
+    
+    // Update previous path for next navigation
+    window.previousPath = location.pathname;
+  }, [location.pathname]);
+
+  return (
+    // Your app content
+  );
+}
+```
+
+## UTM Parameter Tracking
+
+The tracker automatically captures UTM parameters from the URL:
+
+```
+https://yoursite.com/?utm_source=google&utm_medium=cpc&utm_campaign=summer_sale
+```
+
+Will be tracked with:
+- `utmSource`: "google"
+- `utmMedium`: "cpc" 
+- `utmCampaign`: "summer_sale"
+
+## Conditional Tracking
+
+Only track under specific conditions:
+
+```javascript
+// Only track on production
+if (window.location.hostname !== 'localhost') {
+  Psyduck.init({
+    domain: 'https://analytics.yoursite.com'
+  });
+}
+
+// Respect Do Not Track
+if (!navigator.doNotTrack || navigator.doNotTrack !== "1") {
+  Psyduck.init({
+    domain: 'https://analytics.yoursite.com'
+  });
+}
+```
+
+## GDPR Compliance
+
+For GDPR compliance, you might want to implement opt-in consent:
+
+```javascript
+// Check for consent before tracking
+function canTrack() {
+  return localStorage.getItem('analytics_consent') === 'granted';
+}
+
+// Initialize tracking only with consent
+if (canTrack()) {
+  Psyduck.init({
+    domain: 'https://analytics.yoursite.com'
+  });
+}
+
+// Function to enable tracking after consent
+function enableTracking() {
+  localStorage.setItem('analytics_consent', 'granted');
+  Psyduck.init({
+    domain: 'https://analytics.yoursite.com'
+  });
+}
+```
+
+## Error Tracking
+
+You can also track errors:
+
+```javascript
+window.addEventListener('error', function(event) {
+  Psyduck.track('javascript-error', {
+    customData: {
+      message: event.message,
+      filename: event.filename,
+      lineno: event.lineno,
+      colno: event.colno
+    }
+  });
+});
+```
+
+These examples demonstrate various ways to use the Psyduck Tracker to get valuable insights about your users while maintaining their privacy.

@@ -1,0 +1,219 @@
+---
+title: Analytics
+description: Server-side analytics API and data processing
+---
+
+The Psyduck Analytics backend provides powerful data processing and analysis capabilities.
+This section covers the server-side components of the analytics platform.
+
+## Overview
+
+The analytics system processes events collected from the tracking library and provides:
+
+- Data storage and querying capabilities
+- Metrics calculation and aggregation
+- API endpoints for data retrieval
+- Analytics visualization data
+
+## Core Features
+
+- Fast analytical queries powered by DuckDB
+- Time-series data processing
+- Geographic and demographic analysis
+- Traffic source attribution
+- Custom event analytics
+
+## Event Tracking
+
+### POST /events
+
+Track events from your website or application.
+
+**Request Body:**
+```json
+{
+  "browser": "chrome",
+  "deviceType": "desktop",
+  "eventType": "page-view",
+  "hostname": "example.com",
+  "os": "windows",
+  "pathname": "/",
+  "referrer": "https://google.com",
+  "eventId": "uuid-string",
+  "timezone": "America/New_York",
+  "utmID": "",
+  "utmSource": "",
+  "utmMedium": "",
+  "utmCampaign": "",
+  "utmContent": "",
+  "utmTerm": "",
+  "customData": {}
+}
+```
+
+**Response:**
+```json
+{
+  "success": true
+}
+```
+
+### PUT /events/:eventId
+Update event data (typically used for session duration).
+
+**Path Parameters:**
+- `eventId`: The unique identifier for the event (the same UUID sent in the POST /events request)
+
+**Request Body:**
+```json
+{
+  "duration": 12345  // Duration in milliseconds
+}
+```
+
+
+## Analytics Data
+
+### GET /analytics/metrics
+
+Retrieve metrics data for a specified time period.
+
+**Query Parameters:**
+- `from` (required): Start date in ISO format (e.g., 2023-01-01)
+- `to` (required): End date in ISO format (e.g., 2023-01-31)
+- `precision` (required): Time precision (minute, hour, day, week, month)
+
+**Response:**
+```json
+[
+  {
+    "date": "2023-01-01T00:00:00",
+    "pageviews": 120,
+    "visitors": 85,
+    "bounces": 15
+  },
+  {
+    "date": "2023-01-02T00:00:00",
+    "pageviews": 150,
+    "visitors": 95,
+    "bounces": 20
+  }
+]
+```
+
+### GET /analytics/visits_by_country
+
+Retrieve visit data by country.
+
+**Query Parameters:**
+- `from` (required): Start date in ISO format
+- `to` (required): End date in ISO format
+- `all` (optional): Include all countries (default: false, limited to top 10)
+
+**Response:**
+```json
+[
+  {
+    "countryCode": "US",
+    "countryName": "United States",
+    "count": 150
+  },
+  {
+    "countryCode": "CA",
+    "countryName": "Canada",
+    "count": 75
+  }
+]
+```
+
+### GET /analytics/visits_by_device
+
+Retrieve visit data by device type, browser, and operating system.
+
+**Query Parameters:**
+- `from` (required): Start date in ISO format
+- `to` (required): End date in ISO format
+
+**Response:**
+```json
+{
+  "deviceTypes": [
+    {
+      "deviceType": "desktop",
+      "count": 200
+    },
+    {
+      "deviceType": "mobile",
+      "count": 150
+    }
+  ],
+  "browsers": [
+    {
+      "browser": "chrome",
+      "count": 180
+    },
+    {
+      "browser": "firefox",
+      "count": 90
+    }
+  ],
+  "os": [
+    {
+      "os": "windows",
+      "count": 150
+    },
+    {
+      "os": "mac",
+      "count": 100
+    }
+  ]
+}
+```
+
+### GET /analytics/visits_by_page
+
+Retrieve visit data by page.
+
+**Query Parameters:**
+- `from` (required): Start date in ISO format
+- `to` (required): End date in ISO format
+
+**Response:**
+```json
+[
+  {
+    "pathname": "/",
+    "count": 300
+  },
+  {
+    "pathname": "/about",
+    "count": 150
+  }
+]
+```
+
+### GET /analytics/visits_by_source
+
+Retrieve visit data by source (referer).
+
+**Query Parameters:**
+- `from` (required): Start date in ISO format
+- `to` (required): End date in ISO format
+
+**Response:**
+```json
+[
+  {
+    "source": "direct",
+    "count": 250
+  },
+  {
+    "source": "https://google.com",
+    "count": 100
+  }
+]
+```
+
+## Security
+
+The analytics endpoints require authentication using JWT tokens unless the demo mode is enabled. The tracking endpoint `/events` does not require authentication.
