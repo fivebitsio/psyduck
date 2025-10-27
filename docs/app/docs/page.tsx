@@ -1,23 +1,25 @@
-import { docs } from '@/.source';
-import { baseOptions } from '@/lib/layout.shared';
-import { source } from '@/lib/source';
-import type * as PageTree from 'fumadocs-core/page-tree';
-import { toClientRenderer } from 'fumadocs-mdx/runtime/vite';
-import { DocsLayout } from 'fumadocs-ui/layouts/docs';
-import defaultMdxComponents from 'fumadocs-ui/mdx';
+import { docs } from "@/.source";
+import { baseOptions } from "@/lib/layout.shared";
+import { source } from "@/lib/source";
+import type * as PageTree from "fumadocs-core/page-tree";
+import { toClientRenderer } from "fumadocs-mdx/runtime/vite";
+import { DocsLayout } from "fumadocs-ui/layouts/docs";
+import defaultMdxComponents from "fumadocs-ui/mdx";
 import {
   DocsBody,
   DocsDescription,
   DocsPage,
   DocsTitle,
-} from 'fumadocs-ui/page';
-import type { Route } from './+types/page';
+} from "fumadocs-ui/page";
+import type { Route } from "./+types/page";
 
 export async function loader({ params }: Route.LoaderArgs) {
-  const pathParam = params['*'] || '';
-  const slugs = pathParam ? pathParam.split('/').filter((v) => v.length > 0) : [];
+  const pathParam = params["*"] || "";
+  const slugs = pathParam
+    ? pathParam.split("/").filter((v) => v.length > 0)
+    : [];
   const page = source.getPage(slugs);
-  if (!page) throw new Response('Not found', { status: 404 });
+  if (!page) throw new Response("Not found", { status: 404 });
 
   return {
     path: page.path,
@@ -30,9 +32,7 @@ const renderer = toClientRenderer(
   docs.doc,
   ({ toc, default: Mdx, frontmatter }) => {
     return (
-      <DocsPage
-        toc={toc}
-      >
+      <DocsPage toc={toc}>
         <title>{frontmatter.title}</title>
         <meta name="description" content={frontmatter.description} />
         <DocsTitle>{frontmatter.title}</DocsTitle>

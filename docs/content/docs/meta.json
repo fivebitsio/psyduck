@@ -1,9 +1,9 @@
 {
   "pages": [
     "index",
-    "installation", 
+    "installation",
     "tracking",
-    "configuration", 
+    "configuration",
     "analytics",
     "deployment",
     "development"
