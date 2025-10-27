@@ -1,8 +1,11 @@
 import { DuckDBInstance } from '@duckdb/node-api'
+import dotenv from 'dotenv'
 import { Hono } from 'hono'
 import { cors } from 'hono/cors'
 import { logger } from 'hono/logger'
 import type { ConfigSchema } from './config/types'
+
+dotenv.config()
 
 import { JSONFilePreset } from 'lowdb/node'
 import createAnalyticsHandler from './analytics/hander'
@@ -24,9 +27,11 @@ const app = new Hono()
 
 app.use(logger())
 
+const allowedOrigins = process.env.ALLOWED_ORIGINS?.split(',').map(origin => origin.trim()) || ['https://psyduck.click']
+
 app.use(
   cors({
-    origin: ['*'],
+    origin: allowedOrigins,
     credentials: true,
     allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowHeaders: ['X-Requested-With', 'Content-Type', 'Authorization'],

@@ -3,3 +3,4 @@ psyduck.db
 psyduck.db.wal
 track/dist/
 data/config.json
+.env
