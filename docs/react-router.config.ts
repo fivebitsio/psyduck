@@ -1,28 +1,16 @@
 import type { Config } from "@react-router/dev/config";
+import { createGetUrl, getSlugs } from "fumadocs-core/source";
 import { glob } from "node:fs/promises";
 
+const getUrl = createGetUrl('/docs');
+
 export default {
-  ssr: true,
-  async prerender() {
-    const paths: string[] = ["/"];
+  ssr: false,
+  async prerender({ getStaticPaths }) {
+    const paths: string[] = [...getStaticPaths()];
 
-    // Add the main docs paths
-    paths.push("/docs");
-
-    // Add paths for MDX files in content/docs
-    for await (const entry of glob("content/docs/**/*.mdx")) {
-      const path = entry
-        .replace("content/docs/", "")
-        .replace(".mdx", "")
-        .replace("index/index", "")
-        .replace("index", "")
-        .replace(/\/$/, "");
-
-      if (path) {
-        paths.push(`/docs/${path}`);
-      } else {
-        paths.push("/docs");
-      }
+    for await (const entry of glob('**/*.mdx', { cwd: 'content/docs' })) {
+      paths.push(getUrl(getSlugs(entry)));
     }
 
     return paths;
