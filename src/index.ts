@@ -105,7 +105,15 @@ process.on('SIGTERM', async () => {
   process.exit(0)
 })
 
-export default {
-  port: 9876,
-  fetch: app.fetch
-}
+import('@hono/node-server').then(({ serve }) => {
+  const port = parseInt(process.env.PORT || '9876')
+  
+  console.log(`Starting server on port ${port}...`)
+  serve({
+    fetch: app.fetch,
+    port
+  })
+}).catch(err => {
+  console.error('Failed to start server:', err)
+  process.exit(1)
+})
