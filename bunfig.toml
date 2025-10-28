@@ -1,0 +1,3 @@
+# bun workspace configuration
+[workspace]
+members = ["./track", "./web", "./docs"]

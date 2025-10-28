@@ -1,5 +1,4 @@
 import { DuckDBInstance } from '@duckdb/node-api'
-import { serve } from '@hono/node-server'
 import dotenv from 'dotenv'
 import { Hono } from 'hono'
 import { cors } from 'hono/cors'
@@ -26,7 +25,9 @@ const app = new Hono()
 
 app.use(logger())
 
-const allowedOrigins = process.env.ALLOWED_ORIGINS?.split(',').map(origin => origin.trim()) || ['https://psyduck.click']
+const allowedOrigins = process.env.ALLOWED_ORIGINS?.split(',').map(origin => origin.trim()) || [
+  'https://psyduck.click'
+]
 
 app.use(
   cors({
@@ -106,7 +107,7 @@ process.on('SIGTERM', async () => {
 
 const port = parseInt(process.env.PORT || '9876')
 
-serve({
-  fetch: app.fetch,
-  port: port,
-})
+export default {
+  port: 9876,
+  fetch: app.fetch
+}

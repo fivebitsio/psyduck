@@ -1,5 +1,3 @@
-import { randomBytes } from 'crypto'
-import { hashPassword } from '../utils/cryptoHash'
 import type createConfigRepo from './repo'
 import type { User, UserWithoutPassword } from './types'
 import { UserDoesNotExistError, UserExistsError } from './types'
@@ -12,7 +10,7 @@ function createConfigService(deps: deps) {
   async function addUser(user: User): Promise<void> {
     const userExists = await deps.repo.userExistsByEmail(user.email)
     if (userExists) throw new UserExistsError(user.email)
-    user.password = await hashPassword(user.password)
+    user.password = await Bun.password.hash(user.password)
 
     return deps.repo.addUser(user)
   }
@@ -31,8 +29,14 @@ function createConfigService(deps: deps) {
   }
 
   async function generateJWTKey(): Promise<void> {
-    // Generate a random 256-bit (32 byte) key for HS256 algorithm
-    const key = randomBytes(32).toString('base64')
+    const jwtSecret = await crypto.subtle.generateKey({ name: 'HMAC', hash: 'SHA-256' }, true, [
+      'sign',
+      'verify'
+    ])
+
+    const rawKey = await crypto.subtle.exportKey('raw', jwtSecret)
+
+    const key = Buffer.from(new Uint8Array(rawKey)).toString('base64')
     await deps.repo.setJWTKey(key)
   }
 

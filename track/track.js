@@ -1,4 +1,4 @@
-; (() => {
+;(() => {
   let config
   let isInit = false
   let eventID = null

@@ -1,10 +1,10 @@
-import { createFromSource } from "fumadocs-core/search/server";
-import { source } from "@/lib/source";
+import { source } from '@/lib/source'
+import { createFromSource } from 'fumadocs-core/search/server'
 
 const server = createFromSource(source, {
-  language: "english",
-});
+  language: 'english'
+})
 
 export async function loader() {
-  return server.staticGET();
+  return server.staticGET()
 }

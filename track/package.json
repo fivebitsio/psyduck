@@ -5,10 +5,10 @@
   "private": true,
   "main": "track.js",
   "scripts": {
-    "package": "pnpm run prebuild && esbuild track.js --outfile=dist/track.js --bundle --minify",
+    "package": "bun run prebuild && esbuild track.js --outfile=dist/track.js --bundle --minify",
     "clean": "rimraf dist",
-    "prebuild": "pnpm run clean",
-    "build": "pnpm run package",
+    "prebuild": "bun run clean",
+    "build": "bun run package",
     "dev": "nodemon --watch track.js --exec 'node track.js'"
   },
   "devDependencies": {

@@ -1,16 +1,16 @@
-import { Navigate } from "react-router";
-import type { Route } from "./+types/home";
+import { Navigate } from 'react-router'
+import type { Route } from './+types/home'
 
-export function meta({ }: Route.MetaArgs) {
+export function meta({}: Route.MetaArgs) {
   return [
-    { title: "Psyduck Documentation" },
+    { title: 'Psyduck Documentation' },
     {
-      name: "description",
-      content: "Documentation for Psyduck Analytics",
-    },
-  ];
+      name: 'description',
+      content: 'Documentation for Psyduck Analytics'
+    }
+  ]
 }
 
 export default function Home() {
-  return <Navigate to="/docs" replace />;
+  return <Navigate to="/docs" replace />
 }
