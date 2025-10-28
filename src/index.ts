@@ -1,24 +1,23 @@
 import { DuckDBInstance } from '@duckdb/node-api'
+import { serve } from '@hono/node-server'
 import dotenv from 'dotenv'
 import { Hono } from 'hono'
 import { cors } from 'hono/cors'
+import { jwt } from 'hono/jwt'
 import { logger } from 'hono/logger'
 import type { ConfigSchema } from './config/types'
 
 dotenv.config()
 
 import { JSONFilePreset } from 'lowdb/node'
-import createAnalyticsHandler from './analytics/hander'
+import createAnalyticsHandler from './analytics/handler'
 import createAnalyticsRepo from './analytics/repo'
-
 import createAnalyticsService from './analytics/service'
+import createAuthHandler from './auth/handler'
+import createAuthService from './auth/service'
 import createConfigHandler from './config/handler'
 import createConfigRepo from './config/repo'
 import createConfigService from './config/service'
-
-import { jwt } from 'hono/jwt'
-import createAuthHandler from './auth/handler'
-import createAuthService from './auth/service'
 import createEventHandler from './event/handler'
 import createEventRepo from './event/repo'
 import createEventService from './event/service'
@@ -105,15 +104,9 @@ process.on('SIGTERM', async () => {
   process.exit(0)
 })
 
-import('@hono/node-server').then(({ serve }) => {
-  const port = parseInt(process.env.PORT || '9876')
-  
-  console.log(`Starting server on port ${port}...`)
-  serve({
-    fetch: app.fetch,
-    port
-  })
-}).catch(err => {
-  console.error('Failed to start server:', err)
-  process.exit(1)
+const port = parseInt(process.env.PORT || '9876')
+
+serve({
+  fetch: app.fetch,
+  port: port,
 })
