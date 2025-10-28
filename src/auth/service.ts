@@ -1,4 +1,4 @@
-import bcrypt from 'bcrypt'
+import { comparePassword } from '../utils/cryptoHash'
 import { sign, verify } from 'hono/jwt'
 import type createConfigRepo from '../config/repo'
 import type { SignInRequest } from './types'
@@ -12,7 +12,7 @@ function createAuthService(deps: deps) {
   async function signIn(req: SignInRequest): Promise<string> {
     const user = await deps.repo.getUserByEmail(req.email)
 
-    if (user === undefined || !(await bcrypt.compare(req.password, user.password))) {
+    if (user === undefined || !(await comparePassword(req.password, user.password))) {
       throw new InvalidCredentialsError()
     }
 
