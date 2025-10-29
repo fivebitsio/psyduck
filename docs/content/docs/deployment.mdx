@@ -7,9 +7,9 @@ description: This section covers how to deploy the Psyduck Analytics to various 
 
 Before deploying to any specific platform, ensure you have:
 
-1. **Environment Setup**: Install necessary dependencies (Node.js, pnpm, DuckDB)
-2. **Configuration**: Run initial configuration (`pnpm prepare-config`)
-3. **Database**: Ensure database migrations are applied (`pnpm migrate`)
+1. **Environment Setup**: Install necessary dependencies (Bun, DuckDB)
+2. **Database**: Ensure database migrations are applied (`psyduck migrate up`)
+3. **Configuration**: Run initial configuration (`psyduck init`)
 4. **Security**: Set up authentication and secure your installation
 
 ## Platform-Specific Deployment
@@ -42,32 +42,33 @@ Hetzner is a German cloud hosting provider that offers reliable, cost-effective 
    # Update system packages
    apt update && apt upgrade -y
    
-   # Install Node.js and pnpm
-   curl -fsSL https://get.pnpm.io/install.sh | sh -
-   # Follow Node.js installation from nodesource.com for your system
+   # Install Bun runtime
+   curl -fsSL https://bun.sh/install | bash
    
-   # Install DuckDB
-   apt install -y build-essential
+   # Make Bun available in PATH
+   export PATH="$HOME/.bun/bin:$PATH"
+   
+   # Install DuckDB dependencies
+   apt install -y build-essential duckdb
    ```
 
 4. **Deploy Psyduck**
    ```bash
    # Clone the repository
-   git clone https://github.com/your-repo/psyduck.git
+   git clone https://github.com/fivebitsio/psyduck.git
    cd psyduck
    
    # Install dependencies
-   pnpm install
+   bun install
    
-   # Build the application if needed
-   # pnpm run build  # if there's a build step
+   # Build the single executable
+   bun run build:standalone
    ```
 
 5. **Configure the Application**
    ```bash
-   # The application will automatically create a config file on first run
    # Run the configuration setup
-   pnpm prepare-config
+   ./dist/psyduck init
    ```
 
 6. **Run as a Service**
@@ -88,9 +89,10 @@ Hetzner is a German cloud hosting provider that offers reliable, cost-effective 
    Type=simple
    User=psyduck
    WorkingDirectory=/home/psyduck/psyduck
-   ExecStart=/usr/bin/node src/index.ts
+   ExecStart=/home/psyduck/psyduck/dist/psyduck server
    Restart=always
    RestartSec=10
+   Environment=PORT=9876
    
    [Install]
    WantedBy=multi-user.target

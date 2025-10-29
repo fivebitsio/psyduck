@@ -126,18 +126,22 @@ async function runInteractiveMode() {
 
 function runServerCommand() {
   console.log('Starting server...')
-  import('../src/index.ts').then(module => {
-    const { serve } = require('@hono/node-server')
-    serve({
-      ...module.default
-    }, (info: { port: number }) => {
-      console.log(`psyduck server running on port ${info.port}`)
+  import('../src/index.ts')
+    .then(module => {
+      const { serve } = require('@hono/node-server')
+      serve(
+        {
+          ...module.default
+        },
+        (info: { port: number }) => {
+          console.log(`psyduck server running on port ${info.port}`)
+        }
+      )
     })
-  }).catch((err: Error) => {
-    console.error('Failed to start server:', err.message)
-    process.exit(1)
-  })
+    .catch((err: Error) => {
+      console.error('Failed to start server:', err.message)
+      process.exit(1)
+    })
 }
 
-// Run the CLI
 runCli()

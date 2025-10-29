@@ -7,8 +7,7 @@ description: Learn how to set up your development environment to contribute to P
 
 Before setting up the development environment, ensure you have the following installed:
 
-- [Node.js](https://nodejs.org/) (version 18 or higher)
-- [pnpm](https://pnpm.io/) (latest version)
+- [Bun](https://bun.sh/) (version 1.0 or higher)
 - [DuckDB](https://duckdb.org/) (optional, for direct database access)
 
 ## Clone the Repository
@@ -25,7 +24,7 @@ cd psyduck
 
 ```bash
 # Install project dependencies
-pnpm install
+bun install
 ```
 
 ## Project Structure
@@ -34,7 +33,7 @@ Understanding the project structure will help you navigate the codebase:
 
 ```
 psyduck/
-├── bin/                    # Command-line tools (migration, config)
+├── bin/                    # Command-line tools (migration, config, cli)
 ├── data/                   # Default data directory
 ├── docs/                   # Documentation
 ├── migrations/             # Database migration files
@@ -44,10 +43,10 @@ psyduck/
 │   ├── config/             # Configuration management
 │   ├── event/              # Event tracking handlers
 │   ├── lib/                # Shared libraries
-│   ├── index.ts            # Main application entry point
+│   ├── index.ts            # Main application entry point (server logic)
 │   └── utils.ts            # Utility functions
 ├── track/                  # Client-side tracking library
-├── web/                    # Web interface (if applicable)
+├── web/                    # Web interface
 ├── package.json            # Project dependencies and scripts
 └── README.md               # Project overview
 ```
@@ -60,14 +59,10 @@ To run the main analytics server in development mode:
 
 ```bash
 # Run the development server with auto-reload
-pnpm dev
+bun run dev
 ```
 
-This command:
-- Runs the configuration setup (`prepare-config`)
-- Applies database migrations if needed
-- Starts the server with hot reloading
-- Makes the API available at `http://localhost:9876`
+This command starts the server directly using Bun, making the API available at `http://localhost:9876`.
 
 ### Tracking Library Development
 
@@ -78,7 +73,7 @@ To develop the client-side tracking library:
 cd track
 
 # Start the tracking library development server
-pnpm --filter=@psyduck/track dev
+bun run dev
 ```
 
 ### Running All Services
@@ -87,7 +82,7 @@ To run both the main server and tracking library simultaneously:
 
 ```bash
 # Run both services
-pnpm run dev:all
+bun run dev:all
 ```
 
 ## Database Setup
@@ -98,7 +93,7 @@ The first time you run the application, you need to set up the database:
 
 ```bash
 # Run database migrations to create tables
-pnpm migrate
+psyduck migrate up
 ```
 
 ### Custom Database Path
@@ -107,10 +102,7 @@ To use a custom database file:
 
 ```bash
 # Run migrations with custom database path
-pnpm migrate --db ./my-custom-db.db
-
-# Run the server with custom database
-# (You would need to modify the source code to change the default path)
+psyduck migrate up --db ./my-custom-db.db
 ```
 
 ### Direct Database Access
@@ -119,7 +111,7 @@ For debugging purposes, you can connect directly to the DuckDB database:
 
 ```bash
 # Connect to the database directly
-pnpm db
+bun db
 ```
 
 This command accesses the `data/psyduck.db` file using DuckDB's command-line interface.
@@ -128,11 +120,12 @@ This command accesses the `data/psyduck.db` file using DuckDB's command-line int
 
 ### Environment Configuration
 
-The application uses a JSON configuration file stored at `data/config.json`. The development setup automatically:
+The application uses a JSON configuration file stored at `data/config.json`. You can set up the configuration using the CLI:
 
-1. Creates the file if it doesn't exist
-2. Generates a JWT key if one doesn't exist
-3. Prompts for an initial admin user if no users exist
+1. Run `psyduck init` to create the initial configuration
+2. This will create the file if it doesn't exist
+3. Generates a JWT key if one doesn't exist
+4. Prompts for an initial admin user if no users exist
 
 ### Demo Mode
 
@@ -154,40 +147,40 @@ The project includes several scripts for development:
 
 ```bash
 # Run the main server with auto-reload
-pnpm dev
+bun run dev
 
-# Run only the tracking library development server
-pnpm --filter=@psyduck/track dev
-
-# Run all services (main server + tracking library)
-pnpm run dev:all
-
-# Run database migrations
-pnpm migrate
-
-# Access the database directly
-pnpm db
+# Build the single executable
+bun run build:standalone
 
 # Run ESLint for code linting
-pnpm lint
-
-# Run ESLint with auto-fix
-pnpm lint:fix
+bun run lint
 
 # Run Prettier for code formatting
-pnpm format
+bun run format
+```
 
-# Check code formatting without applying changes
-pnpm format:check
+## Running the Server in Development
+
+For development purposes, you can run the server in several ways:
+
+```bash
+# Run the development server directly (hot reload)
+bun run dev
+
+# Run the built binary (for testing production build)
+./dist/psyduck server
+
+# Run in interactive mode
+./dist/psyduck interactive
 ```
 
 ## Development Workflow
 
 ### Code Changes
 
-1. The main server supports hot reloading when you run `pnpm dev`
+1. The main server supports hot reloading when you run `bun run dev`
 2. For the tracking library, changes to `track/track.js` will be reflected when you reload the page
-3. For production builds of the tracking library, use `pnpm track:build`
+3. For production builds of the tracking library, use `bun --cwd track run build`
 
 ### Testing Changes
 
@@ -204,7 +197,7 @@ For debugging, you can:
 
 1. Check the server console output for error messages
 2. Use browser developer tools to inspect network requests
-3. Query the database directly using `pnpm db`
+3. Query the database directly using `bun db`
 
 ## Adding New Features
 

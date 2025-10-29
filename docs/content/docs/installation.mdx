@@ -13,21 +13,21 @@ Before installing the Psyduck Tracker, you need:
 
 ## Server Setup
 
-First, you'll need to have the Psyduck Analytics server running. If you haven't set it up yet:
+First, you'll need to have the Psyduck Analytics server running. If you haven't set it up yet, build the single binary:
 
 ```bash
 # Clone the repository
-git clone https://github.com/your-repo/psyduck.git
+git clone https://github.com/fivebitsio/psyduck.git
 
 # Install dependencies
 cd psyduck
-pnpm install
+bun install
 
-# Start the server
-pnpm dev
+# Build the single executable
+bun run build:standalone
 ```
 
-The server will be available at `http://localhost:9876`.
+This creates a single binary at `./dist/psyduck` that you can use as just `psyduck`.
 
 ## Database Migration
 
@@ -38,7 +38,7 @@ The Psyduck Tracker uses DuckDB as its database. Before starting the server, you
 To apply all pending migrations:
 
 ```bash
-pnpm migrate
+psyduck migrate up
 ```
 
 This will:
@@ -52,41 +52,34 @@ You can customize the migration process:
 
 ```bash
 # Use a custom database file
-pnpm migrate --db ./custom.db
+psyduck migrate --db ./custom.db
 
 # Use a custom migrations directory
-pnpm migrate --migrations ./custom-migrations
+psyduck migrate --migrations ./custom-migrations
 
 # Rollback the last migration
-pnpm migrate down
+psyduck migrate down
 
 # Rollback a specific number of migrations
-pnpm migrate down --number 2
+psyduck migrate down --number 2
 
 # Rollback all migrations
-pnpm migrate down --number all
-```
+psyduck migrate down --number all
 
-Migrations are run automatically when starting the development server via `pnpm dev`.
+# Show help for migration options
+psyduck migrate --help
+```
 
 ## Configuration Initialization
 
 The Psyduck Tracker requires initial configuration including a JWT key and at least one user account.
 
-### Automatic Configuration
+### Initial Configuration
 
-When you run `pnpm dev`, the system automatically runs the configuration initialization script (`bin/config.ts`) which:
-
-1. Checks if a JWT key exists and generates one if needed
-2. Checks if any users exist and prompts for the creation of an initial user if none exist
-
-### Manual Configuration
-
-If you need to manually initialize the configuration:
+Initialize the application configuration with an initial user account:
 
 ```bash
-# This runs automatically with pnpm dev, but can be run separately
-pnpm prepare-config
+psyduck init
 ```
 
 ### Adding Additional Users
@@ -94,7 +87,7 @@ pnpm prepare-config
 To add additional users after the initial setup:
 
 ```bash
-pnpm prepare-config -- --add-user
+psyduck init --add-user
 ```
 
 This will prompt you to enter an email and password for the new user.
@@ -180,52 +173,41 @@ You should see a POST request to `/events` with event data.
 
 After installation and configuration, you can run the Psyduck Tracker server in different ways:
 
+### Running the Server
+
+After installation and configuration, you can run the Psyduck Analytics server in different ways:
+
+### Production Mode
+
+For production deployment, use the built binary:
+
+```bash
+# Run the server from the built binary
+./dist/psyduck server
+```
+
+This starts the Psyduck server, making the API available at `http://localhost:9876`.
+
 ### Development Mode
 
 For development with hot reloading:
 
 ```bash
-# Run the development server (includes auto-migration and config setup)
-pnpm dev
+# Run the development server directly
+bun run dev
 ```
 
-This command automatically:
-- Runs database migrations if needed
-- Sets up initial configuration (JWT key and user)
-- Starts the server with hot reloading
-- Makes the server available at `http://localhost:9876`
+This command starts the server directly using Bun for development, making the API available at `http://localhost:9876`.
 
-### Production Mode
+### Interactive Mode
 
-For production deployment, you would run:
+You can also use the interactive CLI mode:
 
 ```bash
-# Just the server without development features
-pnpm run dev:standalone
+# Run in interactive mode to select commands
+./dist/psyduck interactive
 ```
-
-### Running Multiple Services
-
-If you want to run the tracking library development server alongside the main server:
-
-```bash
-# Run the main server in one terminal
-pnpm dev
-
-# Run the tracking library server in another terminal
-pnpm --filter=@psyduck/track dev
-```
-
-### All-in-One Development
-
-To run all services simultaneously:
-
-```bash
-pnpm run dev:all
-```
-
-This starts both the main server and the tracking library development server.
 
 ## Next Steps
 
-Once installed, check out the [Configuration Guide](/docs/tracker/configuration) to learn how to customize your tracking settings.
+Once installed, check out the [Configuration Guide](/docs/configuration) to learn how to customize your settings.
