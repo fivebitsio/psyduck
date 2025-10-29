@@ -1,4 +1,5 @@
 import { DuckDBInstance } from '@duckdb/node-api'
+import { serveStatic } from '@hono/node-server/serve-static'
 import dotenv from 'dotenv'
 import { Hono } from 'hono'
 import { cors } from 'hono/cors'
@@ -88,10 +89,16 @@ app.get('/health', c => {
   return c.json({ status: 'ok' })
 })
 
-app.route('/analytics', analyticsHandler)
-app.route('/config', configHandler)
-app.route('/events', eventHandler)
-app.route('/auth', authHandler)
+app.route('/api/analytics', analyticsHandler)
+app.route('/api/config', configHandler)
+app.route('/api/events', eventHandler)
+app.route('/api/auth', authHandler)
+
+app.use('/assets/*', serveStatic({ root: './web/dist' }))
+app.use('/favicon.ico', serveStatic({ path: './web/dist/favicon.ico' }))
+app.use('/vite.svg', serveStatic({ path: './web/dist/vite.svg' }))
+
+app.use('*', serveStatic({ path: './web/dist/index.html' }))
 
 process.on('SIGINT', async () => {
   console.log('Received SIGINT. Closing database connection...')
