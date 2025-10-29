@@ -54,7 +54,8 @@ Examples:
 
 function runInitCommand() {
   console.log('Running initialization (bun bin/config.ts)...')
-  const child = spawn('bun', ['bin/config.ts'], {
+  const args = process.argv.slice(3)
+  const child = spawn('bun', ['bin/config.ts', ...args], {
     stdio: 'inherit',
     cwd: process.cwd()
   })
@@ -71,7 +72,8 @@ function runInitCommand() {
 
 function runMigrateCommand() {
   console.log('Running migrations (bun bin/migrate.ts)...')
-  const child = spawn('bun', ['bin/migrate.ts'], {
+  const args = process.argv.slice(3)
+  const child = spawn('bun', ['bin/migrate.ts', ...args], {
     stdio: 'inherit',
     cwd: process.cwd()
   })
