@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "dev": "bun src/index.ts",
-    "dev:standalone": "bun src/index.ts",
+    "dev:standalone": "bun bin/cli.ts",
     "dev:web": "cd web && bun run dev",
     "dev:all": "concurrently \"bun run dev\" \"cd web && bun run dev\"",
     "migrate": "tsx bin/migrate.ts",
@@ -19,10 +19,10 @@
     "format:check": "prettier --check .",
     "dev:docs": "cd docs && bun run dev",
     "build:web": "cd web && bun run build",
-    "build:standalone": "bun run build:web && bun build src/index.ts web/dist/**/* --compile --external @duckdb/node-api --external @duckdb/node-bindings/* --outfile ./dist/psyduck --sourcemap",
-    "build:standalone:linux": "bun run build:web && bun build --compile --target=bun-linux-x64 --external @duckdb/node-api --external @duckdb/node-bindings/* src/index.ts web/dist/**/* --outfile ./dist/psyduck-linux --sourcemap",
-    "build:standalone:win": "bun run build:web && bun build --compile --target=bun-windows-x64 --external @duckdb/node-api --external @duckdb/node-bindings/* src/index.ts web/dist/**/* --outfile ./dist/psyduck-windows.exe --sourcemap",
-    "build:standalone:macos": "bun run build:web && bun build --compile --target=bun-darwin-x64 --external @duckdb/node-api --external @duckdb/node-bindings/* src/index.ts web/dist/**/* --outfile ./dist/psyduck-macos --sourcemap",
+    "build:standalone": "bun run build:web && bun build bin/cli.ts web/dist/**/* --compile --external @duckdb/node-api --external @duckdb/node-bindings/* --outfile ./dist/psyduck --sourcemap",
+    "build:standalone:linux": "bun run build:web && bun build --compile --target=bun-linux-x64 --external @duckdb/node-api --external @duckdb/node-bindings/* bin/cli.ts web/dist/**/* --outfile ./dist/psyduck-linux --sourcemap",
+    "build:standalone:win": "bun run build:web && bun build --compile --target=bun-windows-x64 --external @duckdb/node-api --external @duckdb/node-bindings/* bin/cli.ts web/dist/**/* --outfile ./dist/psyduck-windows.exe --sourcemap",
+    "build:standalone:macos": "bun run build:web && bun build --compile --target=bun-darwin-x64 --external @duckdb/node-api --external @duckdb/node-bindings/* bin/cli.ts web/dist/**/* --outfile ./dist/psyduck-macos --sourcemap",
     "build:standalone:all": "bun run build:standalone && bun run build:standalone:linux && bun run build:standalone:win && bun run build:standalone:macos"
   },
   "dependencies": {
