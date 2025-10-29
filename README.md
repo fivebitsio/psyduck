@@ -2,7 +2,8 @@
 
 ## Dashboard Overview
 
-![Dashboard Screenshot](https://github.com/user-attachments/assets/e08259d2-13a0-4c53-ab2c-bbaf9b976aa1)
+![Dashboard Screenshot](https://github.com/user-attachments/assets/42473821-0169-4f38-a389-58b336a3594f)
+
 Main analytics dashboard showing key metrics and visualizations
 
 Psyduck is a single executable binary that functions as both a server and a command-line interface. This privacy-friendly analytics tool is built with modern technologies for fast data processing and runs with zero external dependencies.
