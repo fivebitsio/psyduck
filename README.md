@@ -1,37 +1,92 @@
-# Psyduck 🦆
+# Psyduck
 
-A privacy-friendly analytics tool built with modern technologies for fast data processing. Powered by DuckDB, an in-process analytical database that delivers exceptional performance for small to medium websites without the overhead of traditional database systems. Get powerful analytics without the complexity of enterprise solutions.
-
-## 📸 Screenshots
-
-### Dashboard Overview
+## Dashboard Overview
 
 ![Dashboard Screenshot](https://github.com/user-attachments/assets/e08259d2-13a0-4c53-ab2c-bbaf9b976aa1)
-_Main analytics dashboard showing key metrics and visualizations_
+Main analytics dashboard showing key metrics and visualizations
 
-````
+Psyduck is a single executable binary that functions as both a server and a command-line interface. This privacy-friendly analytics tool is built with modern technologies for fast data processing and runs with zero external dependencies.
 
-## 🌟 Features
+## Features
 
+- **Single Binary**: Just one executable that serves as a server, frontend and CLI tool
 - **Privacy-First**: All data processing happens on your infrastructure - no data leaves your control
 - **Fast Analytics**: Powered by DuckDB for lightning-fast analytical queries, ideal for small to medium websites
-- **Modern Stack**: Built with Node.js and React for optimal performance
+- **Modern Stack**: Built with Bun and React for optimal performance
 - **Self-Hosted**: Complete control over your analytics data
 - **Lightweight**: Minimal resource footprint compared to traditional analytics solutions
 
-## 🛠️ Tech Stack
+## CLI Commands
 
-- **Backend**: Node.js with DuckDB for data processing
-- **Frontend**: React with modern JavaScript tooling
+The Psyduck binary contains both server and CLI functionality.
+
+### init
+Initialize the configuration and create the initial admin user:
+
+```bash
+psyduck init
+```
+
+Additional options:
+```bash
+# Add an additional user
+psyduck init --add-user
+```
+
+### migrate
+Manage database migrations:
+
+```bash
+# Run all pending migrations
+psyduck migrate up
+
+# Rollback the last migration
+psyduck migrate down
+
+# Rollback a specific number of migrations
+psyduck migrate down --number 3
+
+# Show help for migration options
+psyduck migrate --help
+```
+
+### server
+Start the Psyduck server:
+
+```bash
+psyduck server
+```
+
+The server will start on port 9876 by default (or as configured in your .env file).
+
+### interactive
+Run an interactive command selector with a user-friendly menu:
+
+```bash
+psyduck interactive
+```
+
+### help
+Show help information for all commands:
+
+```bash
+psyduck --help
+```
+
+## Tech Stack
+
+- **Runtime**: Bun for fast JavaScript execution
+- **Frontend**: React with modern JavaScript tooling  
 - **Database**: DuckDB for analytical workloads
-- **Package Manager**: pnpm for efficient dependency management
+- **Package Manager**: Bun for dependency management
 
-## 📋 Prerequisites
+Built as a single executable with no external runtime dependencies.
 
-- [Node.js](https://nodejs.org) (v20+ recommended)
-- [pnpm](https://pnpm.io) (latest version)
+## Prerequisites
 
-## 🚀 Quick Start
+- [Bun](https://bun.sh) (v1.0+ recommended)
+
+## Quick Start
 
 ### 1. Clone the Repository
 
@@ -44,68 +99,80 @@ cd psyduck
 
 ```bash
 # Install all workspace dependencies
-pnpm install
+bun install
 ```
 
-### 3. Database Setup
+### 3. Setup and Run
 
-Run migrations to set up the database:
+Psyduck comes as a single executable binary after building.
+
+**Initialize Configuration** (required on first run):
 
 ```bash
-pnpm migrate
+psyduck init
 ```
 
-### 4. Start Development Servers
-
-**Backend** (from project root):
+**Run Database Migrations**:
 
 ```bash
-pnpm run dev
+psyduck migrate up
 ```
 
-**Frontend** (in a new terminal):
+**Start the Server**:
 
 ```bash
-pnpm --filter=web dev
+psyduck server
 ```
 
-**Or run both together:**
+### 4. Building the Standalone Executable
+
+Build the single executable containing both server and CLI functionality:
 
 ```bash
-pnpm run dev:all
+bun run build:standalone
 ```
 
-The backend will typically run on `http://localhost:9876` and the frontend on `http://localhost:5173`.
+This creates a single binary at `./dist/psyduck` that you can use as just `psyduck` from anywhere in your system.
 
-### 🗄️ Database Management
+### 5. Development
+
+For development, you can run the server directly:
+
+```bash
+bun run dev
+```
+
+The backend will typically run on `http://localhost:9876`.
+
+### Database Management
 
 **Run Migrations**:
 
 ```bash
-pnpm migrate
+psyduck migrate up
 ```
 
 **Open DuckDB Shell**:
 
 ```bash
-pnpm db
+bun db
 ```
 
-## 🔧 Configuration
+## Configuration
 
-Configuration details will be added as the project stabilizes. Currently, most settings are handled through environment variables and configuration files.
+Configuration is handled through environment variables and the `data/config.json` file. The `init` command will prompt you to set up the initial configuration including JWT secret and admin user credentials.
 
-## ⚠️ Development Status
+## Development Status
 
-**Psyduck is currently in active development.** This means:
+Psyduck is currently in active development. This means:
 
 - Features may change or break between updates
 - APIs are not stable and may change
 - Documentation may be incomplete or outdated
-- **Expect breaking changes** - backup your data regularly
+- Expect breaking changes - backup your data regularly
 
 We recommend using Psyduck for testing and development purposes only until we reach a stable release.
 
 ---
 
-**Remember**: This project is under active development. Star ⭐ and watch 👀 this repository to stay updated with the latest changes!
+Remember: This project is under active development. Star and watch this repository to stay updated with the latest changes!
