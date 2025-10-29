@@ -37,7 +37,7 @@ function TopPages() {
 
         const metrics = await api<undefined, ChartData[]>({
           method: 'GET',
-          url: `analytics/visits_by_page?from=${from}&to=${to}`
+          url: `api/analytics/visits_by_page?from=${from}&to=${to}`
         })
         setChartData(metrics)
       } catch (error) {

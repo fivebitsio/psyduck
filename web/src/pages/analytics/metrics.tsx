@@ -50,7 +50,7 @@ function Metrics() {
 
         const metrics = await api<undefined, ChartData[]>({
           method: 'GET',
-          url: `analytics/metrics?from=${from}&to=${to}&precision=${precision}`
+          url: `api/analytics/metrics?from=${from}&to=${to}&precision=${precision}`
         })
         const filledMetrics = fillGapsInData(metrics, from, to, precision)
         setChartData(filledMetrics)

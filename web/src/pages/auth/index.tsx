@@ -50,7 +50,7 @@ function LoginForm({ ...props }) {
       setLoading(true)
 
       const { token } = await api<SignInFormValues, LoginResponse>({
-        url: `auth/signin`,
+        url: `api/auth/signin`,
         body: data
       })
 

@@ -37,7 +37,7 @@ function Sources() {
 
         const metrics = await api<undefined, ChartData[]>({
           method: 'GET',
-          url: `analytics/visits_by_source?from=${from}&to=${to}`
+          url: `api/analytics/visits_by_source?from=${from}&to=${to}`
         })
         setChartData(metrics)
       } catch (error) {

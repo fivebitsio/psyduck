@@ -44,7 +44,7 @@ function Users() {
 
       const users = await api<undefined, User[]>({
         method: 'GET',
-        url: `config/users`
+        url: `api/config/users`
       })
       setUsers(users)
     } catch (error) {
@@ -60,7 +60,7 @@ function Users() {
 
   async function handleAddUser(body: z.infer<typeof formSchema>): Promise<void> {
     try {
-      await api({ url: 'config/users', method: 'POST', body })
+      await api({ url: 'api/config/users', method: 'POST', body })
       form.reset()
       await fetchUsers()
     } catch (error) {
@@ -85,7 +85,7 @@ function Users() {
 
   async function handleDeleteUser(email: string): Promise<void> {
     try {
-      await api({ url: `config/users/${email}`, method: 'DELETE' })
+      await api({ url: `api/config/users/${email}`, method: 'DELETE' })
       await fetchUsers()
     } catch (error: any) {
       console.error(error)

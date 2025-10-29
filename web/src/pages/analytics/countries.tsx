@@ -38,7 +38,7 @@ function Countries() {
 
         const metrics = await api<undefined, ChartData[]>({
           method: 'GET',
-          url: `analytics/visits_by_country?from=${from}&to=${to}`
+          url: `api/analytics/visits_by_country?from=${from}&to=${to}`
         })
         setChartData(metrics)
       } catch (error) {
