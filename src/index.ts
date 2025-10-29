@@ -26,9 +26,7 @@ const app = new Hono()
 
 app.use(logger())
 
-const allowedOrigins = process.env.ALLOWED_ORIGINS?.split(',').map(origin => origin.trim()) || [
-  'https://psyduck.click'
-]
+const allowedOrigins = process.env.ALLOWED_ORIGINS?.split(',').map(origin => origin.trim()) || []
 
 app.use(
   cors({
