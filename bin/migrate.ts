@@ -65,7 +65,7 @@ async function handleDownCommand(migrator: Migrator, numberOfMigrations: string 
       num = 'all'
     } else {
       num = Number(numberOfMigrations)
-      if (isNaN(num) || num < 1 || !Number.isInteger(num)) {
+      if (Number.isNaN(num) || num < 1 || !Number.isInteger(num)) {
         console.error('Error: --number must be a positive integer or "all"')
         process.exit(1)
       }

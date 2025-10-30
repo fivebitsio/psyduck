@@ -38,8 +38,11 @@ app.use(
   })
 )
 
-const instance = await DuckDBInstance.create('data/psyduck.db')
-const configDb = await JSONFilePreset('data/config.json', {} as ConfigSchema)
+const dbPath = process.env.DB_PATH || 'data/psyduck.db'
+const configPath = process.env.CONFIG_PATH || 'data/config.json'
+
+const instance = await DuckDBInstance.create(dbPath)
+const configDb = await JSONFilePreset(configPath, {} as ConfigSchema)
 const db = await instance.connect()
 
 async function closeDb() {
@@ -110,9 +113,9 @@ process.on('SIGTERM', async () => {
   process.exit(0)
 })
 
-const port = parseInt(process.env.PORT || '9876')
+const port = parseInt(process.env.PORT || '9876', 10)
 
 export default {
-  port: 9876,
+  port: port,
   fetch: app.fetch
 }

@@ -1,11 +1,39 @@
+import { DuckDBInstance } from '@duckdb/node-api'
 import { input, password } from '@inquirer/prompts'
 import { JSONFilePreset } from 'lowdb/node'
+import { mkdir } from 'node:fs/promises'
 import { resolve } from 'node:path'
 import createConfigRepo from '../src/config/repo'
 import createConfigService from '../src/config/service'
 import type { ConfigSchema, User } from '../src/config/types'
+import Migrator from '../src/lib/migrator.js'
 
-const configPath = resolve(__dirname, '../data/config.json')
+const configPath = resolve(process.cwd(), 'data/config.json')
+const dbPath = resolve(process.cwd(), 'data/psyduck.db')
+
+async function initializeDatabase() {
+  try {
+    console.log('Initializing database...')
+
+    const instance = await DuckDBInstance.create(dbPath)
+    const conn = await instance.connect()
+    conn.closeSync()
+    instance.closeSync()
+
+    const migrator = new Migrator({
+      dbPath,
+      migrationsDir: resolve(process.cwd(), 'migrations')
+    })
+
+    await migrator.up()
+    migrator.close()
+
+    console.log('Database initialized successfully.')
+  } catch (error) {
+    console.error('Error initializing database:', error)
+    throw error
+  }
+}
 
 async function ensureJwtKey(configService: ReturnType<typeof createConfigService>) {
   try {
@@ -116,6 +144,11 @@ async function main() {
   const args = process.argv.slice(2)
 
   try {
+    const dataDir = resolve(process.cwd(), 'data')
+    await mkdir(dataDir, { recursive: true })
+
+    await initializeDatabase()
+
     const configDb = await JSONFilePreset(configPath, {
       jwtKey: '',
       users: [],
